@@ -27,12 +27,11 @@ describe('library store', () => {
     expect(getState().entries[1]).toMatchObject({ status: 'watching', progress: 5 });
   });
 
-  it('setStatus creates missing entries; remove drops entry and favorite', () => {
+  it('setStatus creates missing entries; remove drops the entry but keeps the favorite', () => {
     getState().setStatus(2, 'completed');
     getState().toggleFavorite(2);
-    expect(getState().favoriteIds).toEqual([2]);
     getState().remove(2);
     expect(getState().entries[2]).toBeUndefined();
-    expect(getState().favoriteIds).toEqual([]);
+    expect(getState().favoriteIds).toEqual([2]);
   });
 });

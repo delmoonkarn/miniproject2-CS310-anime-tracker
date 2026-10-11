@@ -28,7 +28,7 @@ export interface LibraryActions {
   setProgress: (id: number, progress: number, total: number | null) => void;
   increment: (id: number, total: number | null) => void;
   toggleFavorite: (id: number) => void;
-  /** Removes the entry and the favorite. */
+  /** Removes the entry. Favorites are independent and stay. */
   remove: (id: number) => void;
   toggleTheme: () => void;
 }
@@ -86,7 +86,7 @@ export const useLibraryStore = create<LibraryStore>()(
       remove: (id) =>
         set((s) => {
           const { [id]: _removed, ...entries } = s.entries;
-          return { entries, favoriteIds: s.favoriteIds.filter((f) => f !== id) };
+          return { entries };
         }),
 
       toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),

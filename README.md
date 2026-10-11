@@ -133,8 +133,8 @@ screenshots/             app screenshots
 ## Assumptions
 
 - **No separate home page:** `/` opens Explore, which serves as the items page (20+ items in every view).
-- **Quick add:** "+ Add to collection" adds a show as *Interested*. Change the status on the Detail page.
-- **Removing a show:** choosing "Not in collection" removes both the entry and the favorite. Favoriting works whether or not the show is in the collection.
+- **Card actions:** the "+ Add ▾" menu adds a show as *Watching* or *Interested*, switches between them, or removes it. The ♥ button toggles the favorite. *Completed* and progress are set on the Detail page.
+- **Favorites are independent:** removing a show from the collection keeps its favorite, and you can favorite a show without adding it.
 - **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
 - **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than its total ("top 100 of 116").
 - **Poster URLs:** newer Kitsu posters are signed URLs that expire after about 15 minutes. If a cached URL has expired, the card shows a "No poster" placeholder.
