@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
         path: 'explore',
         element: <ExploreLayout />,
         children: [
-          { index: true, element: <Navigate to="trending" replace /> },
+          { index: true, element: <Navigate to="season" replace /> },
           { path: ':category', element: <ExploreCategoryPage /> },
         ],
       },

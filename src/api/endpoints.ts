@@ -1,4 +1,5 @@
 import type { Anime, Episode, Page } from '../types/kitsu';
+import type { Season } from '../lib/season';
 import { kitsuFetch } from './client';
 import { isAnimeAttributes, isEpisodeAttributes, many, one } from './guards';
 
@@ -45,6 +46,7 @@ export function fetchLatestEpisodes(animeId: number, signal?: AbortSignal): Prom
 // ---------- explore categories ----------
 
 export const EXPLORE_CATEGORIES = {
+  season: { label: 'By season', description: 'Everything airing in a season, most popular first.' },
   trending: { label: 'Trending', description: 'What the Kitsu community is watching right now.' },
   airing: { label: 'Airing', description: 'Currently airing shows, most popular first.' },
   upcoming: { label: 'Upcoming', description: 'Announced shows that have not started yet.' },
@@ -52,20 +54,46 @@ export const EXPLORE_CATEGORIES = {
 } as const;
 
 export type ExploreCategory = keyof typeof EXPLORE_CATEGORIES;
+/** Categories that are a single Kitsu list request. */
+export type ListCategory = Exclude<ExploreCategory, 'trending' | 'season'>;
 
 export const isExploreCategory = (v: unknown): v is ExploreCategory =>
   typeof v === 'string' && Object.hasOwn(EXPLORE_CATEGORIES, v);
 
-const CATEGORY_QUERY: Record<Exclude<ExploreCategory, 'trending'>, Record<string, string>> = {
+const CATEGORY_QUERY: Record<ListCategory, Record<string, string>> = {
   airing: { 'filter[status]': 'current', sort: '-userCount' },
   upcoming: { 'filter[status]': 'upcoming', sort: '-userCount' },
   'highest-rated': { sort: '-averageRating' },
 };
 
-export function fetchCategory(
-  category: Exclude<ExploreCategory, 'trending'>,
-  signal?: AbortSignal,
-): Promise<Page<Anime>> {
+export function fetchCategory(category: ListCategory, signal?: AbortSignal): Promise<Page<Anime>> {
   const qs = new URLSearchParams({ ...CATEGORY_QUERY[category], 'page[limit]': String(PAGE_SIZE) });
   return kitsuFetch(`/anime?${qs}`, animeList, signal);
+}
+
+/** A season holds ~100–180 shows, a whole year 500+. Cap the page walk; the list is popularity-sorted. */
+export const SEASON_MAX_PAGES = 8;
+
+/**
+ * All anime of a season (or a whole year when `season` is null), most popular first.
+ * Walks `page[offset]` because Kitsu caps pages at 20; each page goes through the kitsuFetch queue.
+ */
+export async function fetchSeason(season: Season | null, year: number, signal?: AbortSignal): Promise<Page<Anime>> {
+  // Kitsu sometimes ignores page[offset] and repeats an earlier page, so results are de-duplicated by id.
+  const byId = new Map<number, Anime>();
+  let total: number | null = null;
+  for (let page = 0; page < SEASON_MAX_PAGES; page++) {
+    const qs = new URLSearchParams({
+      ...(season ? { 'filter[season]': season } : {}),
+      'filter[seasonYear]': String(year),
+      sort: '-userCount',
+      'page[limit]': String(PAGE_SIZE),
+      'page[offset]': String(page * PAGE_SIZE),
+    });
+    const res = await kitsuFetch(`/anime?${qs}`, animeList, signal);
+    for (const a of res.items) if (!byId.has(a.id)) byId.set(a.id, a);
+    total = res.total;
+    if (res.items.length < PAGE_SIZE || (total !== null && (page + 1) * PAGE_SIZE >= total)) break;
+  }
+  return { items: [...byId.values()], total };
 }

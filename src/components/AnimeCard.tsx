@@ -12,7 +12,7 @@ export function AnimeCard({ anime, highlight = false }: { anime: Anime; highligh
 
   return (
     <article className={`card bg-base-200 shadow-sm ${owned ? 'ring-2 ring-primary' : ''}`}>
-      <Link to={`/anime/${anime.id}`} className="relative">
+      <Link to={`/anime/${anime.id}`} className="relative block">
         <Poster src={posterUrl(anime)} title={anime.canonicalTitle} className="aspect-[2/3] w-full rounded-t-box" />
         {owned && <span className="badge badge-primary absolute top-2 left-2">In collection</span>}
       </Link>

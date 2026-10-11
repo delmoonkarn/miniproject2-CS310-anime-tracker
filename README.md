@@ -29,8 +29,18 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/collection/interested` | Interested | Card grid. |
 | `/collection/completed` | Completed | Card grid. |
 | `/collection/favorites` | Favorites | Card grid. |
-| `/explore` | Explore layout | The index route redirects to `trending`. |
-| `/explore/:category` | Explore | `trending`, `airing`, `upcoming`, `highest-rated`. Shows already in your collection are outlined. Unknown categories show a 404 page. |
+| `/explore` | Explore layout | The index route redirects to `season`. |
+| `/explore/season` | Discover by season | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year). The current season also gets a **Continuing** block for older shows that are still airing. |
+| `/explore/:category` | Explore | `trending`, `airing`, `upcoming`, `highest-rated`. Unknown categories show a 404 page. |
+
+Every Explore tab shares the same list view:
+- **Format** pills (TV, ONA, Movie, Special, OVA, Music, plus Continuing) with live counts. You can select several; **Clear** resets them.
+- A search box that filters the loaded results by title.
+- The grid is grouped into labelled sections: TV & ONA first, then *Movies*, *Specials & OVAs*, *Music* and *Continuing*.
+- A **Refresh** button and an "updated N min ago" note.
+- Shows already in your collection are outlined.
+
+All filtering is done client-side on data already in the TanStack Query cache (`src/lib/discover.ts`, unit-tested), so it never triggers a request.
 | `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
 | `*` | Not found | |
 
@@ -128,6 +138,9 @@ screenshots/             app screenshots
 - **Removing a show:** choosing "Not in collection" removes both the entry and the favorite. Favoriting works whether or not the show is in the collection.
 - **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
 - **Search count:** Kitsu's search `meta.count` is sometimes slightly off, and the page count shown follows it.
+- **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than its total ("top 100 of 116").
+- **Poster URLs:** newer Kitsu posters are signed URLs that expire after about 15 minutes. If a cached URL has expired, the card shows a "No poster" placeholder.
+- The Explore page takes its layout and filtering from the group's earlier app (season/year pickers, format pills, grouped grid). The tag filter was left out, as the brief requires.
 - Team details in `src/data/members.ts` are placeholders. To use real photos, put them in `public/members/` and set `photo: '/members/name.jpg'`.
 
 ## Attribution

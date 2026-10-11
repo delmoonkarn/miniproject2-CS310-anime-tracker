@@ -3,10 +3,12 @@ import {
   fetchAnime,
   fetchCategory,
   fetchLatestEpisodes,
+  fetchSeason,
   fetchTrending,
   searchAnime,
-  type ExploreCategory,
+  type ListCategory,
 } from './endpoints';
+import type { Season } from '../lib/season';
 import { isKitsuError } from './errors';
 import { animeKeys } from './queryKeys';
 
@@ -27,10 +29,17 @@ export const searchQuery = (text: string, offset: number) =>
     staleTime: 10 * MINUTE,
   });
 
-export const categoryQuery = (category: Exclude<ExploreCategory, 'trending'>) =>
+export const categoryQuery = (category: ListCategory) =>
   queryOptions({
     queryKey: animeKeys.category(category),
     queryFn: ({ signal }) => fetchCategory(category, signal),
+    staleTime: 30 * MINUTE,
+  });
+
+export const seasonQuery = (season: Season | null, year: number) =>
+  queryOptions({
+    queryKey: animeKeys.season(season, year),
+    queryFn: ({ signal }) => fetchSeason(season, year, signal),
     staleTime: 30 * MINUTE,
   });
 
