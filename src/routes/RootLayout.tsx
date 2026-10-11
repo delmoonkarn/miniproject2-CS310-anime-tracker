@@ -3,7 +3,8 @@ import { useLibraryStore } from '../store/useLibraryStore';
 
 const NAV = [
   { to: '/explore', label: 'Explore', end: false },
-  { to: '/collection', label: 'Collection', end: false },
+  { to: '/watchlist', label: 'Watchlist', end: false },
+  { to: '/favorites', label: 'Favorites', end: false },
   { to: '/about', label: 'About', end: false },
 ];
 

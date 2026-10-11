@@ -1,18 +1,18 @@
 import { Link } from 'react-router';
-import { useCollectionIds } from '../../store/selectors';
-import { useAnimeDetails } from '../../api/hooks';
-import { AnimeCard } from '../../components/AnimeCard';
-import { CardSkeleton, EmptyState, ErrorState, GRID_CLASSES } from '../../components/States';
+import { useCollectionIds } from '../store/selectors';
+import { useAnimeDetails } from '../api/hooks';
+import { AnimeCard } from './AnimeCard';
+import { CardSkeleton, EmptyState, ErrorState, GRID_CLASSES } from './States';
 
 type Kind = 'interested' | 'completed' | 'favorites';
 
 const EMPTY_TEXT: Record<Kind, string> = {
   interested: 'Shows you add from Explore land here.',
   completed: 'Mark a show as completed on its detail page.',
-  favorites: 'Tap “Add to favorites” on any show’s page.',
+  favorites: 'Tap ♥ on any show to keep it here.',
 };
 
-export function CollectionGridTab({ kind }: { kind: Kind }) {
+export function LibraryGrid({ kind }: { kind: Kind }) {
   const ids = useCollectionIds(kind);
   const queries = useAnimeDetails(ids);
 

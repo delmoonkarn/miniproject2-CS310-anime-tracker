@@ -11,7 +11,7 @@ const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve,
 
 // ---------- request queue ----------
 // Every request runs one after another, at least MIN_GAP_MS apart. This keeps
-// pages that fire many queries at once (useQueries on the Collection page) from hammering Kitsu.
+// pages that fire many queries at once (useQueries on the Watchlist and Favorites pages) from hammering Kitsu.
 
 let tail: Promise<unknown> = Promise.resolve();
 let lastStart = 0;
