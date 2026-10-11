@@ -37,6 +37,8 @@ export type LibraryStore = LibraryState & LibraryActions;
 
 export const WATCH_STATUSES: readonly WatchStatus[] = ['watching', 'interested', 'completed'];
 
+export const isWatchStatus = (v: unknown): v is WatchStatus => WATCH_STATUSES.some((s) => s === v);
+
 export function clampProgress(progress: number, total: number | null): number {
   const max = total ?? Number.POSITIVE_INFINITY;
   return Math.min(Math.max(0, Math.floor(progress)), max);
