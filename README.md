@@ -27,7 +27,7 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/explore/trending` | Explore: trending (items page) | Top 60 trending anime on Kitsu. Switch views with the buttons next to the page title. |
 | `/anime/:id` | Detail | Synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle. Handles invalid ids and 404s. |
 | `/watchlist` | Watchlist (collection page) | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
-| `/watchlist/watching` | Watching | Progress, last aired episode, next episode date, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
+| `/watchlist/watching` | Watching | Grouped by the weekday of each show's next episode (Monday → Sunday, then "No upcoming episode"). Today's day is highlighted and scrolled into view on open. Each row shows progress, last aired episode, next episode date, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
 | `/watchlist/interested` | Interested | Card grid. |
 | `/watchlist/completed` | Completed | Card grid. |
 | `/favorites` | Favorites (extended page) | Every show marked ♥, kept separately from the watchlist. |
@@ -114,7 +114,7 @@ The interfaces in `src/types/kitsu.ts` are hand-written from real responses (fet
 3. One week after the last dated episode that has aired (estimate).
 4. One episode a week from `startDate` (estimate). Nothing is shown if this would go past `episodeCount`.
 
-Estimates are shown with "≈", e.g. "Next: ≈ Ep 3 · Fri, Oct 16". In October 2026, none of the 20 most popular shows of the season had any of this data, so most shows get the weekly estimate. Breaks and delays aren't known to Kitsu, so they aren't reflected.
+The Watching tab groups shows by the weekday of this date (`groupByWeekday` in `src/lib/schedule.ts`, unit-tested). Estimates are shown with "≈", e.g. "Next: ≈ Ep 3 · Fri, Oct 16". In October 2026, none of the 20 most popular shows of the season had any of this data, so most shows get the weekly estimate. Breaks and delays aren't known to Kitsu, so they aren't reflected.
 
 Aired and next-episode data live only in the TanStack Query cache (`animeKeys.latestEpisodes(id)`), never in Zustand. The Detail page uses the same query, so opening an airing show you watch costs no extra request.
 

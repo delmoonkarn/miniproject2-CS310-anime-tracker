@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import { useEffect, useRef, type MouseEvent } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { useWatchingData } from '../../api/hooks';
@@ -6,13 +6,56 @@ import { useCollectionIds } from '../../store/selectors';
 import { useLibraryStore } from '../../store/useLibraryStore';
 import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../../lib/airedEpisodes';
 import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../../lib/format';
+import { WEEKDAY_LABEL, groupByWeekday } from '../../lib/schedule';
 import { EmptyState, ErrorState, RowSkeleton } from '../../components/States';
 import { Poster } from '../../components/Poster';
 import type { Anime, Episode, Page } from '../../types/kitsu';
 
+interface RowData {
+  id: number;
+  detail: UseQueryResult<Anime>;
+  episodes: UseQueryResult<Page<Episode>>;
+  /** Weekday of the next episode, null when there's none (or the show failed to load). */
+  day: number | null;
+  sortKey: number;
+}
+
 export function WatchingTab() {
   const ids = useCollectionIds('watching');
   const { details, episodes } = useWatchingData(ids);
+  const todayRef = useRef<HTMLElement>(null);
+  const scrolled = useRef(false);
+
+  // A row is placed once its detail (and, for airing shows, its episodes) has loaded.
+  const ready: RowData[] = [];
+  const pending: number[] = [];
+  ids.forEach((id, i) => {
+    const detail = details[i];
+    const eps = episodes[i];
+    if (!detail || !eps) return;
+    if (detail.isError) {
+      ready.push({ id, detail, episodes: eps, day: null, sortKey: Infinity });
+      return;
+    }
+    if (!detail.data || (needsEpisodeList(detail.data) && eps.isPending)) {
+      pending.push(id);
+      return;
+    }
+    const next = nextEpisode(detail.data, eps.data?.items);
+    ready.push({ id, detail, episodes: eps, day: next ? next.date.getDay() : null, sortKey: next?.date.getTime() ?? Infinity });
+  });
+  ready.sort((a, b) => a.sortKey - b.sortKey);
+  const groups = groupByWeekday(ready, (r) => r.day, new Date().getDay());
+  const allPlaced = pending.length === 0;
+
+  // Jump to today once, after every row has found its day, so the layout no longer shifts.
+  useEffect(() => {
+    if (allPlaced && ids.length > 0 && !scrolled.current) {
+      scrolled.current = true;
+      todayRef.current?.scrollIntoView({ block: 'start' });
+      todayRef.current?.focus({ preventScroll: true });
+    }
+  }, [allPlaced, ids.length]);
 
   if (ids.length === 0) {
     return (
@@ -26,13 +69,48 @@ export function WatchingTab() {
   }
 
   return (
-    <ul className="flex flex-col gap-3">
-      {ids.map((id, i) => {
-        const detail = details[i];
-        const eps = episodes[i];
-        return <li key={id}>{detail && eps && <WatchingRow detail={detail} episodes={eps} />}</li>;
-      })}
-    </ul>
+    <div className="flex flex-col gap-6">
+      {groups.map((g) => (
+        <section
+          key={g.day ?? 'none'}
+          ref={g.isToday ? todayRef : undefined}
+          tabIndex={g.isToday ? -1 : undefined}
+          aria-current={g.isToday ? 'date' : undefined}
+          aria-labelledby={`day-${g.day ?? 'none'}`}
+          className={`scroll-mt-24 rounded-box outline-none ${g.isToday ? 'border-2 border-primary/60 bg-primary/5 p-3' : ''}`}
+        >
+          <h2 id={`day-${g.day ?? 'none'}`} className="mb-3 flex items-center gap-2 text-lg font-semibold">
+            {g.day === null ? 'No upcoming episode' : WEEKDAY_LABEL[g.day]}
+            {g.isToday && <span className="badge badge-primary badge-sm">Today</span>}
+            <span className="badge badge-ghost badge-sm">{g.items.length}</span>
+          </h2>
+          {g.items.length === 0 ? (
+            <p className="text-sm text-base-content/60">Nothing you watch airs today.</p>
+          ) : (
+            <ul className="flex flex-col gap-3">
+              {g.items.map((r) => (
+                <li key={r.id}>
+                  <WatchingRow detail={r.detail} episodes={r.episodes} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))}
+
+      {pending.length > 0 && (
+        <section aria-busy="true">
+          <h2 className="mb-3 text-lg font-semibold text-base-content/60">Checking schedule…</h2>
+          <ul className="flex flex-col gap-3">
+            {pending.map((id) => (
+              <li key={id}>
+                <RowSkeleton />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
   );
 }
 
