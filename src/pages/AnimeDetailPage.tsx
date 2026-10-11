@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router';
-import { animeDetailQuery } from '../api/queries';
+import { animeDetailQuery, latestEpisodesQuery } from '../api/queries';
 import { isKitsuError } from '../api/errors';
 import { DetailSkeleton, ErrorState } from '../components/States';
 import { LibraryControls } from '../components/LibraryControls';
 import { Poster } from '../components/Poster';
-import { ANIME_STATUS_LABEL, formatDate, formatEpisodes, formatRating, parseId, posterUrl } from '../lib/format';
+import { needsEpisodeList, nextEpisode } from '../lib/airedEpisodes';
+import { ANIME_STATUS_LABEL, formatDate, formatEpisodes, formatNextEpisode, formatRating, parseId, posterUrl } from '../lib/format';
 import { NotFoundPage } from './NotFoundPage';
 
 export function AnimeDetailPage() {
@@ -19,6 +20,8 @@ export function AnimeDetailPage() {
 
 function AnimeDetail({ id }: { id: number }) {
   const query = useQuery(animeDetailQuery(id));
+  // Only airing shows need episodes; same key and cache as the Watching tab.
+  const episodes = useQuery(latestEpisodesQuery(id, query.data !== undefined && needsEpisodeList(query.data)));
 
   if (query.isPending) return <DetailSkeleton />;
   if (query.isError) {
@@ -38,6 +41,10 @@ function AnimeDetail({ id }: { id: number }) {
     ['Started', formatDate(anime.startDate)],
     ['Ended', anime.status === 'finished' ? formatDate(anime.endDate) : '—'],
   ];
+  if (needsEpisodeList(anime)) {
+    const next = episodes.isPending ? undefined : nextEpisode(anime, episodes.data?.items);
+    facts.push(['Next episode', next === undefined ? 'Checking…' : next === null ? 'Unknown' : formatNextEpisode(next)]);
+  }
 
   return (
     <article className="flex flex-col gap-6 md:flex-row">

@@ -1,5 +1,6 @@
 import type { Anime, AnimeStatus } from '../types/kitsu';
 import type { WatchStatus } from '../store/useLibraryStore';
+import type { NextEpisodeInfo } from './airedEpisodes';
 
 export const ANIME_STATUS_LABEL: Record<AnimeStatus, string> = {
   current: 'Airing',
@@ -35,6 +36,14 @@ export function formatDate(date: string | null): string {
 export function posterUrl(anime: Pick<Anime, 'posterImage'>, size: 'small' | 'medium' | 'large' = 'small'): string | null {
   const p = anime.posterImage;
   return p?.[size] ?? p?.medium ?? p?.small ?? p?.original ?? null;
+}
+
+/** "Ep 3 · Fri, Oct 16", "≈ Ep 3 · Fri, Oct 16", or with a time when Kitsu gives one. */
+export function formatNextEpisode(next: NextEpisodeInfo): string {
+  const day = next.date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  const time = next.hasTime ? `, ${next.date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}` : '';
+  const ep = next.number === null ? '' : `Ep ${next.number} · `;
+  return `${next.estimated ? '≈ ' : ''}${ep}${day}${time}`;
 }
 
 export function timeAgo(ts: number, now: number = Date.now()): string {

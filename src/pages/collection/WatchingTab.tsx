@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import { useWatchingData } from '../../api/hooks';
 import { useCollectionIds } from '../../store/selectors';
 import { useLibraryStore } from '../../store/useLibraryStore';
-import { behindBy, lastAiredEpisode, needsEpisodeList } from '../../lib/airedEpisodes';
-import { ANIME_STATUS_LABEL, posterUrl } from '../../lib/format';
+import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../../lib/airedEpisodes';
+import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../../lib/format';
 import { EmptyState, ErrorState, RowSkeleton } from '../../components/States';
 import { Poster } from '../../components/Poster';
 import type { Anime, Episode, Page } from '../../types/kitsu';
@@ -58,6 +58,7 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
   // If the episode request fails, lastAiredEpisode falls back to the start-date estimate.
   const aired = waitingForEpisodes ? null : lastAiredEpisode(anime, episodes.data?.items);
   const behind = aired ? behindBy(aired.aired, progress) : null;
+  const next = waitingForEpisodes ? null : nextEpisode(anime, episodes.data?.items);
   const atEnd = total !== null && progress >= total;
 
   // Runs a menu action, then blurs so DaisyUI's focus-based dropdown closes.
@@ -88,6 +89,17 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
               `Aired: ep ${aired.aired}`
             )}
           </span>
+          {next && (
+            <>
+              <span className="mx-2 text-base-content/40">·</span>
+              <span
+                className="text-base-content/70"
+                title={next.estimated ? 'Estimated from a weekly schedule' : 'Air date from Kitsu'}
+              >
+                Next: {formatNextEpisode(next)}
+              </span>
+            </>
+          )}
         </p>
         <div className="flex flex-wrap gap-1">
           <span className="badge badge-sm badge-ghost">{ANIME_STATUS_LABEL[anime.status]}</span>
