@@ -1,0 +1,2385 @@
+{
+  "data": [
+    {
+      "id": "7442",
+      "type": "anime",
+      "links": {
+        "self": "/anime/7442"
+      },
+      "attributes": {
+        "slug": "attack-on-titan",
+        "synopsis": "Centuries ago, mankind was slaughtered to near extinction by monstrous humanoid creatures called titans, forcing humans to hide in fear behind enormous concentric walls. What makes these giants truly terrifying is that their taste for human flesh is not born out of hunger but what appears to be out of pleasure. To ensure their survival, the remnants of humanity began living within defensive barriers, resulting in one hundred years without a single titan encounter. However, that fragile calm is soon shattered when a colossal titan manages to breach the supposedly impregnable outer wall, reigniting the fight for survival against the man-eating abominations.\n\nAfter witnessing a horrific personal loss at the hands of the invading creatures, Eren Yeager dedicates his life to their eradication by enlisting into the Survey Corps, an elite military unit that combats the merciless humanoids outside the protection of the walls. Based on Hajime Isayama's award-winning manga, Shingeki no Kyojin follows Eren, along with his adopted sister Mikasa Ackerman and his childhood friend Armin Arlert, as they join the brutal war against the titans and race to discover a way of defeating them before the last walls are breached.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en": "Attack on Titan",
+          "en_jp": "Shingeki no Kyojin",
+          "en_us": "Attack on Titan",
+          "ja_jp": "進撃の巨人"
+        },
+        "canonicalTitle": "Attack on Titan",
+        "abbreviatedTitles": [
+          "AoT"
+        ],
+        "averageRating": "84.41",
+        "userCount": 617143,
+        "favoritesCount": 9624,
+        "startDate": "2013-04-07",
+        "endDate": "2013-09-29",
+        "nextRelease": null,
+        "popularityRank": 1,
+        "ratingRank": 50,
+        "ageRating": "R",
+        "ageRatingGuide": "Violence, Profanity",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/7442/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/7442/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/7442/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/7442/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/7442/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/7442/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/7442/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/7442/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/7442/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 25,
+        "episodeLength": 24,
+        "youtubeVideoId": "LHtdKWJdif4",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/7442/relationships/episodes",
+            "related": "/anime/7442/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "11469",
+      "type": "anime",
+      "links": {
+        "self": "/anime/11469"
+      },
+      "attributes": {
+        "slug": "boku-no-hero-academia",
+        "synopsis": "What would the world be like if 80 percent of the population manifested extraordinary superpowers called “Quirks” at age four? Heroes and villains would be battling it out everywhere! Becoming a hero would mean learning to use your power, but where would you go to study? U.A. High's Hero Program of course! But what would you do if you were one of the 20 percent who were born Quirkless?\n\nMiddle school student Izuku Midoriya wants to be a hero more than anything, but he hasn't got an ounce of power in him. With no chance of ever getting into the prestigious U.A. High School for budding heroes, his life is looking more and more like a dead end. Then an encounter with All Might, the greatest hero of them all gives him a chance to change his destiny…\n\n(Source: Viz Media)",
+        "titles": {
+          "en": "My Hero Academia",
+          "en_jp": "Boku no Hero Academia",
+          "en_us": "My Hero Academia",
+          "ja_jp": "僕のヒーローアカデミア"
+        },
+        "canonicalTitle": "Boku no Hero Academia",
+        "abbreviatedTitles": [],
+        "averageRating": "83.05",
+        "userCount": 571619,
+        "favoritesCount": 5710,
+        "startDate": "2016-04-03",
+        "endDate": "2016-06-26",
+        "nextRelease": null,
+        "popularityRank": 2,
+        "ratingRank": 104,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/11469/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/11469/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/11469/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/11469/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/11469/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/11469/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/11469/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/11469/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/11469/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 13,
+        "episodeLength": 23,
+        "youtubeVideoId": "D5fYOnwYkj4",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/11469/relationships/episodes",
+            "related": "/anime/11469/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "12268",
+      "type": "anime",
+      "links": {
+        "self": "/anime/12268"
+      },
+      "attributes": {
+        "slug": "boku-no-hero-academia-2nd-season",
+        "synopsis": "Taking off right after the last episode of the first season. The school is temporarily closed due to security. When U.A. restarts, it is announced that the highly anticipated School Sports Festival will soon be taking place. All classes: Hero, Support, General and Business will be participating. Tournaments all around will decide who is the top Hero in training.\n\n(Source: Anime News Network)",
+        "titles": {
+          "en": "My Hero Academia Season 2",
+          "en_jp": "Boku no Hero Academia 2",
+          "ja_jp": "僕のヒーローアカデミア２"
+        },
+        "canonicalTitle": "Boku no Hero Academia 2",
+        "abbreviatedTitles": [],
+        "averageRating": "83.15",
+        "userCount": 555187,
+        "favoritesCount": 2239,
+        "startDate": "2017-04-01",
+        "endDate": "2017-09-30",
+        "nextRelease": null,
+        "popularityRank": 3,
+        "ratingRank": 99,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/12268/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/12268/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/12268/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/12268/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/12268/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/12268/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/12268/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/12268/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/12268/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 25,
+        "episodeLength": 24,
+        "youtubeVideoId": "9ZIgCYSn3e8",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/12268/relationships/episodes",
+            "related": "/anime/12268/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "13881",
+      "type": "anime",
+      "links": {
+        "self": "/anime/13881"
+      },
+      "attributes": {
+        "slug": "boku-no-hero-academia-3rd-season",
+        "synopsis": "Summer is here, and the heroes of Class 1-A and 1-B are in for the toughest training camp of their lives! A group of seasoned pros pushes everyone's Quirks to new heights as the students face one overwhelming challenge after another. Braving the elements in this secret location becomes the least of their worries when routine training turns into a critical struggle for survival.\n\n(Source: Crunchyroll)",
+        "titles": {
+          "en": "My Hero Academia Season 3",
+          "en_jp": "Boku no Hero Academia 3",
+          "ja_jp": "僕のヒーローアカデミア３"
+        },
+        "canonicalTitle": "Boku no Hero Academia 3",
+        "abbreviatedTitles": [],
+        "averageRating": "83.42",
+        "userCount": 513897,
+        "favoritesCount": 2521,
+        "startDate": "2018-04-07",
+        "endDate": "2018-09-29",
+        "nextRelease": null,
+        "popularityRank": 5,
+        "ratingRank": 83,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/13881/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/13881/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/13881/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/13881/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/13881/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/13881/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/13881/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/13881/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/13881/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 25,
+        "episodeLength": 24,
+        "youtubeVideoId": "JezE6iZUWxo",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/13881/relationships/episodes",
+            "related": "/anime/13881/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "10740",
+      "type": "anime",
+      "links": {
+        "self": "/anime/10740"
+      },
+      "attributes": {
+        "slug": "one-punch-man",
+        "synopsis": "The seemingly ordinary and unimpressive Saitama has a rather unique hobby: being a hero. In order to pursue his childhood dream, he trained relentlessly for three years—and lost all of his hair in the process. Now, Saitama is incredibly powerful, so much so that no enemy is able to defeat him in battle. In fact, all it takes to defeat evildoers with just one punch has led to an unexpected problem—he is no longer able to enjoy the thrill of battling and has become quite bored.\n\nThis all changes with the arrival of Genos, a 19-year-old cyborg, who wishes to be Saitama's disciple after seeing what he is capable of. Genos proposes that the two join the Hero Association in order to become certified heroes that will be recognized for their positive contributions to society, and Saitama, shocked that no one knows who he is, quickly agrees. And thus begins the story of One Punch Man, an action-comedy that follows an eccentric individual who longs to fight strong enemies that can hopefully give him the excitement he once felt and just maybe, he'll become popular in the process.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en_jp": "One Punch Man",
+          "en_us": "One Punch Man",
+          "ja_jp": "ワンパンマン"
+        },
+        "canonicalTitle": "One Punch Man",
+        "abbreviatedTitles": [
+          "One Punch-Man",
+          "OPM",
+          "One-Punch Man"
+        ],
+        "averageRating": "83.43",
+        "userCount": 537307,
+        "favoritesCount": 4307,
+        "startDate": "2015-10-05",
+        "endDate": "2015-12-21",
+        "nextRelease": null,
+        "popularityRank": 4,
+        "ratingRank": 81,
+        "ageRating": "R",
+        "ageRatingGuide": "Violence, Profanity",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/10740/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/10740/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/10740/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/10740/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/10740/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/10740/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/10740/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/10740/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/10740/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 12,
+        "episodeLength": 24,
+        "youtubeVideoId": "tMblzsXwAKo",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/10740/relationships/episodes",
+            "related": "/anime/10740/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "49746",
+      "type": "anime",
+      "links": {
+        "self": "/anime/49746"
+      },
+      "attributes": {
+        "slug": "re-zero-kara-hajimeru-isekai-seikatsu-4",
+        "synopsis": "The fourth season of Re:Zero kara Hajimeru Isekai Seikatsu.\n\nTo save his stricken allies, Subaru faces a deadly desert to find the Sage at Pleiades Watchtower.\n\n(Source: Crunchyroll News)\n\nNote: World Premiere of Episode 1 screened at Lucca Comics &amp; Games 2025 on November 1, 2025, before the Japanese television broadcast.",
+        "titles": {
+          "en": "Re:ZERO -Starting Life in Another World- Season 4",
+          "en_jp": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+          "ja_jp": "Re:ゼロから始める異世界生活 4th season"
+        },
+        "canonicalTitle": "Re:Zero kara Hajimeru Isekai Seikatsu 4th Season",
+        "abbreviatedTitles": [],
+        "averageRating": "87.72",
+        "userCount": 2984,
+        "favoritesCount": 34,
+        "startDate": "2026-04-08",
+        "endDate": "2026-09-30",
+        "nextRelease": null,
+        "popularityRank": 3878,
+        "ratingRank": 5,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/49746/poster_image/tiny-e22c466679c2ca0f145a3bd4a86da484.jpeg",
+          "large": "https://media.kitsu.app/anime/49746/poster_image/large-0f3a9212e3228db596c85f9e636c4f34.jpeg",
+          "small": "https://media.kitsu.app/anime/49746/poster_image/small-4d9fb7ad9ee4c6257ea8fcdb8780a51b.jpeg",
+          "medium": "https://media.kitsu.app/anime/49746/poster_image/medium-31b47768cfba201928ddf80a36ed1543.jpeg",
+          "original": "https://media.kitsu.app/anime/49746/poster_image/1e33406be0996193329715bcff53deb0.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/49746/cover_image/tiny-6ce86917ab5c1df593f1aa3692a04127.jpeg",
+          "large": "https://media.kitsu.app/anime/49746/cover_image/large-8e6f277c44545477b95ba45c96d4deb2.jpeg",
+          "small": "https://media.kitsu.app/anime/49746/cover_image/small-c8ac399e8d58c3fe799908a0c9e1d277.jpeg",
+          "original": "https://media.kitsu.app/anime/49746/cover_image/0a1b871b08665042259599eea6f60db7.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 19,
+        "episodeLength": 24,
+        "youtubeVideoId": "i8EjBP85cCc",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/49746/relationships/episodes",
+            "related": "/anime/49746/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "1376",
+      "type": "anime",
+      "links": {
+        "self": "/anime/1376"
+      },
+      "attributes": {
+        "slug": "death-note",
+        "synopsis": "A shinigami, as a god of death, can kill any person—provided they see their victim's face and write their victim's name in a notebook called a Death Note. One day, Ryuk, bored by the shinigami lifestyle and interested in seeing how a human would use a Death Note, drops one into the human realm.\n\nHigh school student and prodigy Light Yagami stumbles upon the Death Note and—since he deplores the state of the world—tests the deadly notebook by writing a criminal's name in it. When the criminal dies immediately following his experiment with the Death Note, Light is greatly surprised and quickly recognizes how devastating the power that has fallen into his hands could be.\n\nWith this divine capability, Light decides to extinguish all criminals in order to build a new world where crime does not exist and people worship him as a god. Police, however, quickly discover that a serial killer is targeting criminals and, consequently, try to apprehend the culprit. To do this, the Japanese investigators count on the assistance of the best detective in the world: a young and eccentric man known only by the name of L.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en": "Death Note",
+          "en_jp": "Death Note",
+          "en_us": "Death Note",
+          "ja_jp": "デスノート"
+        },
+        "canonicalTitle": "Death Note",
+        "abbreviatedTitles": [
+          "DN"
+        ],
+        "averageRating": "83.05",
+        "userCount": 497687,
+        "favoritesCount": 7241,
+        "startDate": "2006-10-04",
+        "endDate": "2007-06-27",
+        "nextRelease": null,
+        "popularityRank": 6,
+        "ratingRank": 105,
+        "ageRating": "R",
+        "ageRatingGuide": "Violence, Profanity",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/1376/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/1376/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/1376/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/1376/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/1376/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/1376/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/1376/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/1376/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/1376/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 37,
+        "episodeLength": 23,
+        "youtubeVideoId": "NlJZ-YgAt-c",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/1376/relationships/episodes",
+            "related": "/anime/1376/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "49002",
+      "type": "anime",
+      "links": {
+        "self": "/anime/49002"
+      },
+      "attributes": {
+        "slug": "Mushoku-Tensei-Isekai-Ittara-Honki-Dasu-Season-3",
+        "synopsis": "The third season of Mushoku Tensei: Isekai Ittara Honki Dasu.",
+        "titles": {
+          "en": "Mushoku Tensei: Jobless Reincarnation Season 3",
+          "en_jp": "Mushoku Tensei: Isekai Ittara Honki Dasu 3rd Season",
+          "ja_jp": "無職転生 ～異世界行ったら本気だす～ 第3期"
+        },
+        "canonicalTitle": "Mushoku Tensei: Isekai Ittara Honki Dasu 3rd Season",
+        "abbreviatedTitles": [
+          "Mushoku Tensei: Jobless Reincarnation Season 3",
+          "Mushoku Tensei III: Isekai Ittara Honki Dasu",
+          "無職転生 Ⅲ ～異世界行ったら本気だす～"
+        ],
+        "averageRating": "86.69",
+        "userCount": 3646,
+        "favoritesCount": 30,
+        "startDate": "2026-07-04",
+        "endDate": "2026-09-27",
+        "nextRelease": null,
+        "popularityRank": 3402,
+        "ratingRank": 13,
+        "ageRating": "R",
+        "ageRatingGuide": "17+ (violence & profanity)",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/49002/poster_image/tiny-e7450d9e53ec41988b3850666f305d31.jpeg",
+          "large": "https://media.kitsu.app/anime/49002/poster_image/large-726cee92abdf1aba4683dedb5ad6a7d9.jpeg",
+          "small": "https://media.kitsu.app/anime/49002/poster_image/small-617cb0afcc185c1181cfa5b571a2e9d8.jpeg",
+          "medium": "https://media.kitsu.app/anime/49002/poster_image/medium-cc3eaf73a267ee6707cdf04dd100a23f.jpeg",
+          "original": "https://media.kitsu.app/anime/49002/poster_image/6d09b03ffdd5c49802ad21c160b72cb2.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/49002/cover_image/tiny-b009b428e521b59ae18225cea9bbcda7.jpeg",
+          "large": "https://media.kitsu.app/anime/49002/cover_image/large-2b36b6f9472d3d6193f597b42f97f013.jpeg",
+          "small": "https://media.kitsu.app/anime/49002/cover_image/small-af676ae66c1260cbc9c68f84beb9266a.jpeg",
+          "original": "https://media.kitsu.app/anime/49002/cover_image/7f0419f55777921aeb8f140129ef28a6.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 14,
+        "episodeLength": 24,
+        "youtubeVideoId": "ODxfIvSgWuo",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/49002/relationships/episodes",
+            "related": "/anime/49002/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "49235",
+      "type": "anime",
+      "links": {
+        "self": "/anime/49235"
+      },
+      "attributes": {
+        "slug": "tensei-shitara-slime-datta-ken-4th-season",
+        "synopsis": "The fourth season of Tensei Shitara Slime Datta Ken.\n\nDemon Lord Rimuru's dream of creating an alliance between humans and monsters takes a step closer to being realized. As Tempest continues to prosper, Granville Rozzo and his granddaughter, Maribel Rozzo, clash with Demon Lord Rimuru over their plan to protect mankind by ruling over them. Meanwhile, in El Dorado, Demon Lord Leon works toward goals of his own. The awakening of a new Hero draws near!\n\n(Source: Crunchyroll News)",
+        "titles": {
+          "en": "That Time I Got Reincarnated as a Slime Season 4",
+          "en_jp": "Tensei Shitara Slime Datta Ken 4th Season",
+          "ja_jp": "転生したらスライムだった件 第4期"
+        },
+        "canonicalTitle": "Tensei Shitara Slime Datta Ken 4th Season",
+        "abbreviatedTitles": [
+          "Tensura 4"
+        ],
+        "averageRating": "82.87",
+        "userCount": 3292,
+        "favoritesCount": 20,
+        "startDate": "2026-04-03",
+        "endDate": "2026-09-25",
+        "nextRelease": null,
+        "popularityRank": 3638,
+        "ratingRank": 119,
+        "ageRating": null,
+        "ageRatingGuide": null,
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/49235/poster_image/tiny-0c784683390dd0edd3f3e1e30466106e.jpeg",
+          "large": "https://media.kitsu.app/anime/49235/poster_image/large-e16bada49e69db582b723a08447b88dd.jpeg",
+          "small": "https://media.kitsu.app/anime/49235/poster_image/small-eaf4e9bfdec25a71c1c5acdda32d6b95.jpeg",
+          "medium": "https://media.kitsu.app/anime/49235/poster_image/medium-11c40782c83914e8e94c41cfbfcd9c70.jpeg",
+          "original": "https://media.kitsu.app/anime/49235/poster_image/a559e7c83485b1ea85e46d4c9dc425df.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": null,
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "youtubeVideoId": "HXB7PyEP_BA",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/49235/relationships/episodes",
+            "related": "/anime/49235/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "12",
+      "type": "anime",
+      "links": {
+        "self": "/anime/12"
+      },
+      "attributes": {
+        "slug": "one-piece",
+        "synopsis": "Gol D. Roger was known as the \"Pirate King,\" the strongest and most infamous being to have sailed the Grand Line. The capture and death of Roger by the World Government brought a change throughout the world. His last words before his death revealed the existence of the greatest treasure in the world, One Piece. It was this revelation that brought about the Grand Age of Pirates, men who dreamed of finding One Piece—which promises an unlimited amount of riches and fame—and quite possibly the pinnacle of glory and the title of the Pirate King.\nEnter Monkey D. Luffy, a 17-year-old boy who defies your standard definition of a pirate. Rather than the popular persona of a wicked, hardened, toothless pirate ransacking villages for fun, Luffy’s reason for being a pirate is one of pure wonder: the thought of an exciting adventure that leads him to intriguing people and ultimately, the promised treasure. Following in the footsteps of his childhood hero, Luffy and his crew travel across the Grand Line, experiencing crazy adventures, unveiling dark mysteries and battling strong enemies, all in order to reach the most coveted of all fortunes—One Piece.\n[Written by MAL Rewrite]",
+        "titles": {
+          "en": "One Piece",
+          "en_jp": "One Piece",
+          "ja_jp": "ONE PIECE"
+        },
+        "canonicalTitle": "One Piece",
+        "abbreviatedTitles": [
+          "ワンピース"
+        ],
+        "averageRating": "84.01",
+        "userCount": 324725,
+        "favoritesCount": 10769,
+        "startDate": "1999-10-20",
+        "endDate": null,
+        "nextRelease": "2026-10-18T09:30:00.000+09:00",
+        "popularityRank": 14,
+        "ratingRank": 59,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "current",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/12/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/12/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/12/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/12/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/12/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/12/cover_image/tiny-cd1b0729d5c15400bfa2441ea3751e86.jpeg",
+          "large": "https://media.kitsu.app/anime/12/cover_image/large-3e72f400a87b5241780c5082f0582611.jpeg",
+          "small": "https://media.kitsu.app/anime/12/cover_image/small-8d0cbc39cac65d5d7c4db5f5b3742ae7.jpeg",
+          "original": "https://media.kitsu.app/anime/12/cover_image/21ecb556255bd46b95aea4779d19789f.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": null,
+        "episodeLength": 24,
+        "youtubeVideoId": "CmTeYj2FmRc",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/12/relationships/episodes",
+            "related": "/anime/12/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "50040",
+      "type": "anime",
+      "links": {
+        "self": "/anime/50040"
+      },
+      "attributes": {
+        "slug": "super-no-ura-de-yani-suu-futari",
+        "synopsis": "Sasaki is an overworked salaryman drifting through the corporate grind, sustained by cigarettes and the cheerful service and smile of Yamada, the clerk at his favorite supermarket. But one night after a grueling shift, he arrives late to find Yamada nowhere to be seen. With nowhere left to smoke, his spirits sink—until a pierced young woman calls out to him: “You can smoke here.”\n\n(Source: Crunchyroll)\n\nNote: Episodes 1-6 had an early release by ABEMA and Crunchyroll on June 3rd, 2026, in a mini-episode batch format that splits 6 episodes into 12, ahead of the TV broadcast, which starts on July 9th, 2026.",
+        "titles": {
+          "en": "Smoking Behind the Supermarket With You",
+          "en_jp": "Super no Ura de Yani Suu Futari",
+          "ja_jp": "スーパーの裏でヤニ吸うふたり"
+        },
+        "canonicalTitle": "Super no Ura de Yani Suu Futari",
+        "abbreviatedTitles": [
+          "A Story About Smoking at the Back of the Supermarket",
+          "スーパーの裏でヤニ吸う話",
+          "Super no Ura de Yani Suu Hanashi",
+          "Behind the Supermarket, Smoking with You."
+        ],
+        "averageRating": "82.69",
+        "userCount": 2111,
+        "favoritesCount": 34,
+        "startDate": "2026-07-09",
+        "endDate": "2026-09-24",
+        "nextRelease": null,
+        "popularityRank": 4643,
+        "ratingRank": 138,
+        "ageRating": null,
+        "ageRatingGuide": null,
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/50040/poster_image/tiny-7caf745e6152f98def7061b4f442170d.jpeg",
+          "large": "https://media.kitsu.app/anime/50040/poster_image/large-6c60537fbda7aa6ce812138bed3f26f6.jpeg",
+          "small": "https://media.kitsu.app/anime/50040/poster_image/small-4902c2ee0a34d6a7dad51361631106b8.jpeg",
+          "medium": "https://media.kitsu.app/anime/50040/poster_image/medium-525c99128762c00790b888a07f3216a9.jpeg",
+          "original": "https://media.kitsu.app/anime/50040/poster_image/44fd0dc3f8067cfe57621b3f70e0c2e2.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/50040/cover_image/tiny-be3cf6d5edcf7e6926386edc5098551b.jpeg",
+          "large": "https://media.kitsu.app/anime/50040/cover_image/large-49baf6fc44cf03e9b40aea1c694a32eb.jpeg",
+          "small": "https://media.kitsu.app/anime/50040/cover_image/small-fd9104c576dfb4cf787ae43a1aee7df6.jpeg",
+          "original": "https://media.kitsu.app/anime/50040/cover_image/829af5c6aab188c4c23ea7378e816b9b.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 12,
+        "episodeLength": 23,
+        "youtubeVideoId": "aOOwNK6Ul6E",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/50040/relationships/episodes",
+            "related": "/anime/50040/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "6448",
+      "type": "anime",
+      "links": {
+        "self": "/anime/6448"
+      },
+      "attributes": {
+        "slug": "hunter-x-hunter-2011",
+        "synopsis": "Hunter x Hunter is set in a world where Hunters exist to perform all manner of dangerous tasks like capturing criminals and bravely searching for lost treasures in uncharted territories. Twelve-year-old Gon Freecss is determined to become the best Hunter possible in hopes of finding his father, who was a Hunter himself and had long ago abandoned his young son. However, Gon soon realizes the path to achieving his goals is far more challenging than he could have ever imagined.\n\nAlong the way to becoming an official Hunter, Gon befriends the lively doctor-in-training Leorio, vengeful Kurapika, and rebellious ex-assassin Killua. To attain their own goals and desires, together the four of them take the Hunter Exam, notorious for its low success rate and high probability of death. Throughout their journey, Gon and his friends embark on an adventure that puts them through many hardships and struggles. They will meet a plethora of monsters, creatures, and characters—all while learning what being a Hunter truly means.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en": "Hunter x Hunter (2011)",
+          "en_jp": "Hunter x Hunter (2011)",
+          "en_us": "Hunter x Hunter",
+          "ja_jp": "HUNTER×HUNTER ハンターハンター"
+        },
+        "canonicalTitle": "Hunter x Hunter (2011)",
+        "abbreviatedTitles": [
+          "HUNTER×HUNTER ハンターハンター",
+          "HxH (2011)",
+          "Hantā Hantā (2011)"
+        ],
+        "averageRating": "84.17",
+        "userCount": 408190,
+        "favoritesCount": 7891,
+        "startDate": "2011-10-02",
+        "endDate": "2014-09-24",
+        "nextRelease": null,
+        "popularityRank": 9,
+        "ratingRank": 54,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/6448/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/6448/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/6448/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/6448/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/6448/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 155
+              },
+              "large": {
+                "width": 550,
+                "height": 776
+              },
+              "small": {
+                "width": 284,
+                "height": 400
+              },
+              "medium": {
+                "width": 390,
+                "height": 551
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/6448/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/6448/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/6448/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/6448/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 148,
+        "episodeLength": 23,
+        "youtubeVideoId": "fda6QzBA2mI",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/6448/relationships/episodes",
+            "related": "/anime/6448/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "50023",
+      "type": "anime",
+      "links": {
+        "self": "/anime/50023"
+      },
+      "attributes": {
+        "slug": "daemons-of-the-shadow-realm",
+        "synopsis": "Yuru, a young hunter who lives in a small village deep in the mountains, hunts wild game and leads a humble life with Asa, his younger twin sister. Their peaceful lives are torn apart when a dragon’s roar echoes across the sky. What secrets lurk within their village? What fate awaits them? Enter a breathtaking mystical fantasy as exciting Daemon battles intertwine the mysterious and supernatural.\n\n(Source: Crunchyroll)",
+        "titles": {
+          "en": "Daemons of the Shadow Realm",
+          "en_jp": "Yomi no Tsugai",
+          "ja_jp": "黄泉のツガイ"
+        },
+        "canonicalTitle": "Daemons of the Shadow Realm",
+        "abbreviatedTitles": [],
+        "averageRating": "79.45",
+        "userCount": 2962,
+        "favoritesCount": 20,
+        "startDate": "2026-04-04",
+        "endDate": "2026-09-19",
+        "nextRelease": null,
+        "popularityRank": 3895,
+        "ratingRank": 966,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/50023/poster_image/tiny-e78dd4e705bf972e638522482e8f9212.jpeg",
+          "large": "https://media.kitsu.app/anime/50023/poster_image/large-83bcc1806d52156538574d1eeb8ba4bd.jpeg",
+          "small": "https://media.kitsu.app/anime/50023/poster_image/small-7a13d5b24653e41d7e38bd63a41458dd.jpeg",
+          "medium": "https://media.kitsu.app/anime/50023/poster_image/medium-c698c2afff6e4d726f160436304afa43.jpeg",
+          "original": "https://media.kitsu.app/anime/50023/poster_image/b90278933ee48fbc42fab153f54fe383.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/50023/cover_image/tiny-af583f3b0ec65649ac575e4ac3faf950.jpeg",
+          "large": "https://media.kitsu.app/anime/50023/cover_image/large-36271a9d8916e8746f173ac796b210ba.jpeg",
+          "small": "https://media.kitsu.app/anime/50023/cover_image/small-4969765f31d30bb0230e6772f0ab98b2.jpeg",
+          "original": "https://media.kitsu.app/anime/50023/cover_image/5fafec7e883e26e6f6f5aa3909811b51.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 24,
+        "episodeLength": 23,
+        "youtubeVideoId": "XCyj9KKKjUI",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/50023/relationships/episodes",
+            "related": "/anime/50023/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "11614",
+      "type": "anime",
+      "links": {
+        "self": "/anime/11614"
+      },
+      "attributes": {
+        "slug": "kimi-no-na-wa",
+        "synopsis": "From director Makoto Shinkai, the innovative mind behind Voices of a Distant Star and 5 Centimeters Per Second, comes a beautiful masterpiece about time, the thread of fate, and the hearts of two young souls.\n\nThe day the stars fell, two lives changed forever. High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other. Yet, somehow, it works. They build a connection and communicate by leaving notes, messages, and more importantly, an imprint.\n\nWhen a dazzling comet lights up the night’s sky, it dawns on them. They want something more from this connection—a chance to meet, an opportunity to truly know each other. Tugging at the string of fate, they try to find a way to each other. But distance isn’t the only thing keeping them apart. Is their bond strong enough to face the cruel irony of time? Or is their meeting nothing more than a wish upon the stars?\n\n(Source: FUNimation Films)",
+        "titles": {
+          "en": "Your Name.",
+          "en_jp": "Kimi no Na wa.",
+          "en_us": "Your Name.",
+          "ja_jp": "君の名は。"
+        },
+        "canonicalTitle": "Kimi no Na wa.",
+        "abbreviatedTitles": [],
+        "averageRating": "83.32",
+        "userCount": 420195,
+        "favoritesCount": 4191,
+        "startDate": "2016-08-26",
+        "endDate": "2016-08-26",
+        "nextRelease": null,
+        "popularityRank": 8,
+        "ratingRank": 89,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "movie",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/11614/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/11614/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/11614/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/11614/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/11614/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/11614/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/11614/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/11614/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/11614/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 1,
+        "episodeLength": 106,
+        "youtubeVideoId": "3KR8_igDs1Y",
+        "showType": "movie",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/11614/relationships/episodes",
+            "related": "/anime/11614/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "3936",
+      "type": "anime",
+      "links": {
+        "self": "/anime/3936"
+      },
+      "attributes": {
+        "slug": "fullmetal-alchemist-brotherhood",
+        "synopsis": "\"In order for something to be obtained, something of equal value must be lost.\"\n\nAlchemy is bound by this Law of Equivalent Exchange—something the young brothers Edward and Alphonse Elric only realize after attempting human transmutation: the one forbidden act of alchemy. They pay a terrible price for their transgression—Edward loses his left leg, Alphonse his physical body. It is only by the desperate sacrifice of Edward's right arm that he is able to affix Alphonse's soul to a suit of armor. Devastated and alone, it is the hope that they would both eventually return to their original bodies that gives Edward the inspiration to obtain metal limbs called \"automail\" and become a state alchemist, the Fullmetal Alchemist.\n\nThree years of searching later, the brothers seek the Philosopher's Stone, a mythical relic that allows an alchemist to overcome the Law of Equivalent Exchange. Even with military allies Colonel Roy Mustang, Lieutenant Riza Hawkeye, and Lieutenant Colonel Maes Hughes on their side, the brothers find themselves caught up in a nationwide conspiracy that leads them not only to the true nature of the elusive Philosopher's Stone, but their country's murky history as well. In between finding a serial killer and racing against time, Edward and Alphonse must ask themselves if what they are doing will make them human again... or take away their humanity.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en": "Fullmetal Alchemist: Brotherhood",
+          "en_jp": "Hagane no Renkinjutsushi: Fullmetal Alchemist",
+          "ja_jp": "鋼の錬金術師 FULLMETAL ALCHEMIST"
+        },
+        "canonicalTitle": "Fullmetal Alchemist: Brotherhood",
+        "abbreviatedTitles": [
+          "Hagane no Renkinjutsushi (2009)",
+          "Fullmetal Alchemist (2009)",
+          "FMA",
+          "Hagane no Renkinjutsushi: Fullmetal Alchemist",
+          "Hagaren"
+        ],
+        "averageRating": "83.05",
+        "userCount": 422357,
+        "favoritesCount": 9943,
+        "startDate": "2009-04-05",
+        "endDate": "2010-07-04",
+        "nextRelease": null,
+        "popularityRank": 7,
+        "ratingRank": 103,
+        "ageRating": "R",
+        "ageRatingGuide": "17+ (violence & profanity)",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": "",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/3936/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/3936/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/3936/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/3936/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/3936/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/3936/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/3936/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/3936/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/3936/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 64,
+        "episodeLength": 24,
+        "youtubeVideoId": "yb2R1l0O9Zs",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/3936/relationships/episodes",
+            "related": "/anime/3936/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "41370",
+      "type": "anime",
+      "links": {
+        "self": "/anime/41370"
+      },
+      "attributes": {
+        "slug": "kimetsu-no-yaiba",
+        "synopsis": "It is the Taisho Period in Japan. Tanjiro, a kindhearted boy who sells charcoal for a living, finds his family slaughtered by a demon. To make matters worse, his younger sister Nezuko, the sole survivor, has been transformed into a demon herself. Though devastated by this grim reality, Tanjiro resolves to become a “demon slayer” so that he can turn his sister back into a human, and kill the demon that massacred his family.\n\n(Source: Crunchyroll)",
+        "titles": {
+          "en": "Demon Slayer: Kimetsu no Yaiba",
+          "en_jp": "Kimetsu no Yaiba",
+          "ja_jp": "鬼滅の刃"
+        },
+        "canonicalTitle": "Kimetsu no Yaiba",
+        "abbreviatedTitles": [
+          "Blade of Demon Destruction",
+          "KnY",
+          "Kimetsu no Yaiba: Kyoudai no Kizuna",
+          "Demon Slayer: Kimetsu no Yaiba: Bonds of Siblings",
+          "Demon Slayer: Kimetsu no Yaiba - Tanjiro Kamado, Unwavering Resolve Arc",
+          "鬼滅の刃-兄妹の絆-",
+          "鬼灭之刃",
+          "הלהב קוטל השדים",
+          "قاتل الشياطين",
+          "ดาบพิฆาตอสูร",
+          "Miecz zabójcy demonów – Kimetsu no Yaiba",
+          "Guardians de la nit: Kimetsu no Yaiba",
+          "İblis Keser"
+        ],
+        "averageRating": "86.24",
+        "userCount": 403257,
+        "favoritesCount": 4225,
+        "startDate": "2019-04-06",
+        "endDate": "2019-09-28",
+        "nextRelease": null,
+        "popularityRank": 10,
+        "ratingRank": 22,
+        "ageRating": "R",
+        "ageRatingGuide": "17+ (violence & profanity)",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/41370/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/41370/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/41370/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/41370/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/41370/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/41370/cover_image/tiny-6c8c4f050e1706993ddb1285ccbf4ba7.jpeg",
+          "large": "https://media.kitsu.app/anime/41370/cover_image/large-3de3cc6d2b33162c928de10aa201e4ba.jpeg",
+          "small": "https://media.kitsu.app/anime/41370/cover_image/small-2fa71a7b014fd4b5629f3100789f9da8.jpeg",
+          "original": "https://media.kitsu.app/anime/41370/cover_image/7958f9c01b57c980636386d124553791.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 26,
+        "episodeLength": 23,
+        "youtubeVideoId": "Sl2k7bfBeCw",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/41370/relationships/episodes",
+            "related": "/anime/41370/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "720",
+      "type": "anime",
+      "links": {
+        "self": "/anime/720"
+      },
+      "attributes": {
+        "slug": "dragon-ball-z",
+        "synopsis": "Five years after winning the World Martial Arts tournament, Gokuu is now living a peaceful life with his wife and son. This changes, however, with the arrival of a mysterious enemy named Raditz who presents himself as Gokuu's long-lost brother. He reveals that Gokuu is a warrior from the once powerful but now virtually extinct Saiyan race, whose homeworld was completely annihilated. When he was sent to Earth as a baby, Gokuu's sole purpose was to conquer and destroy the planet; but after suffering amnesia from a head injury, his violent and savage nature changed, and instead was raised as a kind and well-mannered boy, now fighting to protect others.\nWith his failed attempt at forcibly recruiting Gokuu as an ally, Raditz warns Gokuu's friends of a new threat that's rapidly approaching Earth—one that could plunge Earth into an intergalactic conflict and cause the heavens themselves to shake. A war will be fought over the seven mystical dragon balls, and only the strongest will survive in Dragon Ball Z.\n[Written by MAL Rewrite]",
+        "titles": {
+          "en": "Dragon Ball Z",
+          "en_jp": "Dragon Ball Z",
+          "ja_jp": "ドラゴンボールZ"
+        },
+        "canonicalTitle": "Dragon Ball Z",
+        "abbreviatedTitles": [
+          "DBZ",
+          "Dragonball Z"
+        ],
+        "averageRating": "82.24",
+        "userCount": 84381,
+        "favoritesCount": 2161,
+        "startDate": "1989-04-26",
+        "endDate": "1996-01-31",
+        "nextRelease": null,
+        "popularityRank": 129,
+        "ratingRank": 217,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/720/poster_image/tiny-f68d380554c43803d8c8b706d65f2842.jpeg",
+          "large": "https://media.kitsu.app/anime/720/poster_image/large-5cfc7e2756852e708c822df0a9f59871.jpeg",
+          "small": "https://media.kitsu.app/anime/720/poster_image/small-c68f67afe0e3cf8a7c1c3996788dcc03.jpeg",
+          "medium": "https://media.kitsu.app/anime/720/poster_image/medium-05eada51035c41796b6ed65fc5add636.jpeg",
+          "original": "https://media.kitsu.app/anime/720/poster_image/905a5906c43d2123fa3ec081be85ebba.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/720/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/720/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/720/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/720/original.png",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": null,
+                "height": null
+              },
+              "large": {
+                "width": null,
+                "height": null
+              },
+              "small": {
+                "width": null,
+                "height": null
+              }
+            }
+          }
+        },
+        "episodeCount": 291,
+        "episodeLength": 24,
+        "youtubeVideoId": "b5mKTXse_gQ",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/720/relationships/episodes",
+            "related": "/anime/720/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "10028",
+      "type": "anime",
+      "links": {
+        "self": "/anime/10028"
+      },
+      "attributes": {
+        "slug": "koe-no-katachi",
+        "synopsis": "Shoya is a bully. When Shoko, a girl who can't hear, enters his elementary school class, she becomes their favorite target, and Shoya and his friends goad each other into devising new tortures for her. But the children's cruelty goes too far. Shoko is forced to leave the school, and Shoya ends up shouldering all the blame. Six years later, the two meet again. Can Shoya make up for his past mistakes, or is it too late?\n\n(Source: Kodansha Comics)",
+        "titles": {
+          "en": "A Silent Voice",
+          "en_jp": "Koe no Katachi",
+          "en_us": "A Silent Voice",
+          "ja_jp": "聲の形"
+        },
+        "canonicalTitle": "Koe no Katachi",
+        "abbreviatedTitles": [
+          "The Shape of Voice",
+          "A Silent Voice: The Movie"
+        ],
+        "averageRating": "83.73",
+        "userCount": 342429,
+        "favoritesCount": 3664,
+        "startDate": "2016-09-17",
+        "endDate": "2016-09-17",
+        "nextRelease": null,
+        "popularityRank": 12,
+        "ratingRank": 67,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "movie",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/10028/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/10028/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/10028/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/10028/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/10028/original.jpeg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/10028/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/10028/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/10028/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/10028/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 1,
+        "episodeLength": 130,
+        "youtubeVideoId": "XBNWo25izJ8",
+        "showType": "movie",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/10028/relationships/episodes",
+            "related": "/anime/10028/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "8640",
+      "type": "anime",
+      "links": {
+        "self": "/anime/8640"
+      },
+      "attributes": {
+        "slug": "ansatsu-kyoushitsu-tv",
+        "synopsis": "When a mysterious creature chops the moon down to a permanent crescent, the students of class 3-E of Kunugigaoka Middle School find themselves confronted with an enormous task: assassinate the creature responsible for the disaster before Earth suffers a similar fate. However, the monster, dubbed Koro-sensei (the indestructible teacher), is able to fly at speeds of up to Mach 20, which he demonstrates freely, leaving any attempt to subdue him in his extraterrestrial dust. Furthermore, the misfits of 3-E soon find that the strange, tentacled beast is more than just indomitable—he is the best teacher they have ever had!\n\nAdapted from the humorous hit manga by Yuusei Matsui, Ansatsu Kyoushitsu tells the story of these junior high pupils as they polish their assassination skills and grow in order to stand strong against the oppressive school system, their own life problems, and one day, Koro-sensei.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en": "Assassination Classroom",
+          "en_jp": "Ansatsu Kyoushitsu",
+          "en_us": "Assassination Classroom",
+          "ja_jp": "暗殺教室"
+        },
+        "canonicalTitle": "Ansatsu Kyoushitsu",
+        "abbreviatedTitles": [
+          "Ansatsu Kyoushitsu"
+        ],
+        "averageRating": "82.84",
+        "userCount": 259520,
+        "favoritesCount": 1781,
+        "startDate": "2015-01-10",
+        "endDate": "2015-06-20",
+        "nextRelease": null,
+        "popularityRank": 20,
+        "ratingRank": 120,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/8640/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/8640/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/8640/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/8640/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/8640/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/8640/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/8640/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/8640/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/8640/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 22,
+        "episodeLength": 23,
+        "youtubeVideoId": "kgNkGohA20k",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/8640/relationships/episodes",
+            "related": "/anime/8640/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "41982",
+      "type": "anime",
+      "links": {
+        "self": "/anime/41982"
+      },
+      "attributes": {
+        "slug": "shingeki-no-kyojin-3-part-2",
+        "synopsis": "The battle to retake Wall Maria begins now! With Eren’s new hardening ability, the Scouts are confident they can seal the wall and take back Shiganshina District. If they succeed, Eren can finally unlock the secrets of the basement—and the world. But danger lies in wait as Reiner, Bertholdt, and the Beast Titan have plans of their own. Could this be humanity’s final battle for survival?\n\n(Source: Funimation)",
+        "titles": {
+          "en": "Attack on Titan Season 3 Part 2",
+          "en_jp": "Shingeki no Kyojin Season 3 Part 2",
+          "ja_jp": "進撃の巨人 Season 3 Part 2"
+        },
+        "canonicalTitle": "Attack on Titan Season 3 Part 2",
+        "abbreviatedTitles": [],
+        "averageRating": "84.72",
+        "userCount": 285359,
+        "favoritesCount": 786,
+        "startDate": "2019-04-29",
+        "endDate": "2019-07-01",
+        "nextRelease": null,
+        "popularityRank": 17,
+        "ratingRank": 45,
+        "ageRating": "R",
+        "ageRatingGuide": "Violence, Profanity",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/41982/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/41982/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/41982/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/41982/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/41982/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/41982/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/41982/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/41982/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/41982/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 10,
+        "episodeLength": 23,
+        "youtubeVideoId": "hKHepjfj5Tw",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/41982/relationships/episodes",
+            "related": "/anime/41982/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "8699",
+      "type": "anime",
+      "links": {
+        "self": "/anime/8699"
+      },
+      "attributes": {
+        "slug": "nanatsu-no-taizai",
+        "synopsis": "In a world similar to the European Middle Ages, the feared yet revered Holy Knights of Britannia use immensely powerful magic to protect the region of Britannia and its kingdoms. However, a small subset of the Knights supposedly betrayed their homeland and turned their blades against their comrades in an attempt to overthrow the ruler of Liones. They were defeated by the Holy Knights, but rumors continued to persist that these legendary knights, called the \"Seven Deadly Sins,\" were still alive. Ten years later, the Holy Knights themselves staged a coup d’état, and thus became the new, tyrannical rulers of the Kingdom of Liones.\n\nBased on the best-selling manga series of the same name, Nanatsu no Taizai follows the adventures of Elizabeth, the third princess of the Kingdom of Liones, and her search for the Seven Deadly Sins. With their help, she endeavors to not only take back her kingdom from the Holy Knights, but to also seek justice in an unjust world.\n\n(Source: MAL Rewrite)",
+        "titles": {
+          "en": "The Seven Deadly Sins",
+          "en_jp": "Nanatsu no Taizai",
+          "en_us": "The Seven Deadly Sins",
+          "ja_jp": "七つの大罪"
+        },
+        "canonicalTitle": "Nanatsu no Taizai",
+        "abbreviatedTitles": [
+          "Nanatsu no Taizai"
+        ],
+        "averageRating": "82.11",
+        "userCount": 355308,
+        "favoritesCount": 2090,
+        "startDate": "2014-10-05",
+        "endDate": "2015-03-29",
+        "nextRelease": null,
+        "popularityRank": 11,
+        "ratingRank": 282,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": "",
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/8699/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/8699/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/8699/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/8699/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/8699/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/8699/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/8699/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/8699/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/8699/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "youtubeVideoId": "wxcvbL6o55M",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/8699/relationships/episodes",
+            "related": "/anime/8699/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "8133",
+      "type": "anime",
+      "links": {
+        "self": "/anime/8133"
+      },
+      "attributes": {
+        "slug": "haikyuu",
+        "synopsis": "Inspired after watching a volleyball ace nicknamed \"Little Giant\" in action, small-statured Shouyou Hinata revives the volleyball club at his middle school. The newly-formed team even makes it to a tournament; however, their first match turns out to be their last when they are brutally squashed by the \"King of the Court,\" Tobio Kageyama. Hinata vows to surpass Kageyama, and so after graduating from middle school, he joins Karasuno High School's volleyball team—only to find that his sworn rival, Kageyama, is now his teammate.\n\nThanks to his short height, Hinata struggles to find his role on the team, even with his superior jumping power. Surprisingly, Kageyama has his own problems that only Hinata can help with, and learning to work together appears to be the only way for the team to be successful. Based on Haruichi Furudate's popular shounen manga of the same name, Haikyuu!! is an exhilarating and emotional sports comedy following two determined athletes as they attempt to patch a heated rivalry in order to make their high school volleyball team the best in Japan.\n\n(Source: MAL)",
+        "titles": {
+          "en": "Haikyu!!",
+          "en_jp": "Haikyuu!!",
+          "en_us": "Haikyu!!",
+          "ja_jp": "ハイキュー!!"
+        },
+        "canonicalTitle": "Haikyuu!!",
+        "abbreviatedTitles": [
+          "High Kyuu!!",
+          "HQ!!"
+        ],
+        "averageRating": "82.91",
+        "userCount": 263417,
+        "favoritesCount": 4055,
+        "startDate": "2014-04-06",
+        "endDate": "2014-09-21",
+        "nextRelease": null,
+        "popularityRank": 19,
+        "ratingRank": 115,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/8133/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/8133/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/8133/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/8133/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/8133/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/8133/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/8133/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/8133/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/8133/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 25,
+        "episodeLength": 24,
+        "youtubeVideoId": "JOGp2c7-cKc",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/8133/relationships/episodes",
+            "related": "/anime/8133/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "42765",
+      "type": "anime",
+      "links": {
+        "self": "/anime/42765"
+      },
+      "attributes": {
+        "slug": "jujutsu-kaisen",
+        "synopsis": "Yuji Itadori is a boy with tremendous physical strength, though he lives a completely ordinary high school life. One day, to save a classmate who has been attacked by curses, he eats the finger of Ryomen Sukuna, taking the curse into his own soul. From then on, he shares one body with Ryomen Sukuna. Guided by the most powerful of sorcerers, Satoru Gojo, Itadori is admitted to Tokyo Jujutsu High School, an organization that fights the curses... and thus begins the heroic tale of a boy who became a curse to exorcise a curse, a life from which he could never turn back.\n\n(Source: Crunchyroll)",
+        "titles": {
+          "en_jp": "Jujutsu Kaisen",
+          "ja_jp": "呪術廻戦"
+        },
+        "canonicalTitle": "Jujutsu Kaisen",
+        "abbreviatedTitles": [
+          "Sorcery Fight"
+        ],
+        "averageRating": "85.9",
+        "userCount": 235519,
+        "favoritesCount": 2425,
+        "startDate": "2020-10-03",
+        "endDate": "2021-03-27",
+        "nextRelease": null,
+        "popularityRank": 25,
+        "ratingRank": 26,
+        "ageRating": "R",
+        "ageRatingGuide": "17+ (violence & profanity)",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/42765/poster_image/tiny-7ffb92f0ca6df86a6d9e63b48583405c.jpeg",
+          "large": "https://media.kitsu.app/anime/42765/poster_image/large-5ce19551c1a6cf995b378205b9149b5c.jpeg",
+          "small": "https://media.kitsu.app/anime/42765/poster_image/small-08cb06fd4250de4d435041861d026a8c.jpeg",
+          "medium": "https://media.kitsu.app/anime/42765/poster_image/medium-d34c203fcd7c3a03a29645f1e44ce747.jpeg",
+          "original": "https://media.kitsu.app/anime/42765/poster_image/5f099d83883544fc6200be91706d70e0.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/42765/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/42765/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/42765/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/42765/original.jpeg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 24,
+        "episodeLength": 24,
+        "youtubeVideoId": "VpO6APNqY1c",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/42765/relationships/episodes",
+            "related": "/anime/42765/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "13569",
+      "type": "anime",
+      "links": {
+        "self": "/anime/13569"
+      },
+      "attributes": {
+        "slug": "shingeki-no-kyojin-3",
+        "synopsis": "After recovering Eren and Historia, the recruits are put under the care of Levi. Stuck out in the middle of nowhere, Hange subjects Eren to a series of experiments in an attempt to find out more about his ability. But when their link to the secrets behind the wall is murdered, the squad must move out and find a new refuge. Except, a figure from Levi’s past has his own plans to stop them.\n\n(Source: Funimation)",
+        "titles": {
+          "en": "Attack on Titan Season 3",
+          "en_jp": "Shingeki no Kyojin Season 3",
+          "ja_jp": "進撃の巨人 Season 3"
+        },
+        "canonicalTitle": "Attack on Titan Season 3",
+        "abbreviatedTitles": [],
+        "averageRating": "84.09",
+        "userCount": 310825,
+        "favoritesCount": 1134,
+        "startDate": "2018-07-23",
+        "endDate": "2018-10-15",
+        "nextRelease": "2026-10-12T00:30:00.000+09:00",
+        "popularityRank": 15,
+        "ratingRank": 56,
+        "ageRating": "R",
+        "ageRatingGuide": "Violence, Profanity",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/poster_images/13569/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/poster_images/13569/large.jpg",
+          "small": "https://media.kitsu.app/anime/poster_images/13569/small.jpg",
+          "medium": "https://media.kitsu.app/anime/poster_images/13569/medium.jpg",
+          "original": "https://media.kitsu.app/anime/poster_images/13569/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/cover_images/13569/tiny.jpg",
+          "large": "https://media.kitsu.app/anime/cover_images/13569/large.jpg",
+          "small": "https://media.kitsu.app/anime/cover_images/13569/small.jpg",
+          "original": "https://media.kitsu.app/anime/cover_images/13569/original.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 12,
+        "episodeLength": 23,
+        "youtubeVideoId": "EHzBhrncmac",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/13569/relationships/episodes",
+            "related": "/anime/13569/episodes"
+          }
+        }
+      }
+    },
+    {
+      "id": "48649",
+      "type": "anime",
+      "links": {
+        "self": "/anime/48649"
+      },
+      "attributes": {
+        "slug": "kusuriya-no-hitorigoto-2nd-season",
+        "synopsis": "The second season of Kusuriya no Hitorigoto.\n\nMaomao and Jinshi face palace intrigue as a pregnant concubine's safety and a looming conspiracy collide.\n\n(Source: Crunchyroll News)",
+        "titles": {
+          "en": "The Apothecary Diaries Season 2",
+          "en_jp": "Kusuriya no Hitorigoto 2nd Season",
+          "ja_jp": "薬屋のひとりごと 第2期"
+        },
+        "canonicalTitle": "Kusuriya no Hitorigoto 2nd Season",
+        "abbreviatedTitles": [
+          "The Pharmacist's Monologue",
+          "Drugstore Soliloquy"
+        ],
+        "averageRating": "88.2",
+        "userCount": 7352,
+        "favoritesCount": 70,
+        "startDate": "2025-01-10",
+        "endDate": "2025-07-04",
+        "nextRelease": null,
+        "popularityRank": 2145,
+        "ratingRank": 4,
+        "ageRating": "PG",
+        "ageRatingGuide": "Teens 13 or older",
+        "subtype": "TV",
+        "status": "finished",
+        "tba": null,
+        "posterImage": {
+          "tiny": "https://media.kitsu.app/anime/48649/poster_image/tiny-d2aef286658124e43433b89752f5d8d1.jpeg",
+          "large": "https://media.kitsu.app/anime/48649/poster_image/large-47f26dc6e2f3ee29bf411f719c37d90e.jpeg",
+          "small": "https://media.kitsu.app/anime/48649/poster_image/small-941cd3f602917c05a642afd08c295f33.jpeg",
+          "medium": "https://media.kitsu.app/anime/48649/poster_image/medium-ee2183412cd2c54e9c8dcd6cf0435f32.jpeg",
+          "original": "https://media.kitsu.app/anime/48649/poster_image/e5e0b9560d8236c57add65f086d5e2ef.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 110,
+                "height": 156
+              },
+              "large": {
+                "width": 550,
+                "height": 780
+              },
+              "small": {
+                "width": 284,
+                "height": 402
+              },
+              "medium": {
+                "width": 390,
+                "height": 554
+              }
+            }
+          }
+        },
+        "coverImage": {
+          "tiny": "https://media.kitsu.app/anime/48649/cover_image/tiny-8d5c02d4fff824aeddaa3de3df713f1c.jpeg",
+          "large": "https://media.kitsu.app/anime/48649/cover_image/large-88f42275f8ee7df9643f2056810b3795.jpeg",
+          "small": "https://media.kitsu.app/anime/48649/cover_image/small-6526b9be7426a8b67631c3418f0399f9.jpeg",
+          "original": "https://media.kitsu.app/anime/48649/cover_image/c08ef10355874c693a041390f58b5b3c.jpg",
+          "meta": {
+            "dimensions": {
+              "tiny": {
+                "width": 840,
+                "height": 200
+              },
+              "large": {
+                "width": 3360,
+                "height": 800
+              },
+              "small": {
+                "width": 1680,
+                "height": 400
+              }
+            }
+          }
+        },
+        "episodeCount": 24,
+        "episodeLength": 23,
+        "youtubeVideoId": "3BYutu3Pf_0",
+        "showType": "TV",
+        "nsfw": false
+      },
+      "relationships": {
+        "episodes": {
+          "links": {
+            "self": "/anime/48649/relationships/episodes",
+            "related": "/anime/48649/episodes"
+          }
+        }
+      }
+    }
+  ],
+  "meta": {
+    "count": 25
+  },
+  "links": {
+    "first": "https://kitsu.io/api/edge/trending/anime?limit=25"
+  }
+}
