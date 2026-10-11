@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 import { useQuery, type UseQueryResult } from '@tanstack/react-query';
-import { useParams, useSearchParams } from 'react-router';
-import { EXPLORE_CATEGORIES, isExploreCategory, type ListCategory } from '../../api/endpoints';
-import { categoryQuery, seasonQuery, trendingQuery } from '../../api/queries';
+import { NavLink, useParams, useSearchParams } from 'react-router';
+import { airingQuery, seasonQuery, trendingQuery } from '../../api/queries';
 import { DiscoverResults } from '../../components/DiscoverResults';
 import { timeAgo } from '../../lib/format';
 import { SEASONS, SEASON_LABEL, currentSeason, isSeason, nextSeason, seasonStart, type Season } from '../../lib/season';
@@ -11,20 +10,21 @@ import { NotFoundPage } from '../NotFoundPage';
 
 const MIN_YEAR = 1960;
 
+const VIEWS = [
+  { to: '/explore/season', label: 'Discover by season' },
+  { to: '/explore/trending', label: 'Trending' },
+] as const;
+
 export function ExploreCategoryPage() {
   const { category } = useParams();
-  if (!isExploreCategory(category)) {
-    return <NotFoundPage title="Unknown category" message={`There is no “${category ?? ''}” category.`} />;
-  }
   if (category === 'season') return <SeasonExplore />;
   if (category === 'trending') return <TrendingExplore />;
-  return <ListExplore key={category} category={category} />;
+  return <NotFoundPage title="Unknown category" message={`There is no “${category ?? ''}” category.`} />;
 }
 
 // ---------- header ----------
 
 interface HeaderProps {
-  eyebrow: string;
   title: string;
   sparkle?: boolean;
   subtitle?: string;
@@ -33,12 +33,24 @@ interface HeaderProps {
   children?: ReactNode;
 }
 
-function ExploreHeader({ eyebrow, title, sparkle, subtitle, query, onRefresh, children }: HeaderProps) {
+function ExploreHeader({ title, sparkle, subtitle, query, onRefresh, children }: HeaderProps) {
   const shown = query.data?.items.length ?? 0;
   const total = query.data?.total ?? null;
   return (
     <header className="mb-6 border-b border-base-300 pb-4">
-      <p className="text-xs font-semibold tracking-wider text-base-content/50 uppercase">· {eyebrow} ·</p>
+      <nav aria-label="Explore views" className="flex flex-wrap gap-1">
+        {VIEWS.map((v) => (
+          <NavLink
+            key={v.to}
+            to={v.to}
+            className={({ isActive }) =>
+              `btn btn-xs tracking-wider uppercase ${isActive ? 'btn-primary btn-soft' : 'btn-ghost text-base-content/60'}`
+            }
+          >
+            {v.label}
+          </NavLink>
+        ))}
+      </nav>
       <h1 className="mt-0.5 flex items-center gap-2 text-2xl font-bold">
         {title}
         {sparkle && (
@@ -80,8 +92,8 @@ function SeasonExplore() {
   const isCurrent = season === now.season && year === now.year;
 
   const query = useQuery(seasonQuery(season, year));
-  // Shows from earlier seasons that are still airing. Same query (and cache) as the Airing tab.
-  const airing = useQuery({ ...categoryQuery('airing'), enabled: isCurrent });
+  // Shows from earlier seasons that are still airing.
+  const airing = useQuery({ ...airingQuery(), enabled: isCurrent });
   const start = seasonStart(now);
   const continuing = isCurrent ? (airing.data?.items ?? []).filter((a) => a.startDate !== null && a.startDate < start) : [];
 
@@ -92,7 +104,6 @@ function SeasonExplore() {
   return (
     <>
       <ExploreHeader
-        eyebrow="Discover by season"
         title={season ? `${SEASON_LABEL[season]} ${year}` : `All of ${year}`}
         sparkle={isCurrent}
         query={query}
@@ -138,37 +149,19 @@ function SeasonExplore() {
   );
 }
 
-// ---------- fixed lists ----------
+// ---------- trending ----------
 
-/** Reuses the Home page's trending query: no extra request. */
 function TrendingExplore() {
   const query = useQuery(trendingQuery());
   return (
     <>
       <ExploreHeader
-        eyebrow="Explore"
-        title={EXPLORE_CATEGORIES.trending.label}
-        subtitle={EXPLORE_CATEGORIES.trending.description}
+        title="Trending now"
+        subtitle="What the Kitsu community is watching right now."
         query={query}
         onRefresh={() => void query.refetch()}
       />
       <DiscoverResults query={query} emptyText="No trending anime right now." />
-    </>
-  );
-}
-
-function ListExplore({ category }: { category: ListCategory }) {
-  const query = useQuery(categoryQuery(category));
-  return (
-    <>
-      <ExploreHeader
-        eyebrow="Explore"
-        title={EXPLORE_CATEGORIES[category].label}
-        subtitle={EXPLORE_CATEGORIES[category].description}
-        query={query}
-        onRefresh={() => void query.refetch()}
-      />
-      <DiscoverResults query={query} emptyText="Kitsu returned no shows for this category." />
     </>
   );
 }

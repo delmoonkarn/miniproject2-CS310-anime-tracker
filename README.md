@@ -22,18 +22,19 @@ No API key is needed: the Kitsu endpoints used are public.
 
 | Path | Page | Notes |
 | --- | --- | --- |
-| `/` | Home | Trending anime, 20 per page. Search (`?q=`) and paging (`?offset=`) are kept in the URL. |
+| `/` | | Redirects to `/explore/season`. |
+| `/explore/season` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year). The current season also gets a **Continuing** block for older shows that are still airing. |
+| `/explore/trending` | Explore: trending (items page) | Top 60 trending anime on Kitsu. Switch views with the buttons next to the page title. |
 | `/anime/:id` | Detail | Synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle. Handles invalid ids and 404s. |
 | `/collection` | Collection layout | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
 | `/collection/watching` | Watching | Progress, last aired episode, "behind by N" or "caught up", and a +1 button. |
 | `/collection/interested` | Interested | Card grid. |
 | `/collection/completed` | Completed | Card grid. |
 | `/collection/favorites` | Favorites | Card grid. |
-| `/explore` | Explore layout | The index route redirects to `season`. |
-| `/explore/season` | Discover by season | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year). The current season also gets a **Continuing** block for older shows that are still airing. |
-| `/explore/:category` | Explore | `trending`, `airing`, `upcoming`, `highest-rated`. Unknown categories show a 404 page. |
+| `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
+| `*` | Not found | Unknown paths, including `/explore/<anything else>`. |
 
-Every Explore tab shares the same list view:
+Both Explore views share the same list:
 - **Format** pills (TV, ONA, Movie, Special, OVA, Music, plus Continuing) with live counts. You can select several; **Clear** resets them.
 - A search box that filters the loaded results by title.
 - The grid is grouped into labelled sections: TV & ONA first, then *Movies*, *Specials & OVAs*, *Music* and *Continuing*.
@@ -41,8 +42,6 @@ Every Explore tab shares the same list view:
 - Shows already in your collection are outlined.
 
 All filtering is done client-side on data already in the TanStack Query cache (`src/lib/discover.ts`, unit-tested), so it never triggers a request.
-| `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
-| `*` | Not found | |
 
 ## State architecture: Zustand vs TanStack Query
 
@@ -60,7 +59,7 @@ The two meet only at render time. A component reads ids and progress from the st
 **Queries** (`src/api/queryKeys.ts`, `src/api/queries.ts`):
 
 - A query-key factory (`animeKeys`) creates every key. `animeKeys.detail(id)` is shared by the Detail page and all Collection tabs, so each show is fetched once and then served from the cache.
-- `staleTime` per query: trending 15 min, search 10 min, explore categories 30 min, detail 2 h, latest episodes 4 h.
+- `staleTime` per query: trending 15 min, season lists and airing 30 min, detail 2 h, latest episodes 4 h.
 - Global settings: `refetchOnWindowFocus: false`. `shouldRetry` retries network errors, 5xx and 429. It does not retry other 4xx errors (such as 404) or responses that fail to parse.
 
 ## Talking to Kitsu (JSON:API)
@@ -90,7 +89,7 @@ The interfaces in `src/types/kitsu.ts` are hand-written from real responses (fet
 | `status` is one of `current \| finished \| tba \| unreleased \| upcoming` | Union type `AnimeStatus` |
 | Dates are `"YYYY-MM-DD"` strings | Typed as nullable strings |
 | `/anime` rejects `page[limit]` above 20 | Page size is **20** |
-| `/trending/anime` takes `?limit=` but ignores offsets and returns no `meta`/`links` | Home fetches the top 60 trending once and pages through them locally. The Explore → Trending tab reuses that same query. |
+| `/trending/anime` takes `?limit=` but ignores offsets and returns no `meta`/`links` | The Trending view fetches the top 60 in one request. Season lists use `/anime` with `page[offset]` instead. |
 | Episodes are numbered by the absolute `number` field | That field is used |
 | `/anime/:id/episodes` ignores `sort` | `/episodes?filter[mediaId]=…&sort=-number&page[limit]=20&fields[episodes]=number,airdate` fetches the 20 newest episodes in one request, even for 1000+ episode shows |
 | Future episodes appear as placeholders with `airdate: null` | Ignored when finding the last aired episode |
@@ -110,7 +109,7 @@ Aired data lives only in the TanStack Query cache (`animeKeys.latestEpisodes(id)
 
 - Every API-backed view has a skeleton while loading (card grid, Watching rows, detail layout).
 - Error states have a working **Retry** button and messages specific to the error type.
-- Empty states cover no search results, empty collection tabs and an empty Watching list.
+- Empty states cover a season with no shows, filters that match nothing, empty collection tabs and an empty Watching list.
 - Responsive layout: the card grid has 1, 2, 3, 4 or 5 columns depending on width, and the navbar collapses into a dropdown on mobile.
 - Light/dark theme toggle, persisted in the store and applied before the first paint.
 
@@ -123,8 +122,8 @@ src/
   types/       kitsu.ts (JSON:API + Kitsu interfaces)
   store/       useLibraryStore.ts (Zustand + persist), selectors.ts
   lib/         airedEpisodes.ts (+ test), format.ts
-  components/  AnimeCard, AnimeQueryGrid, LibraryControls, Pagination, Poster, States (skeleton/error/empty)
-  pages/       Home, AnimeDetail, About, NotFound, RouteError, collection/*, explore/*
+  components/  AnimeCard, DiscoverResults, LibraryControls, Poster, States (skeleton/error/empty)
+  pages/       AnimeDetail, About, NotFound, RouteError, collection/*, explore/*
   routes/      router.tsx, RootLayout.tsx
   data/        members.ts
 data/sample-anime.json   25 real trending items in Kitsu's JSON:API shape (also used by a parser test)
@@ -133,11 +132,10 @@ screenshots/             app screenshots
 
 ## Assumptions
 
-- **Home paging:** Kitsu's trending endpoint can't be paged, so the home page shows the top 60 trending titles as 3 local pages of 20. Search results are paged on the server with `page[offset]`. The app's URL uses `?offset=`, which is passed to Kitsu as `page[offset]`.
+- **No separate home page:** `/` opens Explore, which serves as the items page (20+ items in every view).
 - **Quick add:** "+ Add to collection" adds a show as *Interested*. Change the status on the Detail page.
 - **Removing a show:** choosing "Not in collection" removes both the entry and the favorite. Favoriting works whether or not the show is in the collection.
 - **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
-- **Search count:** Kitsu's search `meta.count` is sometimes slightly off, and the page count shown follows it.
 - **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than its total ("top 100 of 116").
 - **Poster URLs:** newer Kitsu posters are signed URLs that expire after about 15 minutes. If a cached URL has expired, the card shows a "No poster" placeholder.
 - The Explore page takes its layout and filtering from the group's earlier app (season/year pickers, format pills, grouped grid). The tag filter was left out, as the brief requires.

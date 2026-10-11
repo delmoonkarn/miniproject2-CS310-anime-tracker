@@ -5,7 +5,7 @@ import { isAnimeAttributes, isEpisodeAttributes, many, one } from './guards';
 
 /** Kitsu rejects page[limit] above 20 on /anime and /episodes. */
 export const PAGE_SIZE = 20;
-/** /trending/anime ignores offsets, so the home page fetches this many once and pages through them locally. */
+/** /trending/anime ignores offsets and page limits, it takes a plain `limit`. */
 export const TRENDING_LIMIT = 60;
 
 const animeList = many('anime', isAnimeAttributes);
@@ -13,15 +13,6 @@ const animeOne = one('anime', isAnimeAttributes);
 
 export function fetchTrending(signal?: AbortSignal): Promise<Page<Anime>> {
   return kitsuFetch(`/trending/anime?limit=${TRENDING_LIMIT}`, animeList, signal);
-}
-
-export function searchAnime(text: string, offset: number, signal?: AbortSignal): Promise<Page<Anime>> {
-  const qs = new URLSearchParams({
-    'filter[text]': text,
-    'page[limit]': String(PAGE_SIZE),
-    'page[offset]': String(offset),
-  });
-  return kitsuFetch(`/anime?${qs}`, animeList, signal);
 }
 
 export function fetchAnime(id: number, signal?: AbortSignal): Promise<Anime> {
@@ -43,31 +34,9 @@ export function fetchLatestEpisodes(animeId: number, signal?: AbortSignal): Prom
   return kitsuFetch(`/episodes?${qs}`, many('episodes', isEpisodeAttributes), signal);
 }
 
-// ---------- explore categories ----------
-
-export const EXPLORE_CATEGORIES = {
-  season: { label: 'By season', description: 'Everything airing in a season, most popular first.' },
-  trending: { label: 'Trending', description: 'What the Kitsu community is watching right now.' },
-  airing: { label: 'Airing', description: 'Currently airing shows, most popular first.' },
-  upcoming: { label: 'Upcoming', description: 'Announced shows that have not started yet.' },
-  'highest-rated': { label: 'Highest rated', description: 'All-time top average ratings.' },
-} as const;
-
-export type ExploreCategory = keyof typeof EXPLORE_CATEGORIES;
-/** Categories that are a single Kitsu list request. */
-export type ListCategory = Exclude<ExploreCategory, 'trending' | 'season'>;
-
-export const isExploreCategory = (v: unknown): v is ExploreCategory =>
-  typeof v === 'string' && Object.hasOwn(EXPLORE_CATEGORIES, v);
-
-const CATEGORY_QUERY: Record<ListCategory, Record<string, string>> = {
-  airing: { 'filter[status]': 'current', sort: '-userCount' },
-  upcoming: { 'filter[status]': 'upcoming', sort: '-userCount' },
-  'highest-rated': { sort: '-averageRating' },
-};
-
-export function fetchCategory(category: ListCategory, signal?: AbortSignal): Promise<Page<Anime>> {
-  const qs = new URLSearchParams({ ...CATEGORY_QUERY[category], 'page[limit]': String(PAGE_SIZE) });
+/** The 20 most popular shows airing right now; feeds the "Continuing" block. */
+export function fetchAiring(signal?: AbortSignal): Promise<Page<Anime>> {
+  const qs = new URLSearchParams({ 'filter[status]': 'current', sort: '-userCount', 'page[limit]': String(PAGE_SIZE) });
   return kitsuFetch(`/anime?${qs}`, animeList, signal);
 }
 

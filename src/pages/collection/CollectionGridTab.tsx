@@ -7,7 +7,7 @@ import { CardSkeleton, EmptyState, ErrorState, GRID_CLASSES } from '../../compon
 type Kind = 'interested' | 'completed' | 'favorites';
 
 const EMPTY_TEXT: Record<Kind, string> = {
-  interested: 'Shows you add from Home or Explore land here.',
+  interested: 'Shows you add from Explore land here.',
   completed: 'Mark a show as completed on its detail page.',
   favorites: 'Tap “Add to favorites” on any show’s page.',
 };

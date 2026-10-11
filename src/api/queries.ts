@@ -1,13 +1,5 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
-import {
-  fetchAnime,
-  fetchCategory,
-  fetchLatestEpisodes,
-  fetchSeason,
-  fetchTrending,
-  searchAnime,
-  type ListCategory,
-} from './endpoints';
+import { fetchAiring, fetchAnime, fetchLatestEpisodes, fetchSeason, fetchTrending } from './endpoints';
 import type { Season } from '../lib/season';
 import { isKitsuError } from './errors';
 import { animeKeys } from './queryKeys';
@@ -22,17 +14,10 @@ export const trendingQuery = () =>
     staleTime: 15 * MINUTE,
   });
 
-export const searchQuery = (text: string, offset: number) =>
+export const airingQuery = () =>
   queryOptions({
-    queryKey: animeKeys.search(text, offset),
-    queryFn: ({ signal }) => searchAnime(text, offset, signal),
-    staleTime: 10 * MINUTE,
-  });
-
-export const categoryQuery = (category: ListCategory) =>
-  queryOptions({
-    queryKey: animeKeys.category(category),
-    queryFn: ({ signal }) => fetchCategory(category, signal),
+    queryKey: animeKeys.airing(),
+    queryFn: ({ signal }) => fetchAiring(signal),
     staleTime: 30 * MINUTE,
   });
 

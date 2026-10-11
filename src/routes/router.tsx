@@ -1,12 +1,10 @@
 import { Navigate, createBrowserRouter } from 'react-router';
 import { RootLayout } from './RootLayout';
 import { RouteError } from '../pages/RouteError';
-import { HomePage } from '../pages/HomePage';
 import { AnimeDetailPage } from '../pages/AnimeDetailPage';
 import { CollectionLayout } from '../pages/collection/CollectionLayout';
 import { WatchingTab } from '../pages/collection/WatchingTab';
 import { CollectionGridTab } from '../pages/collection/CollectionGridTab';
-import { ExploreLayout } from '../pages/explore/ExploreLayout';
 import { ExploreCategoryPage } from '../pages/explore/ExploreCategoryPage';
 import { AboutPage } from '../pages/AboutPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
@@ -17,7 +15,7 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <RouteError />,
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <Navigate to="/explore/season" replace /> },
       { path: 'anime/:id', element: <AnimeDetailPage /> },
       {
         path: 'collection',
@@ -32,7 +30,6 @@ export const router = createBrowserRouter([
       },
       {
         path: 'explore',
-        element: <ExploreLayout />,
         children: [
           { index: true, element: <Navigate to="season" replace /> },
           { path: ':category', element: <ExploreCategoryPage /> },

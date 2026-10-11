@@ -17,8 +17,8 @@ export function WatchingTab() {
     return (
       <EmptyState title="You're not watching anything">
         <p>Set a show's status to “Watching” to see how far behind you are.</p>
-        <Link to="/explore/airing" className="btn btn-primary btn-sm mt-3">
-          Browse airing shows
+        <Link to="/explore/season" className="btn btn-primary btn-sm mt-3">
+          Browse this season
         </Link>
       </EmptyState>
     );

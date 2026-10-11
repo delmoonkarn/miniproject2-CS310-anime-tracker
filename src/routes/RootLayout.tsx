@@ -2,7 +2,6 @@ import { Link, NavLink, Outlet, ScrollRestoration } from 'react-router';
 import { useLibraryStore } from '../store/useLibraryStore';
 
 const NAV = [
-  { to: '/', label: 'Home', end: true },
   { to: '/explore', label: 'Explore', end: false },
   { to: '/collection', label: 'Collection', end: false },
   { to: '/about', label: 'About', end: false },
