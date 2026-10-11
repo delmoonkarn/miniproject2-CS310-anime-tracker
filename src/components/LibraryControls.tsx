@@ -18,7 +18,7 @@ export function LibraryControls({ id, total }: { id: number; total: number | nul
           <select
             className="select w-full"
             value={entry?.status ?? ''}
-            onChange={(e) => (isWatchStatus(e.target.value) ? setStatus(id, e.target.value) : remove(id))}
+            onChange={(e) => (isWatchStatus(e.target.value) ? setStatus(id, e.target.value, total) : remove(id))}
           >
             <option value="">Not in collection</option>
             {WATCH_STATUSES.map((s) => (

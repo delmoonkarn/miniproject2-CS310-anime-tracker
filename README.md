@@ -27,7 +27,7 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/explore/trending` | Explore: trending (items page) | Top 60 trending anime on Kitsu. Switch views with the buttons next to the page title. |
 | `/anime/:id` | Detail | Synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle. Handles invalid ids and 404s. |
 | `/collection` | Collection layout | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
-| `/collection/watching` | Watching | Progress, last aired episode, "behind by N" or "caught up", and a +1 button. |
+| `/collection/watching` | Watching | Progress, last aired episode, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
 | `/collection/interested` | Interested | Card grid. |
 | `/collection/completed` | Completed | Card grid. |
 | `/collection/favorites` | Favorites | Card grid. |
@@ -133,7 +133,9 @@ screenshots/             app screenshots
 ## Assumptions
 
 - **No separate home page:** `/` opens Explore, which serves as the items page (20+ items in every view).
-- **Card actions:** the "+ Add ▾" menu adds a show as *Watching* or *Interested*, switches between them, or removes it. The ♥ button toggles the favorite. *Completed* and progress are set on the Detail page.
+- **Card actions:** the "+ Add ▾" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The ♥ button toggles the favorite.
+- **Watching rows:** a − / + stepper for episodes watched (clamped to the episode count) and a ⋮ menu with Mark completed, Favorite and Remove.
+- **Marking completed** fills progress to the episode count when Kitsu knows it.
 - **Favorites are independent:** removing a show from the collection keeps its favorite, and you can favorite a show without adding it.
 - **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
 - **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than its total ("top 100 of 116").

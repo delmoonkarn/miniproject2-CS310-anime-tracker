@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { useWatchingData } from '../../api/hooks';
@@ -48,28 +49,34 @@ function WatchingRow({
 }
 
 function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQueryResult<Page<Episode>> }) {
+  const total = anime.episodeCount;
   const progress = useLibraryStore((s) => s.entries[anime.id]?.progress ?? 0);
-  const increment = useLibraryStore((s) => s.increment);
+  const favorited = useLibraryStore((s) => s.favoriteIds.includes(anime.id));
+  const { setProgress, increment, setStatus, toggleFavorite, remove } = useLibraryStore.getState();
 
   const waitingForEpisodes = needsEpisodeList(anime) && episodes.isPending;
   // If the episode request fails, lastAiredEpisode falls back to the start-date estimate.
   const aired = waitingForEpisodes ? null : lastAiredEpisode(anime, episodes.data?.items);
   const behind = aired ? behindBy(aired.aired, progress) : null;
-  const atEnd = anime.episodeCount !== null && progress >= anime.episodeCount;
+  const atEnd = total !== null && progress >= total;
+
+  // Runs a menu action, then blurs so DaisyUI's focus-based dropdown closes.
+  const menuAction = (action: () => void) => (e: MouseEvent<HTMLButtonElement>) => {
+    action();
+    e.currentTarget.blur();
+  };
 
   return (
-    <div className="flex items-center gap-3 rounded-box bg-base-200 p-3 sm:gap-4">
+    <div className="flex flex-wrap items-center gap-3 rounded-box bg-base-200 p-3 sm:flex-nowrap sm:gap-4">
       <Link to={`/anime/${anime.id}`} className="shrink-0">
         <Poster src={posterUrl(anime, 'small')} title={anime.canonicalTitle} className="h-24 w-16 rounded" />
       </Link>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className="flex min-w-0 flex-1 basis-40 flex-col gap-1">
         <Link to={`/anime/${anime.id}`} className="link-hover truncate font-semibold">
           {anime.canonicalTitle}
         </Link>
         <p className="text-sm">
-          Watched <strong>{progress}</strong> / {anime.episodeCount ?? '?'}
-          <span className="mx-2 text-base-content/40">·</span>
           <span className="text-base-content/70">
             {waitingForEpisodes ? (
               <span className="skeleton inline-block h-3 w-20 align-middle" aria-label="Checking aired episodes" />
@@ -96,15 +103,54 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
         </div>
       </div>
 
-      <button
-        type="button"
-        className="btn btn-primary btn-sm"
-        disabled={atEnd}
-        onClick={() => increment(anime.id, anime.episodeCount)}
-        aria-label={`Mark next episode of ${anime.canonicalTitle} as watched`}
-      >
-        +1
-      </button>
+      <div className="ml-auto flex items-center gap-2">
+        <div className="join" role="group" aria-label={`Episodes watched of ${anime.canonicalTitle}`}>
+          <button
+            type="button"
+            className="btn btn-sm join-item"
+            disabled={progress <= 0}
+            onClick={() => setProgress(anime.id, progress - 1, total)}
+            aria-label="One episode less"
+          >
+            −
+          </button>
+          <span className="btn btn-sm join-item pointer-events-none min-w-16 tabular-nums no-animation">
+            {progress} / {total ?? '?'}
+          </span>
+          <button
+            type="button"
+            className="btn btn-sm btn-primary join-item"
+            disabled={atEnd}
+            onClick={() => increment(anime.id, total)}
+            aria-label="One episode more"
+          >
+            +
+          </button>
+        </div>
+
+        <div className="dropdown dropdown-end">
+          <button type="button" tabIndex={0} className="btn btn-sm btn-ghost btn-square" aria-label={`More actions for ${anime.canonicalTitle}`}>
+            ⋮
+          </button>
+          <ul tabIndex={0} className="menu dropdown-content menu-sm z-30 mt-1 w-48 rounded-box bg-base-100 p-1 shadow-lg">
+            <li>
+              <button type="button" onClick={menuAction(() => setStatus(anime.id, 'completed', total))}>
+                ✓ Mark completed
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={menuAction(() => toggleFavorite(anime.id))}>
+                {favorited ? '♥ Unfavorite' : '♡ Favorite'}
+              </button>
+            </li>
+            <li>
+              <button type="button" className="text-error" onClick={menuAction(() => remove(anime.id))}>
+                ✕ Remove
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

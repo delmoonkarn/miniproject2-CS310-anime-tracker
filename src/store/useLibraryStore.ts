@@ -22,8 +22,8 @@ export interface LibraryState {
 
 export interface LibraryActions {
   add: (id: number, status?: WatchStatus) => void;
-  /** Adds the show if it isn't in the collection yet. */
-  setStatus: (id: number, status: WatchStatus) => void;
+  /** Adds the show if it isn't in the collection yet. "completed" fills progress to `total` when it is known. */
+  setStatus: (id: number, status: WatchStatus, total?: number | null) => void;
   /** `total` is the episode count when known; progress is clamped to 0..total. */
   setProgress: (id: number, progress: number, total: number | null) => void;
   increment: (id: number, total: number | null) => void;
@@ -58,10 +58,11 @@ export const useLibraryStore = create<LibraryStore>()(
           s.entries[id] ? s : { entries: { ...s.entries, [id]: { status, progress: 0, addedAt: Date.now() } } },
         ),
 
-      setStatus: (id, status) =>
+      setStatus: (id, status, total = null) =>
         set((s) => {
           const entry = s.entries[id] ?? { status, progress: 0, addedAt: Date.now() };
-          return { entries: { ...s.entries, [id]: { ...entry, status } } };
+          const progress = status === 'completed' && total !== null ? total : entry.progress;
+          return { entries: { ...s.entries, [id]: { ...entry, status, progress } } };
         }),
 
       setProgress: (id, progress, total) =>

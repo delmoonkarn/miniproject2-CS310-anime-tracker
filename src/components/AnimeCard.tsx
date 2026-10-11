@@ -1,11 +1,10 @@
 import { Link } from 'react-router';
-import { useLibraryStore, type WatchStatus } from '../store/useLibraryStore';
+import { WATCH_STATUSES, useLibraryStore, type WatchStatus } from '../store/useLibraryStore';
 import { ANIME_STATUS_LABEL, WATCH_STATUS_LABEL, formatEpisodes, formatRating, posterUrl } from '../lib/format';
 import type { Anime } from '../types/kitsu';
 import { Poster } from './Poster';
 
-/** Quick picks on the card; "Completed" is set on the Detail page. */
-const CARD_STATUSES: readonly WatchStatus[] = ['watching', 'interested'];
+const STATUS_ICON: Record<WatchStatus, string> = { watching: '▶', interested: '🔖', completed: '✓' };
 
 /** `highlight` outlines the card when the show is already in the user's collection. */
 export function AnimeCard({ anime, highlight = false }: { anime: Anime; highlight?: boolean }) {
@@ -47,18 +46,18 @@ export function AnimeCard({ anime, highlight = false }: { anime: Anime; highligh
               {entry ? `✓ ${WATCH_STATUS_LABEL[entry.status]}` : '+ Add'} ▾
             </button>
             <ul tabIndex={0} className="menu dropdown-content menu-sm z-30 mb-1 w-full rounded-box bg-base-100 p-1 shadow-lg">
-              {CARD_STATUSES.map((s) => (
+              {WATCH_STATUSES.map((s) => (
                 <li key={s}>
                   {/* Blurring closes DaisyUI's focus-based dropdown after a pick. */}
                   <button
                     type="button"
                     className={entry?.status === s ? 'menu-active' : ''}
                     onClick={(e) => {
-                      setStatus(anime.id, s);
+                      setStatus(anime.id, s, anime.episodeCount);
                       e.currentTarget.blur();
                     }}
                   >
-                    {s === 'watching' ? '▶' : '🔖'} {WATCH_STATUS_LABEL[s]}
+                    {STATUS_ICON[s]} {WATCH_STATUS_LABEL[s]}
                   </button>
                 </li>
               ))}

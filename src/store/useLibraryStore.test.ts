@@ -27,6 +27,15 @@ describe('library store', () => {
     expect(getState().entries[1]).toMatchObject({ status: 'watching', progress: 5 });
   });
 
+  it('marking completed fills progress only when the episode count is known', () => {
+    getState().add(3, 'watching');
+    getState().setProgress(3, 4, 12);
+    getState().setStatus(3, 'completed', 12);
+    expect(getState().entries[3]).toMatchObject({ status: 'completed', progress: 12 });
+    getState().setStatus(4, 'completed', null);
+    expect(getState().entries[4]?.progress).toBe(0);
+  });
+
   it('setStatus creates missing entries; remove drops the entry but keeps the favorite', () => {
     getState().setStatus(2, 'completed');
     getState().toggleFavorite(2);
