@@ -31,6 +31,7 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/watchlist/completed` | Completed | Card grid. |
 | `/favorites` | Favorites (extended page) | Every show marked with a heart, kept separately from the watchlist. |
 | `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
+| `/admin` | Edit links | Editor for the published streaming links (see below). In the nav only under `npm run dev`; read-only on the deployed site. |
 | `*` | Not found | Unknown paths, including `/explore/<anything else>`. |
 
 **Search everything:** the box in the navbar searches the whole Kitsu catalogue by title (`filter[text]`) and shows the results in a dropdown (poster, format, year, status, rating). It waits 300 ms after you stop typing, keeps the previous results visible while the next ones load, and supports ↑/↓, Enter and Esc. Press `/` anywhere to focus it. Picking a result opens its Detail page.
@@ -123,7 +124,8 @@ Aired and next-episode data live only in the TanStack Query cache (`animeKeys.la
 
 Kitsu doesn't say where a show is legally streamed in your region, so the Detail page shows links from two places (Netflix, Crunchyroll, a YouTube channel, …):
 
-- **Published links** live in `src/data/streamLinks.ts` (`SHARED_STREAM_LINKS`, keyed by Kitsu id). They ship with the build, so every visitor of the deployed site sees them, read-only, at the top of the panel. To add one, take the id from `/anime/<id>`, add an entry, commit and redeploy. A unit test checks every entry is a named, valid http(s) link. This is static app data like `src/data/members.ts`: it is merged with the personal links at render time (`useWatchLinks`) and never copied into Zustand.
+- **Published links** live in `src/data/streamLinks.json` (keyed by Kitsu id). They ship with the build, so every visitor of the deployed site sees them, read-only, at the top of the panel. They are static app data like `src/data/members.ts`: the JSON is validated by `parseSharedLinks` (`src/lib/sharedLinks.ts`), held in TanStack Query (`publishedLinksQuery`, `src/api/publishedLinks.ts`) and merged with the personal links at render time (`useWatchLinks`). They are never copied into Zustand. Unit tests check the file is valid and in its saved format.
+- **Editing them:** run `npm run dev` and open **Edit links** (`/admin`). The page lists shows from the same queries as the rest of the app (a season like Explore, Trending like Home, Kitsu search, or only the shows that already have links), each with its links and an *Add link* form. Every change is saved straight away: a dev-server-only Vite plugin (`vite-plugins/streamLinksAdmin.ts`, `apply: 'serve'`) accepts a `PUT /__admin/stream-links` from the same origin, validates the body with the same `parseSharedLinks` and rewrites the JSON file. The save is optimistic (`useSavePublishedLinks`) and skips the page reload Vite would otherwise trigger. Commit and redeploy to publish. A production build has no such endpoint, and its `/admin` page is read-only.
 - **Personal links** live in the store as `streamLinks: Record<animeId, { id, label, url }[]>`, persisted with everything else, and only exist in that browser. A personal link with the same URL as a published one isn't shown twice. Because they are keyed by Kitsu id, they appear on the Detail page however you open it (Explore, Watchlist, Favorites, a bookmark or a reload), and the first link becomes a **Watch on …** button there and a ▶ button on the show's Watching row.
 - `normalizeStreamUrl` (`src/lib/streamLinks.ts`, unit-tested) adds `https://` when it is missing and only accepts `http(s)` URLs, so a saved link can never be `javascript:`. Links open in a new tab with `rel="noopener noreferrer"`.
 - The name is optional: `serviceName` fills in "Netflix", "Crunchyroll" and similar for known hosts, otherwise the hostname.
@@ -153,7 +155,8 @@ src/
                States (skeleton/error/empty)
   pages/       Home, AnimeDetail, Favorites, About, NotFound, RouteError, watchlist/*, explore/*
   routes/      router.tsx, RootLayout.tsx
-  data/        members.ts, streamLinks.ts (published streaming links)
+  data/        members.ts, streamLinks.json (published streaming links) + streamLinks.ts (loads and validates it)
+vite-plugins/  streamLinksAdmin.ts (dev-server endpoint that saves streamLinks.json)
 data/sample-anime.json   25 real trending items in Kitsu's JSON:API shape (also used by a parser test)
 screenshots/             app screenshots
 ```

@@ -1,5 +1,8 @@
 import type { Season } from '../lib/season';
 
+/** Streaming links published with the app (src/data/streamLinks.json). */
+export const publishedLinksKey = ['publishedLinks'] as const;
+
 /** Every Kitsu query key comes from here, so related queries share prefixes and never collide. */
 export const animeKeys = {
   all: ['anime'] as const,

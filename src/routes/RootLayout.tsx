@@ -2,14 +2,17 @@ import { Link, NavLink, Outlet, ScrollRestoration } from 'react-router';
 import { useLibraryStore } from '../store/useLibraryStore';
 import { Icon } from '../components/Icon';
 import { GlobalSearch } from '../components/GlobalSearch';
+import { CAN_EDIT_PUBLISHED_LINKS } from '../api/publishedLinks';
 
-const NAV = [
+const NAV: readonly { to: string; label: string }[] = [
   { to: '/', label: 'Home' },
   { to: '/explore', label: 'Explore' },
   { to: '/watchlist', label: 'Watchlist' },
   { to: '/favorites', label: 'Favorites' },
   { to: '/about', label: 'About' },
-] as const;
+  // The link editor can only save under `npm run dev`, so it is only in the nav there.
+  ...(CAN_EDIT_PUBLISHED_LINKS ? [{ to: '/admin', label: 'Edit links' }] : []),
+];
 
 function ThemeToggle() {
   const theme = useLibraryStore((s) => s.theme);

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { SHARED_STREAM_LINKS } from '../data/streamLinks';
+import raw from '../data/streamLinks.json';
+import { parseSharedLinks, serializeSharedLinks } from './sharedLinks';
 import { findService, normalizeStreamUrl, serviceName } from './streamLinks';
 
 describe('normalizeStreamUrl', () => {
@@ -46,14 +47,23 @@ describe('findService', () => {
   });
 });
 
-describe('SHARED_STREAM_LINKS', () => {
-  it('only holds named, already-normalized http(s) links', () => {
-    for (const [id, links] of Object.entries(SHARED_STREAM_LINKS)) {
-      expect(Number.isSafeInteger(Number(id)) && Number(id) > 0, `id ${id}`).toBe(true);
-      for (const l of links) {
-        expect(l.label.trim(), `label for ${id}`).not.toBe('');
-        expect(normalizeStreamUrl(l.url), `url for ${id}`).toBe(l.url);
-      }
-    }
+describe('published links file', () => {
+  it('src/data/streamLinks.json is valid and already in its saved format', () => {
+    const parsed = parseSharedLinks(raw);
+    expect(JSON.parse(serializeSharedLinks(parsed))).toEqual(raw);
+  });
+
+  it('rejects bad ids, missing names and unsafe URLs', () => {
+    expect(() => parseSharedLinks({ abc: [] })).toThrow(/anime id/);
+    expect(() => parseSharedLinks({ 1: [{ label: ' ', url: 'https://netflix.com' }] })).toThrow(/name/);
+    expect(() => parseSharedLinks({ 1: [{ label: 'X', url: 'javascript:alert(1)' }] })).toThrow(/URL/);
+    expect(() => parseSharedLinks([])).toThrow();
+  });
+
+  it('normalizes, drops empty shows and writes ids in order', () => {
+    const map = parseSharedLinks({ 20: [{ label: ' Netflix ', url: 'netflix.com/title/1' }], 3: [], 5: [{ label: 'YT', url: 'https://youtu.be/x' }] });
+    expect(map).toEqual({ 20: [{ label: 'Netflix', url: 'https://netflix.com/title/1' }], 5: [{ label: 'YT', url: 'https://youtu.be/x' }] });
+    const text = serializeSharedLinks(map);
+    expect(text.indexOf('"5"')).toBeLessThan(text.indexOf('"20"'));
   });
 });

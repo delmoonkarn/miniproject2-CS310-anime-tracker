@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useShallow } from 'zustand/react/shallow';
-import { SHARED_STREAM_LINKS } from '../data/streamLinks';
+import { usePublishedLinks } from '../api/publishedLinks';
 import { useLibraryStore, type StreamLink, type WatchStatus } from './useLibraryStore';
 
 const NO_LINKS: StreamLink[] = [];
@@ -37,7 +37,7 @@ export function useStreamLinks(animeId: number): StreamLink[] {
 export interface WatchLink {
   label: string;
   url: string;
-  /** true = published in src/data/streamLinks.ts (read-only), false = the user's own link. */
+  /** true = published in src/data/streamLinks.json (read-only), false = the user's own link. */
   shared: boolean;
 }
 
@@ -48,12 +48,13 @@ export interface WatchLink {
  */
 export function useWatchLinks(animeId: number): WatchLink[] {
   const personal = useStreamLinks(animeId);
+  const published = usePublishedLinks();
   return useMemo(() => {
-    const shared = SHARED_STREAM_LINKS[animeId] ?? [];
+    const shared = published[animeId] ?? [];
     const sharedUrls = new Set(shared.map((l) => l.url));
     return [
       ...shared.map((l) => ({ label: l.label, url: l.url, shared: true })),
       ...personal.filter((l) => !sharedUrls.has(l.url)).map((l) => ({ label: l.label, url: l.url, shared: false })),
     ];
-  }, [animeId, personal]);
+  }, [animeId, personal, published]);
 }

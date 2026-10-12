@@ -68,25 +68,8 @@ export function findService(url: string, label = ''): StreamingService | null {
   return STREAMING_SERVICES.find((s) => squash(s.name) === key || s.aliases?.some((a) => squash(a) === key)) ?? null;
 }
 
-/**
- * Turns user input into a safe absolute URL, or null. A missing scheme gets "https://".
- * Only http(s) is accepted, so a stored link can never be a `javascript:` or `data:` URL.
- */
-export function normalizeStreamUrl(raw: string): string | null {
-  const trimmed = raw.trim();
-  if (!trimmed || /\s/.test(trimmed)) return null;
-  const withScheme = /^[a-z][a-z\d+.-]*:/i.test(trimmed) ? trimmed : `https://${trimmed}`;
-  let url: URL;
-  try {
-    url = new URL(withScheme);
-  } catch {
-    return null;
-  }
-  if (url.protocol !== 'https:' && url.protocol !== 'http:') return null;
-  // A host without a dot ("https://netflix") is almost always a typo; localhost is the exception.
-  if (!url.hostname.includes('.') && url.hostname !== 'localhost') return null;
-  return url.href;
-}
+// Lives in sharedLinks.ts so the dev-server plugin can use it without pulling in Simple Icons.
+export { normalizeStreamUrl } from './sharedLinks';
 
 /** "Netflix" for netflix.com links, otherwise the bare hostname ("example.org"). */
 export function serviceName(url: string): string {

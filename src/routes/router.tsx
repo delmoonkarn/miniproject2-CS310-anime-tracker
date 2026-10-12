@@ -9,6 +9,7 @@ import { LibraryGrid } from '../components/LibraryGrid';
 import { FavoritesPage } from '../pages/FavoritesPage';
 import { ExplorePage } from '../pages/explore/ExplorePage';
 import { AboutPage } from '../pages/AboutPage';
+import { AdminLinksPage } from '../pages/AdminLinksPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 
 /** Old /explore/season?… links keep working; the query string (season, year) is carried over. */
@@ -45,6 +46,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: 'about', element: <AboutPage /> },
+      { path: 'admin', element: <AdminLinksPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
   },

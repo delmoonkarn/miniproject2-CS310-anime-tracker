@@ -1,21 +1,21 @@
-import { useState, type FormEvent } from 'react';
-import { useLibraryStore, type StreamLink } from '../store/useLibraryStore';
+import { useState } from 'react';
+import { useLibraryStore } from '../store/useLibraryStore';
 import { useStreamLinks } from '../store/selectors';
-import { normalizeStreamUrl, serviceName } from '../lib/streamLinks';
-import { SHARED_STREAM_LINKS } from '../data/streamLinks';
+import { LinkForm } from './LinkForm';
+import { usePublishedLinks } from '../api/publishedLinks';
 import { Icon } from './Icon';
 import { ServiceLogo } from './ServiceLogo';
 
 /**
- * "Where to watch": links published with the app (src/data/streamLinks.ts, read-only, same for everyone)
+ * "Where to watch": links published with the app (src/data/streamLinks.json, read-only, same for everyone)
  * followed by the user's own links, saved in the store by anime id.
  */
 export function StreamLinks({ animeId, title }: { animeId: number; title: string }) {
-  const shared = SHARED_STREAM_LINKS[animeId] ?? [];
+  const shared = usePublishedLinks()[animeId] ?? [];
   const sharedUrls = new Set(shared.map((l) => l.url));
   // Same rule as useWatchLinks: a personal copy of a published link isn't listed twice.
   const links = useStreamLinks(animeId).filter((l) => !sharedUrls.has(l.url));
-  const { removeStreamLink } = useLibraryStore.getState();
+  const { addStreamLink, updateStreamLink, removeStreamLink } = useLibraryStore.getState();
   // null = no form open, 'new' = adding, otherwise the id of the link being edited.
   const [editing, setEditing] = useState<string | null>(null);
 
@@ -65,7 +65,14 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
           {links.map((l) =>
             editing === l.id ? (
               <li key={l.id}>
-                <LinkForm animeId={animeId} link={l} onDone={() => setEditing(null)} />
+                <LinkForm
+                  initial={l}
+                  onSubmit={(label, url) => {
+                    updateStreamLink(animeId, l.id, label, url);
+                    setEditing(null);
+                  }}
+                  onCancel={() => setEditing(null)}
+                />
               </li>
             ) : (
               <li key={l.id} className="group flex items-center gap-1">
@@ -106,7 +113,13 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
 
       {editing === 'new' && (
         <div className={links.length + shared.length > 0 ? 'mt-3' : ''}>
-          <LinkForm animeId={animeId} onDone={() => setEditing(null)} />
+          <LinkForm
+            onSubmit={(label, url) => {
+              addStreamLink(animeId, label, url);
+              setEditing(null);
+            }}
+            onCancel={() => setEditing(null)}
+          />
         </div>
       )}
 
@@ -120,77 +133,5 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
         </div>
       )}
     </section>
-  );
-}
-
-/** Add form when `link` is absent, edit form otherwise. */
-function LinkForm({ animeId, link, onDone }: { animeId: number; link?: StreamLink; onDone: () => void }) {
-  const [url, setUrl] = useState(link?.url ?? '');
-  // Left empty, the label is taken from the URL ("Netflix", "example.org").
-  const [label, setLabel] = useState(link?.label ?? '');
-  const [error, setError] = useState<string | null>(null);
-  const { addStreamLink, updateStreamLink } = useLibraryStore.getState();
-
-  const normalized = normalizeStreamUrl(url);
-  const suggested = normalized ? serviceName(normalized) : 'e.g. Netflix';
-
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!normalized) {
-      setError('Enter a valid web address, e.g. https://www.netflix.com/title/…');
-      return;
-    }
-    const finalLabel = label.trim() || serviceName(normalized);
-    if (link) updateStreamLink(animeId, link.id, finalLabel, normalized);
-    else addStreamLink(animeId, finalLabel, normalized);
-    onDone();
-  };
-
-  return (
-    <form onSubmit={submit} className="flex flex-col gap-2 rounded-field bg-base-200 p-3" noValidate>
-      <label className="flex flex-col gap-1">
-        <span className="text-xs font-medium text-base-content/70">Link</span>
-        <input
-          type="url"
-          inputMode="url"
-          className={`input input-sm w-full ${error ? 'input-error' : ''}`}
-          placeholder="https://…"
-          value={url}
-          onChange={(e) => {
-            setUrl(e.target.value);
-            setError(null);
-          }}
-          aria-invalid={error !== null}
-          autoFocus
-          required
-        />
-      </label>
-      <label className="flex flex-col gap-1">
-        <span className="text-xs font-medium text-base-content/70">
-          Name <span className="font-normal text-base-content/50">(optional)</span>
-        </span>
-        <input
-          type="text"
-          className="input input-sm w-full"
-          placeholder={suggested}
-          value={label}
-          maxLength={40}
-          onChange={(e) => setLabel(e.target.value)}
-        />
-      </label>
-      {error && (
-        <p className="text-xs text-error" role="alert">
-          {error}
-        </p>
-      )}
-      <div className="mt-1 flex justify-end gap-2">
-        <button type="button" className="btn btn-ghost btn-sm" onClick={onDone}>
-          Cancel
-        </button>
-        <button type="submit" className="btn btn-primary btn-sm">
-          {link ? 'Save' : 'Add link'}
-        </button>
-      </div>
-    </form>
   );
 }
