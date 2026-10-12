@@ -1,6 +1,7 @@
 import type { Anime, Episode, Page, RelatedAnime } from '../types/kitsu';
 import type { Season } from '../lib/season';
 import { kitsuFetch } from './client';
+import { KitsuError } from './errors';
 import { isAnimeAttributes, isEpisodeAttributes, many, one, relatedAnime } from './guards';
 
 /** Kitsu rejects page[limit] above 20 on /anime and /episodes. */
@@ -15,8 +16,59 @@ export function fetchTrending(signal?: AbortSignal): Promise<Page<Anime>> {
   return kitsuFetch(`/trending/anime?limit=${TRENDING_LIMIT}`, animeList, signal);
 }
 
+// ---------- show details, batched ----------
+// Pages like the Watchlist, Favorites and Edit links load many shows at once, one detail query each.
+// Calls made within BATCH_WINDOW_MS are collected and loaded with `/anime?filter[id]=…` (20 per
+// request), so 50 shows take 3 requests instead of 50. Each show still has its own cache entry.
+
+const BATCH_WINDOW_MS = 10;
+
+interface Waiter {
+  resolve: (anime: Anime) => void;
+  reject: (error: unknown) => void;
+}
+
+let waiting = new Map<number, Waiter[]>();
+let flushTimer: ReturnType<typeof setTimeout> | null = null;
+
+function settle(ids: readonly number[], batch: ReadonlyMap<number, Waiter[]>, found: ReadonlyMap<number, Anime>) {
+  for (const id of ids) {
+    const anime = found.get(id);
+    for (const w of batch.get(id) ?? []) {
+      if (anime) w.resolve(anime);
+      else w.reject(new KitsuError('http', `Kitsu has no anime with id ${id}.`, 404));
+    }
+  }
+}
+
+function flush() {
+  flushTimer = null;
+  const batch = waiting;
+  waiting = new Map();
+  const ids = [...batch.keys()];
+  for (let i = 0; i < ids.length; i += PAGE_SIZE) {
+    const chunk = ids.slice(i, i + PAGE_SIZE);
+    const fail = (error: unknown) => chunk.forEach((id) => batch.get(id)?.forEach((w) => w.reject(error)));
+    if (chunk.length === 1) {
+      // A lone show (the usual case on the Detail page) uses the plain endpoint, with Kitsu's own 404.
+      const id = chunk[0] ?? 0;
+      kitsuFetch(`/anime/${id}`, animeOne).then((a) => settle(chunk, batch, new Map([[id, a]])), fail);
+    } else {
+      const qs = new URLSearchParams({ 'filter[id]': chunk.join(','), 'page[limit]': String(PAGE_SIZE) });
+      kitsuFetch(`/anime?${qs}`, animeList).then((page) => settle(chunk, batch, new Map(page.items.map((a) => [a.id, a]))), fail);
+    }
+  }
+}
+
+/** One show's details. Batched with other calls made at the same time (see above). */
 export function fetchAnime(id: number, signal?: AbortSignal): Promise<Anime> {
-  return kitsuFetch(`/anime/${id}`, animeOne, signal);
+  return new Promise<Anime>((resolve, reject) => {
+    if (signal?.aborted) return reject(signal.reason);
+    // A cancelled query stops waiting; the shared request still finishes for the other shows.
+    signal?.addEventListener('abort', () => reject(signal.reason), { once: true });
+    waiting.set(id, [...(waiting.get(id) ?? []), { resolve, reject }]);
+    flushTimer ??= setTimeout(flush, BATCH_WINDOW_MS);
+  });
 }
 
 /**
