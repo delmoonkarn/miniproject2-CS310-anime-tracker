@@ -31,9 +31,6 @@ export function ExplorePage() {
   const years: number[] = [];
   for (let y = now.year + 2; y >= MIN_YEAR; y--) years.push(y);
 
-  const shown = query.data?.items.length ?? 0;
-  const total = query.data?.total ?? null;
-
   return (
     <section>
       <PageHeader
@@ -48,7 +45,6 @@ export function ExplorePage() {
             )}
           </>
         }
-        description={total !== null && total > shown ? `Top ${shown} of ${total} shows on Kitsu.` : undefined}
       >
         <div className="flex flex-wrap items-center gap-2">
           <select

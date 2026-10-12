@@ -164,7 +164,7 @@ screenshots/             app screenshots
 - **Marking completed** fills progress to the episode count when Kitsu knows it.
 - **Favorites are independent:** removing a show from the watchlist keeps its favorite, and you can favorite a show without adding it.
 - **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
-- **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than its total ("top 100 of 116").
+- **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than Kitsu reports in total.
 - **Poster URLs:** newer Kitsu posters are signed URLs that expire after about 15 minutes. If a cached URL has expired, the card shows a "No poster" placeholder.
 - The Explore page takes its layout and filtering from the group's earlier app (season/year pickers, format pills, grouped grid). The tag filter was left out, as the brief requires.
 - Team details in `src/data/members.ts` are placeholders. To use real photos, put them in `public/members/` and set `photo: '/members/name.jpg'`.

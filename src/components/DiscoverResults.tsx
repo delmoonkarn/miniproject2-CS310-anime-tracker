@@ -72,7 +72,6 @@ export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
           type="search"
           value={search}
           onChange={(e) => filters.setSearch(e.target.value)}
-          placeholder={query.isSuccess ? `Search ${all.length} title${all.length === 1 ? '' : 's'}…` : 'Search titles…'}
           aria-label="Filter these results by title"
         />
       </label>
