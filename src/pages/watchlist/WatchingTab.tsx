@@ -186,7 +186,7 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
   const total = anime.episodeCount;
   const progress = useLibraryStore((s) => s.entries[anime.id]?.progress ?? 0);
   const favorited = useLibraryStore((s) => s.favoriteIds.includes(anime.id));
-  const watchLink = useWatchLinks(anime.id)[0];
+  const watchLinks = useWatchLinks(anime.id);
   const { setProgress, increment, setStatus, toggleFavorite, remove } = useLibraryStore.getState();
 
   const waitingForEpisodes = needsEpisodeList(anime) && episodes.isPending;
@@ -256,17 +256,22 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        {watchLink && (
-          <a
-            href={watchLink.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-sm btn-ghost btn-square"
-            aria-label={`Watch ${anime.canonicalTitle} on ${watchLink.label}`}
-            title={`Watch on ${watchLink.label}`}
-          >
-            <ServiceLogo url={watchLink.url} label={watchLink.label} />
-          </a>
+        {watchLinks.length > 0 && (
+          <div className="flex flex-wrap items-center justify-end gap-1">
+            {watchLinks.map((l) => (
+              <a
+                key={l.url}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-sm btn-ghost btn-square"
+                aria-label={`Watch ${anime.canonicalTitle} on ${l.label}`}
+                title={`Watch on ${l.label}`}
+              >
+                <ServiceLogo url={l.url} label={l.label} />
+              </a>
+            ))}
+          </div>
         )}
         <div className="join" role="group" aria-label={`Episodes watched of ${anime.canonicalTitle}`}>
           <button
