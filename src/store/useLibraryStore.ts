@@ -35,7 +35,7 @@ export interface LibraryActions {
   setStatus: (id: number, status: WatchStatus, total?: number | null) => void;
   /**
    * `total` is the episode count when known; progress is clamped to 0..total.
-   * Reaching the last episode marks the show completed.
+   * Going from 0 to 1+ moves an interested show to watching; reaching the last episode marks it completed.
    */
   setProgress: (id: number, progress: number, total: number | null) => void;
   increment: (id: number, total: number | null) => void;
@@ -55,11 +55,16 @@ export const WATCH_STATUSES: readonly WatchStatus[] = ['watching', 'interested',
 
 export const isWatchStatus = (v: unknown): v is WatchStatus => WATCH_STATUSES.some((s) => s === v);
 
-/** The entry with new progress; watching the last episode (when the count is known) marks it completed. */
+/**
+ * The entry with new progress. Watching the last episode (when the count is known) marks it completed;
+ * watching the first episode of an "interested" show moves it to watching.
+ */
 function withProgress(entry: LibraryEntry, progress: number, total: number | null): LibraryEntry {
   const clamped = clampProgress(progress, total);
   const finished = total !== null && total > 0 && clamped >= total;
-  return { ...entry, progress: clamped, status: finished ? 'completed' : entry.status };
+  const started = entry.progress === 0 && clamped > 0 && entry.status === 'interested';
+  const status: WatchStatus = finished ? 'completed' : started ? 'watching' : entry.status;
+  return { ...entry, progress: clamped, status };
 }
 
 export function clampProgress(progress: number, total: number | null): number {

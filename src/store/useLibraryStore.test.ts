@@ -78,4 +78,20 @@ describe('library store', () => {
     getState().setProgress(9, 500, null);
     expect(getState().entries[9]?.status).toBe('watching');
   });
+
+  it('moves an interested show to watching when the first episode is watched', () => {
+    getState().add(10, 'interested');
+    getState().increment(10, 12);
+    expect(getState().entries[10]).toMatchObject({ status: 'watching', progress: 1 });
+
+    // A one-episode show goes straight to completed.
+    getState().add(11, 'interested');
+    getState().increment(11, 1);
+    expect(getState().entries[11]?.status).toBe('completed');
+
+    // Lowering a completed show to 0 and back up doesn't reopen it.
+    getState().setStatus(12, 'completed');
+    getState().setProgress(12, 1, null);
+    expect(getState().entries[12]?.status).toBe('completed');
+  });
 });
