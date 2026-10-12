@@ -6,6 +6,8 @@ import { AnimeCard } from './AnimeCard';
 import { Icon } from './Icon';
 import { CardGridSkeleton, EmptyState, ErrorState, GRID_CLASSES } from './States';
 import { pillClass as pill } from './pill';
+import { ServiceLogo } from './ServiceLogo';
+import { useServiceIndex } from '../store/selectors';
 
 // ---------- filter state ----------
 
@@ -13,27 +15,36 @@ export interface DiscoverFilters {
   search: string;
   formats: AnimeSubtype[];
   continuingOnly: boolean;
+  /** Streaming service names; a show passes if it is on any of them. */
+  services: string[];
   setSearch: (search: string) => void;
   toggleFormat: (format: AnimeSubtype) => void;
   toggleContinuing: () => void;
+  toggleService: (service: string) => void;
   clear: () => void;
 }
 
-/** Search + format state, owned by the page so the controls and the grid can sit in different places. */
+const toggle = <T,>(list: T[], item: T) => (list.includes(item) ? list.filter((x) => x !== item) : [...list, item]);
+
+/** Search, format and streaming-service state, owned by the page so the controls and the grid can sit in different places. */
 export function useDiscoverFilters(): DiscoverFilters {
   const [search, setSearch] = useState('');
   const [formats, setFormats] = useState<AnimeSubtype[]>([]);
   const [continuingOnly, setContinuingOnly] = useState(false);
+  const [services, setServices] = useState<string[]>([]);
   return {
     search,
     formats,
     continuingOnly,
+    services,
     setSearch,
-    toggleFormat: (f) => setFormats((cur) => (cur.includes(f) ? cur.filter((x) => x !== f) : [...cur, f])),
+    toggleFormat: (f) => setFormats((cur) => toggle(cur, f)),
     toggleContinuing: () => setContinuingOnly((v) => !v),
+    toggleService: (s) => setServices((cur) => toggle(cur, s)),
     clear: () => {
       setFormats([]);
       setContinuingOnly(false);
+      setServices([]);
     },
   };
 }
@@ -54,15 +65,23 @@ interface Props {
 
 // ---------- controls ----------
 
-/** Title search and format pills. The pills appear once the list has loaded. */
+/** Title search, format pills and streaming-service pills. The pills appear once the list has loaded. */
 export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
+  const index = useServiceIndex();
   const { items, extra } = splitItems(query, continuing);
   const all = [...items, ...extra];
-  const { search, formats, continuingOnly } = filters;
+  const { search, formats, continuingOnly, services } = filters;
 
-  // Counts follow the search but not the format filter, so each pill says what it would show.
-  const counts = countFormats(all.filter((a) => matchesTitle(a, search)));
+  // Counts follow the search but not the other filters, so each pill says what it would show.
+  const searched = all.filter((a) => matchesTitle(a, search));
+  const counts = countFormats(searched);
   const continuingCount = extra.filter((a) => matchesTitle(a, search)).length;
+  const serviceCounts = new Map<string, number>();
+  for (const a of searched) for (const s of index.servicesOf(a.id)) serviceCounts.set(s, (serviceCounts.get(s) ?? 0) + 1);
+  // A selected service stays visible even when the search hides all its shows, so it can be turned off.
+  for (const s of services) if (!serviceCounts.has(s)) serviceCounts.set(s, 0);
+  const serviceList = [...serviceCounts].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0]));
+  const anyFilter = formats.length > 0 || continuingOnly || services.length > 0;
 
   return (
     <>
@@ -93,7 +112,32 @@ export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
               Continuing <span className="tabular-nums opacity-60">{continuingCount}</span>
             </button>
           )}
-          {(formats.length > 0 || continuingOnly) && (
+          {anyFilter && serviceList.length === 0 && (
+            <button type="button" className="btn btn-link btn-xs text-base-content/60 no-underline" onClick={filters.clear}>
+              Clear
+            </button>
+          )}
+        </div>
+      )}
+      {serviceList.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Streaming service">
+          {serviceList.map(([s, n]) => {
+            const logo = index.logoLink.get(s);
+            return (
+              <button
+                key={s}
+                type="button"
+                className={pill(services.includes(s))}
+                aria-pressed={services.includes(s)}
+                onClick={() => filters.toggleService(s)}
+                title={`Only shows on ${s}`}
+              >
+                {logo && <ServiceLogo url={logo.url} label={logo.label} className="-ml-1.5 size-5" />}
+                {s} <span className="tabular-nums opacity-60">{n}</span>
+              </button>
+            );
+          })}
+          {anyFilter && (
             <button type="button" className="btn btn-link btn-xs text-base-content/60 no-underline" onClick={filters.clear}>
               Clear
             </button>
@@ -108,14 +152,18 @@ export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
 
 /** The grid grouped into format blocks, filtered client-side by `filters`. */
 export function DiscoverResults({ query, continuing = [], filters, emptyText }: Props & { emptyText: string }) {
+  const index = useServiceIndex();
   if (query.isPending) return <CardGridSkeleton />;
   if (query.isError) return <ErrorState error={query.error} onRetry={() => void query.refetch()} />;
 
   const { items, extra } = splitItems(query, continuing);
   if (items.length === 0 && extra.length === 0) return <EmptyState title="No results">{emptyText}</EmptyState>;
 
-  const { search, formats, continuingOnly } = filters;
-  const keep = (a: Anime) => matchesTitle(a, search) && (formats.length === 0 || formats.includes(a.subtype));
+  const { search, formats, continuingOnly, services } = filters;
+  const keep = (a: Anime) =>
+    matchesTitle(a, search) &&
+    (formats.length === 0 || formats.includes(a.subtype)) &&
+    (services.length === 0 || index.servicesOf(a.id).some((s) => services.includes(s)));
   const visibleMain = continuingOnly ? [] : items.filter(keep);
   const sections = groupIntoSections(visibleMain, extra.filter(keep));
 

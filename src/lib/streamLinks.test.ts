@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import raw from '../data/streamLinks.json';
 import { parseSharedLinks, serializeSharedLinks } from './sharedLinks';
-import { findService, normalizeStreamUrl, serviceName } from './streamLinks';
+import { findService, normalizeStreamUrl, serviceName, serviceOf } from './streamLinks';
 
 describe('normalizeStreamUrl', () => {
   it('keeps full http(s) URLs', () => {
@@ -39,6 +39,12 @@ describe('findService', () => {
     // The hostname wins over a misleading name.
     expect(findService('https://www.youtube.com/@MuseAsia', 'Netflix')?.name).toBe('YouTube');
     expect(findService('https://example.org', 'My site')).toBeNull();
+  });
+
+  it('serviceOf groups a link under its service, or its hostname when unknown', () => {
+    expect(serviceOf('https://www.netflix.com/title/1')).toBe('Netflix');
+    expect(serviceOf('https://bit.ly/x', 'Netflix')).toBe('Netflix');
+    expect(serviceOf('https://www.example.org/a', 'My site')).toBe('example.org');
   });
 
   it('carries the official logo where Simple Icons has one', () => {

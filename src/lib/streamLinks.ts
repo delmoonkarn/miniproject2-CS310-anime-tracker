@@ -41,6 +41,7 @@ const STREAMING_SERVICES: readonly StreamingService[] = [
   { name: 'Hulu', hosts: ['hulu.com'], icon: null },
   { name: 'Ani-One', hosts: ['ani-one.com'], aliases: ['anione', 'ani one asia'], icon: null },
   { name: 'Muse Asia', hosts: ['museasia.com'], aliases: ['muse', 'muse thailand'], icon: null },
+  { name: 'SOOP', hosts: ['sooplive.com', 'sooplive.co.kr', 'afreecatv.com'], aliases: ['soop live', 'afreecatv'], icon: null },
 ];
 
 const squash = (s: string) => s.toLowerCase().replace(/[^a-z0-9+]/g, '');
@@ -70,6 +71,11 @@ export function findService(url: string, label = ''): StreamingService | null {
 
 // Lives in sharedLinks.ts so the dev-server plugin can use it without pulling in Simple Icons.
 export { normalizeStreamUrl } from './sharedLinks';
+
+/** The service a link counts as when filtering: a recognised service's name, otherwise the site's hostname. */
+export function serviceOf(url: string, label = ''): string {
+  return findService(url, label)?.name ?? serviceName(url);
+}
 
 /** "Netflix" for netflix.com links, otherwise the bare hostname ("example.org"). */
 export function serviceName(url: string): string {

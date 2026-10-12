@@ -16,7 +16,7 @@ Opens on http://localhost:5173. `npm test` runs the tests, `npm run build` build
 ## Pages
 
 - `/` home, popular this season + trending
-- `/explore` browse by season/year, search and filter by format (items page)
+- `/explore` browse by season/year, search and filter by format or streaming service (items page)
 - `/anime/:id` detail page
 - `/watchlist` watching / interested / completed (collection page)
 - `/favorites` favorites (extended page)
