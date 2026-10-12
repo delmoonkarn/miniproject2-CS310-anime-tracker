@@ -1,5 +1,5 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
-import { fetchAiring, fetchAnime, fetchLatestEpisodes, fetchSeason, fetchTrending } from './endpoints';
+import { fetchAiring, fetchAnime, fetchLatestEpisodes, fetchSearch, fetchSeason, fetchTrending } from './endpoints';
 import type { Season } from '../lib/season';
 import { isKitsuError } from './errors';
 import { animeKeys } from './queryKeys';
@@ -26,6 +26,18 @@ export const seasonQuery = (season: Season | null, year: number) =>
     queryKey: animeKeys.season(season, year),
     queryFn: ({ signal }) => fetchSeason(season, year, signal),
     staleTime: 30 * MINUTE,
+  });
+
+/** Shortest query sent to Kitsu; one letter matches almost everything. */
+export const MIN_SEARCH_LENGTH = 2;
+
+/** Search the whole Kitsu catalogue: the 20 most relevant matches. */
+export const searchQuery = (text: string) =>
+  queryOptions({
+    queryKey: animeKeys.search(text),
+    queryFn: ({ signal }) => fetchSearch(text, signal),
+    staleTime: 30 * MINUTE,
+    enabled: text.length >= MIN_SEARCH_LENGTH,
   });
 
 export const animeDetailQuery = (id: number) =>

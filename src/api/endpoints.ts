@@ -40,6 +40,15 @@ export function fetchAiring(signal?: AbortSignal): Promise<Page<Anime>> {
   return kitsuFetch(`/anime?${qs}`, animeList, signal);
 }
 
+/**
+ * Kitsu's full-text search (titles and alternative titles), most relevant first.
+ * Text search ignores page[offset] (every offset returns the first page), so only the top 20 are reachable.
+ */
+export function fetchSearch(text: string, signal?: AbortSignal): Promise<Page<Anime>> {
+  const qs = new URLSearchParams({ 'filter[text]': text, 'page[limit]': String(PAGE_SIZE) });
+  return kitsuFetch(`/anime?${qs}`, animeList, signal);
+}
+
 /** A season holds ~100–180 shows, a whole year 500+. Cap the page walk; the list is popularity-sorted. */
 export const SEASON_MAX_PAGES = 8;
 

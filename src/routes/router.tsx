@@ -2,6 +2,7 @@ import { Navigate, createBrowserRouter, useLocation } from 'react-router';
 import { RootLayout } from './RootLayout';
 import { RouteError } from '../pages/RouteError';
 import { HomePage } from '../pages/HomePage';
+import { SearchPage } from '../pages/SearchPage';
 import { AnimeDetailPage } from '../pages/AnimeDetailPage';
 import { WatchlistLayout } from '../pages/watchlist/WatchlistLayout';
 import { WatchingTab } from '../pages/watchlist/WatchingTab';
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
     errorElement: <RouteError />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: 'search', element: <SearchPage /> },
       { path: 'anime/:id', element: <AnimeDetailPage /> },
       {
         path: 'watchlist',

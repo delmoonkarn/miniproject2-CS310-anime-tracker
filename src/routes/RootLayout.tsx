@@ -2,6 +2,7 @@ import { Link, NavLink, Outlet, ScrollRestoration } from 'react-router';
 import { useLibraryStore } from '../store/useLibraryStore';
 import { useStatusCounts } from '../store/selectors';
 import { Icon } from '../components/Icon';
+import { GlobalSearch } from '../components/GlobalSearch';
 
 const NAV = [
   { to: '/', label: 'Home' },
@@ -55,7 +56,7 @@ export function RootLayout() {
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-20 border-b border-base-300 bg-base-100/85 backdrop-blur-md">
-        <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-4 px-4">
+        <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-3 px-4 md:gap-4">
           <div className="dropdown md:hidden">
             <button type="button" tabIndex={0} className="btn btn-ghost btn-sm btn-square" aria-label="Open menu">
               <Icon name="menu" className="size-5" />
@@ -69,14 +70,15 @@ export function RootLayout() {
             <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-content">
               <Icon name="play" filled className="size-4" />
             </span>
-            <span className="text-[0.95rem]">Anime Tracker</span>
+            <span className="hidden text-[0.95rem] sm:inline">Anime Tracker</span>
           </Link>
 
-          <nav aria-label="Main" className="ml-4 hidden md:block">
+          <nav aria-label="Main" className="ml-2 hidden md:block">
             <ul className="flex items-center gap-1">{links(false)}</ul>
           </nav>
 
-          <div className="ml-auto">
+          <div className="ml-auto flex min-w-0 flex-1 items-center justify-end gap-2">
+            <GlobalSearch />
             <ThemeToggle />
           </div>
         </div>
