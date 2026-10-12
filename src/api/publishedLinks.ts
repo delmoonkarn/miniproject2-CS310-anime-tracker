@@ -29,6 +29,8 @@ async function putPublishedLinks(next: SharedLinkMap): Promise<SharedLinkMap> {
     headers: { 'Content-Type': 'application/json' },
     body: serializeSharedLinks(next),
   });
+  // 404: this dev server started before vite-plugins/streamLinksAdmin.ts was in the config (or failed to load it).
+  if (res.status === 404) throw new Error('the save endpoint is missing. Stop the dev server and run `npm run dev` again.');
   if (!res.ok) throw new Error((await res.text()) || `Saving failed (HTTP ${res.status}).`);
   return next;
 }
