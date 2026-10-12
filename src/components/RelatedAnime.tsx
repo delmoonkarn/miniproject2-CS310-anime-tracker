@@ -14,33 +14,57 @@ const GRID = 'grid gap-2 sm:grid-cols-2 xl:grid-cols-3';
 /** "Also in this series" items shown before "Show all". */
 const OTHER_PREVIEW = 6;
 
-/** Detail page: prequels and sequels, then other related shows (side stories, spin-offs, recaps…). */
+/**
+ * Detail page: prequels and sequels, then other related shows (side stories, spin-offs, recaps…),
+ * in a section that opens and closes. The header says what is inside, so it is useful while closed.
+ */
 export function RelatedAnimeSection({ animeId }: { animeId: number }) {
   const query = useQuery(relatedQuery(animeId));
+  const groups = query.data ? groupRelated(query.data) : null;
+
+  let summary: string;
+  if (query.isPending) summary = 'Loading…';
+  else if (!groups) summary = 'Could not load';
+  else {
+    const story = groups.storyLine.map((r) => RELATION_LABEL[r.role]);
+    const parts = [story.length > 0 ? [...new Set(story)].join(' · ') : 'No prequel or sequel'];
+    if (groups.other.length > 0) parts.push(`${groups.other.length} more in this series`);
+    summary = parts.join(' + ');
+  }
 
   return (
-    <section aria-labelledby="related-heading">
-      <h2 id="related-heading" className="mb-3 text-lg font-semibold">
-        Prequel &amp; sequel
-      </h2>
-      {query.isPending ? (
-        <div className={GRID} aria-busy="true" aria-label="Loading related shows">
-          {Array.from({ length: 2 }, (_, i) => (
-            <div key={i} className="surface flex items-center gap-3 p-2">
-              <div className="skeleton h-16 w-11 shrink-0" />
-              <div className="flex flex-1 flex-col gap-1.5">
-                <div className="skeleton h-3 w-16" />
-                <div className="skeleton h-4 w-3/4" />
+    <details className="group/related surface overflow-hidden">
+      <summary className="flex cursor-pointer list-none items-center gap-3 p-4 select-none hover:bg-base-200/60 [&::-webkit-details-marker]:hidden">
+        <h2 id="related-heading" className="text-lg font-semibold">
+          Prequel &amp; sequel
+        </h2>
+        <span className="min-w-0 flex-1 truncate text-sm text-base-content/60">
+          {query.isPending && <span className="loading loading-spinner loading-xs mr-1.5 align-middle" />}
+          {summary}
+        </span>
+        <Icon name="chevronDown" className="size-5 shrink-0 text-base-content/50 transition-transform group-open/related:rotate-180" />
+      </summary>
+
+      <div className="border-t border-base-300 p-4" aria-labelledby="related-heading" role="region">
+        {query.isPending ? (
+          <div className={GRID} aria-busy="true" aria-label="Loading related shows">
+            {Array.from({ length: 2 }, (_, i) => (
+              <div key={i} className="surface flex items-center gap-3 p-2">
+                <div className="skeleton h-16 w-11 shrink-0" />
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <div className="skeleton h-3 w-16" />
+                  <div className="skeleton h-4 w-3/4" />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      ) : query.isError ? (
-        <ErrorState compact error={query.error} onRetry={() => void query.refetch()} />
-      ) : (
-        <RelatedLists items={query.data} />
-      )}
-    </section>
+            ))}
+          </div>
+        ) : query.isError ? (
+          <ErrorState compact error={query.error} onRetry={() => void query.refetch()} />
+        ) : (
+          <RelatedLists items={query.data} />
+        )}
+      </div>
+    </details>
   );
 }
 
@@ -60,7 +84,7 @@ function RelatedLists({ items }: { items: readonly Related[] }) {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-base-content/60">Kitsu lists no prequel or sequel for this show.</p>
+        <p className="text-sm text-base-content/60">This show has no prequel or sequel.</p>
       )}
       {other.length > 0 && (
         <div>
