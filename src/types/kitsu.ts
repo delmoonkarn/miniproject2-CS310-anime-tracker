@@ -97,6 +97,29 @@ export type EpisodeResource = JsonApiResource<'episodes', EpisodeAttributes>;
 export type Flat<A> = A & { id: number };
 
 export type Anime = Flat<AnimeAttributes>;
+
+// ---------- relations ----------
+
+/** `role` of a `/media-relationships` resource: how the destination relates to the show. */
+export type RelationRole =
+  | 'prequel'
+  | 'sequel'
+  | 'parent_story'
+  | 'side_story'
+  | 'full_story'
+  | 'summary'
+  | 'alternative_setting'
+  | 'alternative_version'
+  | 'spinoff'
+  | 'adaptation'
+  | 'character'
+  | 'other';
+
+/** One related anime (manga destinations are dropped). */
+export interface RelatedAnime {
+  role: RelationRole;
+  anime: Anime;
+}
 export type Episode = Flat<EpisodeAttributes>;
 
 export interface Page<T> {

@@ -6,6 +6,7 @@ import { isKitsuError } from '../api/errors';
 import { DetailSkeleton, ErrorState } from '../components/States';
 import { LibraryControls } from '../components/LibraryControls';
 import { StreamLinks } from '../components/StreamLinks';
+import { RelatedAnimeSection } from '../components/RelatedAnime';
 import { Poster } from '../components/Poster';
 import { Icon } from '../components/Icon';
 import { useMediaQuery } from '../hooks/useMediaQuery';
@@ -155,6 +156,8 @@ function AnimeDetail({ id }: { id: number }) {
             <h2 className="mb-2 text-lg font-semibold">Synopsis</h2>
             <p className="leading-relaxed whitespace-pre-line text-base-content/80">{anime.synopsis || 'No synopsis available.'}</p>
           </section>
+
+          <RelatedAnimeSection animeId={anime.id} />
 
           {anime.youtubeVideoId && (
             <section>

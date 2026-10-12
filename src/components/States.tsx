@@ -64,6 +64,10 @@ export function CardSkeleton() {
   );
 }
 
+/** One horizontally scrolling row of cards (Home's season row, the Detail page's related shows). */
+export const CARD_ROW_CLASSES = '-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-3 [scrollbar-width:thin] sm:gap-4';
+export const CARD_ROW_ITEM = 'w-40 shrink-0 snap-start sm:w-44 lg:w-48';
+
 /** Keep in sync with useGridColumns. */
 export const GRID_CLASSES = 'grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
 

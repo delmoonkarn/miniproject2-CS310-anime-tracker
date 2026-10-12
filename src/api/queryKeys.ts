@@ -15,4 +15,5 @@ export const animeKeys = {
   /** Shared by the Detail, Watchlist and Favorites pages, so a show is fetched once. */
   detail: (id: number) => [...animeKeys.all, 'detail', id] as const,
   latestEpisodes: (id: number) => [...animeKeys.all, 'latestEpisodes', id] as const,
+  related: (id: number) => [...animeKeys.all, 'related', id] as const,
 };

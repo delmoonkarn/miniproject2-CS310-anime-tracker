@@ -1,5 +1,5 @@
 import { QueryClient, queryOptions } from '@tanstack/react-query';
-import { fetchAiring, fetchAnime, fetchLatestEpisodes, fetchSearch, fetchSeason, fetchSeasonTop, fetchTrending } from './endpoints';
+import { fetchAiring, fetchAnime, fetchLatestEpisodes, fetchRelated, fetchSearch, fetchSeason, fetchSeasonTop, fetchTrending } from './endpoints';
 import type { Season } from '../lib/season';
 import { isKitsuError } from './errors';
 import { animeKeys } from './queryKeys';
@@ -51,6 +51,15 @@ export const animeDetailQuery = (id: number) =>
   queryOptions({
     queryKey: animeKeys.detail(id),
     queryFn: ({ signal }) => fetchAnime(id, signal),
+    staleTime: 2 * HOUR,
+    gcTime: 2 * HOUR,
+  });
+
+/** Relations rarely change, so they stay fresh as long as the show's details. */
+export const relatedQuery = (id: number) =>
+  queryOptions({
+    queryKey: animeKeys.related(id),
+    queryFn: ({ signal }) => fetchRelated(id, signal),
     staleTime: 2 * HOUR,
     gcTime: 2 * HOUR,
   });

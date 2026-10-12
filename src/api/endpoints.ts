@@ -1,7 +1,7 @@
-import type { Anime, Episode, Page } from '../types/kitsu';
+import type { Anime, Episode, Page, RelatedAnime } from '../types/kitsu';
 import type { Season } from '../lib/season';
 import { kitsuFetch } from './client';
-import { isAnimeAttributes, isEpisodeAttributes, many, one } from './guards';
+import { isAnimeAttributes, isEpisodeAttributes, many, one, relatedAnime } from './guards';
 
 /** Kitsu rejects page[limit] above 20 on /anime and /episodes. */
 export const PAGE_SIZE = 20;
@@ -32,6 +32,12 @@ export function fetchLatestEpisodes(animeId: number, signal?: AbortSignal): Prom
     'fields[episodes]': 'number,airdate',
   });
   return kitsuFetch(`/episodes?${qs}`, many('episodes', isEpisodeAttributes), signal);
+}
+
+/** Prequels, sequels, side stories… of one show, with the related anime included (one request, up to 20). */
+export function fetchRelated(animeId: number, signal?: AbortSignal): Promise<RelatedAnime[]> {
+  const qs = new URLSearchParams({ include: 'destination', 'page[limit]': String(PAGE_SIZE), 'fields[manga]': 'canonicalTitle' });
+  return kitsuFetch(`/anime/${animeId}/media-relationships?${qs}`, relatedAnime, signal);
 }
 
 /** The 20 most popular shows airing right now; feeds the "Continuing" block. */

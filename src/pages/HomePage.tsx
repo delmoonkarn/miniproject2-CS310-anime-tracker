@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { seasonTopQuery, trendingQuery } from '../api/queries';
 import { AnimeCard } from '../components/AnimeCard';
 import { Icon } from '../components/Icon';
-import { CardGridSkeleton, CardSkeleton, EmptyState, ErrorState, GRID_CLASSES } from '../components/States';
+import { CARD_ROW_CLASSES as ROW_CLASSES, CARD_ROW_ITEM as ROW_ITEM, CardGridSkeleton, CardSkeleton, EmptyState, ErrorState, GRID_CLASSES } from '../components/States';
 import { SEASON_LABEL, currentSeason } from '../lib/season';
 import { useGridColumns } from '../hooks/useGridColumns';
 
@@ -20,10 +20,6 @@ function SectionHeading({ title, description, action }: { title: ReactNode; desc
     </div>
   );
 }
-
-/** One horizontally scrolling row of cards. */
-const ROW_CLASSES = '-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-3 [scrollbar-width:thin] sm:gap-4';
-const ROW_ITEM = 'w-40 shrink-0 snap-start sm:w-44 lg:w-48';
 
 /** Cards in the "Trending this season" row; See more continues on Explore. */
 const SEASON_ROW_SIZE = 10;

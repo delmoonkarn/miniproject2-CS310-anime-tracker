@@ -1,10 +1,13 @@
 import type {
+  Anime,
   AnimeAttributes,
   AnimeStatus,
   EpisodeAttributes,
   Flat,
   JsonApiErrorDocument,
   Page,
+  RelatedAnime,
+  RelationRole,
 } from '../types/kitsu';
 import { KitsuError } from './errors';
 
@@ -79,3 +82,37 @@ export function many<A>(type: string, isAttributes: AttributesGuard<A>): Parser<
     return { items, total };
   };
 }
+
+// ---------- relations ----------
+
+const RELATION_ROLES: ReadonlySet<string> = new Set([
+  'prequel', 'sequel', 'parent_story', 'side_story', 'full_story', 'summary',
+  'alternative_setting', 'alternative_version', 'spinoff', 'adaptation', 'character', 'other',
+]);
+const isRelationRole = (v: unknown): v is RelationRole => typeof v === 'string' && RELATION_ROLES.has(v);
+
+/**
+ * Parser for `/anime/:id/media-relationships?include=destination`: pairs each relationship's `role`
+ * with its destination from `included`. Manga destinations, unknown roles and malformed entries are skipped.
+ */
+export const relatedAnime: Parser<RelatedAnime[]> = (json) => {
+  if (!isRecord(json) || !Array.isArray(json.data)) {
+    throw new KitsuError('parse', 'Unexpected response shape for related anime.');
+  }
+  const animeById = new Map<number, Anime>();
+  for (const r of Array.isArray(json.included) ? json.included : []) {
+    const anime = flatten(r, 'anime', isAnimeAttributes);
+    if (anime) animeById.set(anime.id, anime);
+  }
+  const out: RelatedAnime[] = [];
+  for (const rel of json.data) {
+    if (!isRecord(rel) || !isRecord(rel.attributes) || !isRecord(rel.relationships)) continue;
+    const role = rel.attributes.role;
+    const destination = rel.relationships.destination;
+    const target = isRecord(destination) ? destination.data : null;
+    if (!isRelationRole(role) || !isRecord(target) || target.type !== 'anime') continue;
+    const anime = animeById.get(Number(target.id));
+    if (anime) out.push({ role, anime });
+  }
+  return out;
+};

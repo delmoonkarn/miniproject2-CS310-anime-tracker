@@ -24,7 +24,7 @@ No API key is needed: the Kitsu endpoints used are public.
 | --- | --- | --- |
 | `/` | Home | First row: **Trending this season**, the 10 most popular shows of the current season (one request, `sort=-userCount`) in a horizontal scroller with a *See more* link to Explore. Below: Kitsu's overall trending list as a grid, 6 rows at first (the column count follows the screen width) with **Show more** adding 6 rows at a time up to the top 60. No search or filters. |
 | `/explore` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year), title search, format filters and a **Refresh** button, all in one row under the title. The current season also gets a **Continuing** block for older shows that are still airing. Old `/explore/season` links redirect here; `/explore/trending` redirects to `/`. |
-| `/anime/:id` | Detail | Cover banner, synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
+| `/anime/:id` | Detail | Cover banner, synopsis, ratings, dates, **Prequel & sequel** (then *Also in this series*: side stories, spin-offs, recaps…) from Kitsu's `/media-relationships`, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
 | `/watchlist` | Watchlist (collection page) | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
 | `/watchlist/watching` | Watching | Grouped by the weekday of each show's next episode (Monday → Sunday, then "No upcoming episode"). Today's day is highlighted and scrolled into view on open. A sticky **day filter** (All days, Mon … Sun with counts, No date) shows a single day; it is kept in the URL (`?day=fri`, `?day=none`). Each row shows progress, last aired episode, next episode date, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
 | `/watchlist/interested` | Interested | Card grid. |
@@ -62,7 +62,7 @@ The two meet only at render time. A component reads ids and progress from the st
 **Queries** (`src/api/queryKeys.ts`, `src/api/queries.ts`):
 
 - A query-key factory (`animeKeys`) creates every key. `animeKeys.detail(id)` is shared by the Detail page the Watchlist and the Favorites page, so each show is fetched once and then served from the cache.
-- `staleTime` per query: trending 15 min, season lists and airing 30 min, detail 2 h, latest episodes 4 h.
+- `staleTime` per query: trending 15 min, season lists and airing 30 min, detail and related shows 2 h, latest episodes 4 h.
 - Global settings: `refetchOnWindowFocus: false`. `shouldRetry` retries network errors, 5xx and 429. It does not retry other 4xx errors (such as 404) or responses that fail to parse.
 
 ## Talking to Kitsu (JSON:API)
@@ -163,7 +163,7 @@ screenshots/             app screenshots
 
 ## Assumptions
 
-- **Home vs. Explore:** `/` shows the trending list as a plain grid. Explore is the items page in the rubric sense (search, filters, 20+ items in every season). Data refreshes on its own through each query's `staleTime`, so there is no Refresh button.
+- **Home vs. Explore:** `/` shows this season's top shows and the trending list, with no search or filters. Explore is the items page in the rubric sense (search, filters, 20+ items in every season, and a Refresh button).
 - **Card actions:** the "Add to list" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The heart button on the poster toggles the favorite.
 - **Watching rows:** a − / + stepper for episodes watched (clamped to the episode count) and a ⋮ menu with Mark completed, Favorite and Remove.
 - **Marking completed** fills progress to the episode count when Kitsu knows it.
