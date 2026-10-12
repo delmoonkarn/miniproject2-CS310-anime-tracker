@@ -152,12 +152,13 @@ function AnimeDetail({ id }: { id: number }) {
             ))}
           </dl>
 
+          <RelatedAnimeSection animeId={anime.id} />
+
           <section>
             <h2 className="mb-2 text-lg font-semibold">Synopsis</h2>
             <p className="leading-relaxed whitespace-pre-line text-base-content/80">{anime.synopsis || 'No synopsis available.'}</p>
           </section>
 
-          <RelatedAnimeSection animeId={anime.id} />
 
           {anime.youtubeVideoId && (
             <section>
