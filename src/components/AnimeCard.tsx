@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { WATCH_STATUSES, useLibraryStore, type WatchStatus } from '../store/useLibraryStore';
-import { ANIME_STATUS_LABEL, WATCH_STATUS_LABEL, formatEpisodes, formatRating, posterUrl } from '../lib/format';
+import { ANIME_STATUS_LABEL, WATCH_STATUS_LABEL, formatEpisodes, posterUrl } from '../lib/format';
 import { FORMAT_LABEL } from '../lib/discover';
 import type { Anime } from '../types/kitsu';
 import { Icon, type IconName } from './Icon';
@@ -20,7 +20,6 @@ export function AnimeCard({ anime, highlight = false }: { anime: Anime; highligh
   const { setStatus, remove, toggleFavorite } = useLibraryStore.getState();
   const owned = highlight && entry !== undefined;
   const watchLinks = useWatchLinks(anime.id);
-  const rated = anime.averageRating !== null;
 
   return (
     <article
@@ -36,15 +35,7 @@ export function AnimeCard({ anime, highlight = false }: { anime: Anime; highligh
             className="aspect-[2/3] w-full transition-transform duration-300 group-hover:scale-[1.03]"
           />
         </Link>
-        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-2">
-          {rated ? (
-            <span className="inline-flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-0.5 text-xs font-semibold text-white backdrop-blur-sm" title="Average rating">
-              <Icon name="star" filled className="size-3 text-amber-400" />
-              {formatRating(anime.averageRating)}
-            </span>
-          ) : (
-            <span />
-          )}
+        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-end p-2">
           <button
             type="button"
             className={`pointer-events-auto grid size-8 place-items-center rounded-full backdrop-blur-sm transition-colors ${

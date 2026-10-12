@@ -12,7 +12,7 @@ import { Icon } from '../components/Icon';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { needsEpisodeList, nextEpisode } from '../lib/airedEpisodes';
 import { FORMAT_LABEL } from '../lib/discover';
-import { ANIME_STATUS_LABEL, formatDate, formatEpisodes, formatNextEpisode, formatRating, parseId, posterUrl } from '../lib/format';
+import { ANIME_STATUS_LABEL, formatDate, formatEpisodes, formatNextEpisode, parseId, posterUrl } from '../lib/format';
 import type { Anime } from '../types/kitsu';
 import { NotFoundPage } from './NotFoundPage';
 
@@ -120,12 +120,6 @@ function AnimeDetail({ id }: { id: number }) {
             <h1 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">{anime.canonicalTitle}</h1>
             {altTitles && <p className="mt-1 text-base-content/60">{altTitles}</p>}
             <div className="mt-4 flex flex-wrap items-center justify-center gap-2 md:justify-start">
-              {anime.averageRating !== null && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-400/15 px-3 py-1 text-sm font-semibold text-amber-600 dark:text-amber-400">
-                  <Icon name="star" filled className="size-3.5" />
-                  {formatRating(anime.averageRating)}
-                </span>
-              )}
               {anime.popularityRank !== null && (
                 <span className="rounded-full bg-base-300/70 px-3 py-1 text-sm font-medium text-base-content/70">
                   #{anime.popularityRank} most popular
