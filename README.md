@@ -42,7 +42,7 @@ The Explore page:
 - **Format** pills (TV, ONA, Movie, Special, OVA, Music, plus Continuing) with live counts. You can select several; **Clear** resets them.
 - A search box that filters the loaded results by title.
 - The grid is grouped into labelled sections: TV & ONA first, then *Movies*, *Specials & OVAs*, *Music* and *Continuing*.
-- Shows already in your collection are outlined.
+- Shows already in your collection are outlined. Shows with streaming links (published or your own) show up to 4 service logos on the poster; each opens that link.
 
 All filtering is done client-side on data already in the TanStack Query cache (`src/lib/discover.ts`, unit-tested), so it never triggers a request.
 
