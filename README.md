@@ -1,179 +1,156 @@
-# Anime Tracker — Mini Project 2
+# Anime Tracker (Mini Project 2)
 
-A single-page app for tracking the anime you watch. It is built to show a clean split between **client state** (what *you* did: Zustand, persisted to localStorage) and **server state** (everything about the shows: TanStack Query, fetched from the [Kitsu API](https://kitsu.docs.apiary.io/)). There is no backend.
+Anime Tracker is a React app for keeping track of the anime you watch. You can browse shows by season, save them to your watchlist, count the episodes you've seen and see which day the next episode comes out.
 
-**Stack:** Vite · React 19 · TypeScript (strict) · React Router v7 (`createBrowserRouter`) · Zustand (`persist`) · TanStack Query v5 · Tailwind CSS v4 + DaisyUI 5 · Simple Icons · Vitest
+Show data comes from the public [Kitsu API](https://kitsu.docs.apiary.io/). Your own stuff (watchlist, progress, favorites, theme) is saved in the browser with Zustand. There's no backend.
 
-## Setup
+Built with Vite, React 19, TypeScript (strict), React Router 7, Zustand, TanStack Query 5, Tailwind 4 + DaisyUI 5 and Vitest. Streaming service logos come from Simple Icons.
 
-Requirements: Node.js 20+ and npm.
+## Running it
+
+You need Node.js 20 or newer.
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm test           # unit tests (aired-episode logic, store, streaming links, JSON:API parsing)
-npm run build      # type-check + production build into dist/
-npm run preview    # serve the production build
+npm run dev
 ```
 
-No API key is needed: the Kitsu endpoints used are public.
+Then open http://localhost:5173. No API key is needed.
 
-## Routes
+Other scripts:
 
-| Path | Page | Notes |
-| --- | --- | --- |
-| `/` | Home | First row: **Trending this season**, the 10 most popular shows of the current season (one request, `sort=-userCount`) in a horizontal scroller with a *See more* link to Explore. Below: Kitsu's overall trending list as a grid, 6 rows at first (the column count follows the screen width) with **Show more** adding 6 rows at a time up to the top 60. No search or filters. |
-| `/explore` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year), title search, format filters and a **Refresh** button, all in one row under the title. The current season also gets a **Continuing** block for older shows that are still airing. Old `/explore/season` links redirect here; `/explore/trending` redirects to `/`. |
-| `/anime/:id` | Detail | Cover banner, ratings, dates, **Prequel & sequel** above the synopsis, a section that opens and closes (closed by default; the header names what is inside), with small cards (then *Also in this series*: side stories, spin-offs, recaps…, first 6 with Show all) from Kitsu's `/media-relationships`, synopsis, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
-| `/watchlist` | Watchlist (collection page) | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
-| `/watchlist/watching` | Watching | Grouped by the weekday of each show's next episode (Monday → Sunday, then "No upcoming episode"). Today's day is highlighted and scrolled into view on open. A sticky **day filter** (All days, Mon … Sun with counts, No date) shows a single day; it is kept in the URL (`?day=fri`, `?day=none`). Each row shows progress, last aired episode, next episode date, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
-| `/watchlist/interested` | Interested | Card grid. |
-| `/watchlist/completed` | Completed | Card grid. |
-| `/favorites` | Favorites (extended page) | Every show marked with a heart, kept separately from the watchlist. |
-| `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
-| `/admin` | Edit links | Editor for the published streaming links (see below). In the nav only under `npm run dev`; read-only on the deployed site. |
-| `*` | Not found | Unknown paths, including `/explore/<anything else>`. |
+```bash
+npm test          # unit tests
+npm run build     # type check + production build in dist/
+npm run preview   # run the production build
+```
 
-**Search everything:** the box in the navbar searches the whole Kitsu catalogue by title (`filter[text]`) and shows the results in a dropdown (poster, format, year, status, rating). It waits 300 ms after you stop typing, keeps the previous results visible while the next ones load, and supports ↑/↓, Enter and Esc. Press `/` anywhere to focus it. Picking a result opens its Detail page.
+## Pages
 
-How the pages map to the assignment's five required pages: **Items** = Explore, **Detail** = `/anime/:id`, **Collection** = Watchlist, **About** = `/about`, **Extended page** = Favorites.
+The five pages from the assignment:
 
-The Explore page:
-- **Format** pills (TV, ONA, Movie, Special, OVA, Music, plus Continuing) with live counts. You can select several; **Clear** resets them.
-- A search box that filters the loaded results by title.
-- The grid is grouped into labelled sections: TV & ONA first, then *Movies*, *Specials & OVAs*, *Music* and *Continuing*.
-- Shows already in your collection are outlined. Shows with streaming links (published or your own) show up to 4 service logos on the poster; each opens that link.
+- Items: **Explore** (`/explore`)
+- Detail: **anime page** (`/anime/:id`)
+- Collection: **Watchlist** (`/watchlist`)
+- About: **About** (`/about`)
+- Extended page: **Favorites** (`/favorites`)
 
-All filtering is done client-side on data already in the TanStack Query cache (`src/lib/discover.ts`, unit-tested), so it never triggers a request.
+There's also a Home page and a page for editing streaming links, described below. Any other address shows a 404 page.
 
-## State architecture: Zustand vs TanStack Query
+### Home (`/`)
 
-| | Zustand (`src/store`) | TanStack Query (`src/api`) |
-| --- | --- | --- |
-| Owns | The user's collection: `entries` (status, progress, addedAt), `favoriteIds`, `streamLinks`, `theme` | All Kitsu data: lists, details, episodes |
-| Source of truth | The browser (localStorage key `anime-tracker`) | Kitsu |
-| Lifetime | Forever (persisted) | Cached with `staleTime` / `gcTime` |
-| Never contains | Titles, posters, episode counts or any other API data | User choices |
+The first row shows the 10 most popular shows of the current season, with a link to see more on Explore. Under it is Kitsu's trending list. It shows 6 rows at first, and "Show more" adds 6 more rows each time, up to 60 shows.
 
-The two meet only at render time. A component reads ids and progress from the store and passes the ids to query hooks. The Watching tab, for example, gets ids from `useCollectionIds('watching')` and then calls `useWatchingData(ids)`, which uses `useQueries`. Values derived from both sides (aired episode, next episode date, "behind by N") are computed during render and never stored.
+### Explore (`/explore`)
 
-**Store** (`src/store/useLibraryStore.ts`): the state and actions are typed explicitly as `LibraryState` and `LibraryActions`. The actions are `add`, `setStatus`, `setProgress` (clamped to `0..episodeCount` when the count is known), `increment` (+1, also clamped; reaching the last episode through either marks the show **completed**), `toggleFavorite`, `remove`, `addStreamLink` / `updateStreamLink` / `removeStreamLink` and `toggleTheme`. Selectors that return arrays use `useShallow`, so components don't re-render on unrelated changes.
+Pick a season and year (or "All year") to see what aired. Everything is in one row under the title: the season and year pickers, a Refresh button, a search box and format filters (TV, ONA, Movie, Special, OVA, Music). You can pick more than one format. The results are grouped by format.
 
-**Queries** (`src/api/queryKeys.ts`, `src/api/queries.ts`):
+For the current season there's also a "Continuing" group with older shows that are still airing.
 
-- A query-key factory (`animeKeys`) creates every key. `animeKeys.detail(id)` is shared by the Detail page the Watchlist and the Favorites page, so each show is fetched once and then served from the cache.
-- `staleTime` per query: trending 15 min, season lists and airing 30 min, detail and related shows 2 h, latest episodes 4 h.
-- Global settings: `refetchOnWindowFocus: false`. `shouldRetry` retries network errors, 5xx and 429. It does not retry other 4xx errors (such as 404) or responses that fail to parse.
+The season and year are kept in the URL (`/explore?season=fall&year=2026`), so a reload or a shared link opens the same season. The search and filters only work on the shows that are already loaded, so they don't send any requests.
 
-## Talking to Kitsu (JSON:API)
+### Anime page (`/anime/:id`)
 
-All requests go through one function, `kitsuFetch<T>(path, parse, signal)` in `src/api/client.ts`:
+Shows the cover image, poster, rating, episode count, airing dates, synopsis and trailer. For shows that are still airing, it also shows when the next episode is expected.
 
-1. **Queue.** Requests run one at a time, at least **300 ms apart**. When the Watchlist or Favorites page fires many `useQueries` at once, they drain in order and never hit Kitsu in a burst. A query cancelled while it waits in the queue never reaches the network.
-2. **Rate limits.** A `429` is retried up to 3 times with exponential backoff, or after the `Retry-After` delay when Kitsu sends one. The backoff holds the queue, so the whole app slows down rather than just one request.
-3. **Typed errors.** Every failure becomes a `KitsuError` with `kind: 'network' | 'http' | 'parse'` and `status`. The UI uses it for distinct messages: network error, API error (HTTP n), rate limit, or unexpected response.
-4. **Unwrapping.** The `parse` argument is built with `one(type, guard)` or `many(type, guard)` (`src/api/guards.ts`). These turn
+On the side you can set your status (Watching, Interested, Completed), change how many episodes you've watched and add the show to favorites.
 
-   ```json
-   { "data": [{ "id": "7442", "type": "anime", "attributes": { "canonicalTitle": "Attack on Titan", ... } }], "meta": { "count": 123 } }
-   ```
+"Prequel & sequel" is a section you can open and close. It lists the show's prequel and sequel, plus other related shows like side stories, spin-offs and recaps.
 
-   into `{ items: [{ id: 7442, canonicalTitle: "Attack on Titan", ... }], total: 123 }`.
+"Where to watch" lists streaming links for the show (see below). The Back button goes back to the page you came from.
 
-   Type guards (`isAnimeAttributes`, `isEpisodeAttributes`) validate the attributes without casts. A malformed item in a list is skipped. A malformed single document throws a `parse` error.
+Invalid ids and shows Kitsu doesn't have get a "not found" page.
 
-The interfaces in `src/types/kitsu.ts` are hand-written from real responses (fetched October 2026) and checked against the docs:
+### Watchlist (`/watchlist`)
 
-| Finding | How the app handles it |
-| --- | --- |
-| `id` is a string | Converted to a number when unwrapping |
-| `averageRating` is a percentage string (`"84.41"`) or `null` | Typed `string \| null` |
-| `episodeCount` is `null` while a show is airing | Typed `number \| null` |
-| `status` is one of `current \| finished \| tba \| unreleased \| upcoming` | Union type `AnimeStatus` |
-| Dates are `"YYYY-MM-DD"` strings | Typed as nullable strings |
-| `/anime` rejects `page[limit]` above 20 | Page size is **20** |
-| `/trending/anime` takes `?limit=` but ignores offsets and returns no `meta`/`links` | The Trending view fetches the top 60 in one request. Season lists use `/anime` with `page[offset]` instead. |
-| Episodes are numbered by the absolute `number` field | That field is used |
-| Text search (`filter[text]`) ignores `page[offset]`: every offset returns the first page | The search dropdown shows the top 20 matches and the total, and suggests adding words, instead of paging through repeats |
-| `/anime/:id/episodes` ignores `sort` | `/episodes?filter[mediaId]=…&sort=-number&page[limit]=20&fields[episodes]=number,airdate` fetches the 20 newest episodes in one request, even for 1000+ episode shows |
-| Future episodes appear as placeholders with `airdate: null` | Ignored when finding the last aired episode |
+Three tabs: Watching, Interested and Completed.
 
-## Last aired and next episode
+The Watching tab is grouped by the day of the week the next episode airs, and today's day is highlighted. A row of day buttons at the top lets you show only one day. Each show has a +/− counter for episodes watched, tells you how many episodes behind you are, and has a menu to mark it completed, favorite it or remove it.
 
-`src/lib/airedEpisodes.ts` is pure and unit-tested (`airedEpisodes.test.ts`):
+When you reach the last episode, the show is marked completed automatically.
 
-1. **Finished show:** aired = `episodeCount`. No episode request is made.
-2. **Airing show** (`status === 'current'`): the highest `number` whose `airdate` is on or before today.
-3. **Fallback:** if no episode has a usable date, estimate one episode per week since `startDate` (episode 1 airs on the start date), capped at `episodeCount`. Estimates are shown as **"≈ ep N"**. The fallback is also used if the episode request fails.
-4. `behind = max(0, aired − progress)`, shown as a "Behind by N" badge or "Caught up".
+### Favorites (`/favorites`)
 
-### Next episode date (Watching tab and Detail page)
+Every show you've hearted. Favorites are separate from the watchlist, so removing a show from the watchlist doesn't remove it from favorites.
 
-`nextEpisode()` in the same file works out when an airing show's next episode comes out, using the best source Kitsu has:
+### About (`/about`)
 
-1. The earliest episode with an `airdate` after today (exact).
-2. Kitsu's `nextRelease` timestamp, which includes a broadcast time (exact, but rarely filled).
-3. One week after the last dated episode that has aired (estimate).
-4. One episode a week from `startDate` (estimate). Nothing is shown if this would go past `episodeCount`.
+Team members and a credit for the Kitsu API.
 
-The Watching tab groups shows by the weekday of this date (`groupByWeekday` in `src/lib/schedule.ts`, unit-tested). Estimates are shown with "≈", e.g. "Next: ≈ Ep 3 · Fri, Oct 16". In October 2026, none of the 20 most popular shows of the season had any of this data, so most shows get the weekly estimate. Breaks and delays aren't known to Kitsu, so they aren't reflected.
+### Search
 
-Aired and next-episode data live only in the TanStack Query cache (`animeKeys.latestEpisodes(id)`), never in Zustand. The Detail page uses the same query, so opening an airing show you watch costs no extra request.
+The search box at the top of every page searches all of Kitsu, not just one season. Results show up in a dropdown as you type. You can use the arrow keys and Enter, and pressing `/` jumps to the box. Kitsu only returns the 20 best matches for a search.
 
-### Streaming links ("Where to watch")
+## How the state is split
 
-Kitsu doesn't say where a show is legally streamed in your region, so the Detail page shows links from two places (Netflix, Crunchyroll, a YouTube channel, …):
+This is the main point of the assignment, so here's how it works.
 
-- **Published links** live in `src/data/streamLinks.json` (keyed by Kitsu id). They ship with the build, so every visitor of the deployed site sees them, read-only, at the top of the panel. They are static app data like `src/data/members.ts`: the JSON is validated by `parseSharedLinks` (`src/lib/sharedLinks.ts`), held in TanStack Query (`publishedLinksQuery`, `src/api/publishedLinks.ts`) and merged with the personal links at render time (`useWatchLinks`). They are never copied into Zustand. Unit tests check the file is valid and in its saved format.
-- **Editing them:** run `npm run dev` and open **Edit links** (`/admin`). The page lists shows from the same queries as the rest of the app (a season like Explore, Trending like Home, Kitsu search, or only the shows that already have links), each with its links and an *Add link* form. Every change is saved straight away: a dev-server-only Vite plugin (`vite-plugins/streamLinksAdmin.ts`, `apply: 'serve'`) accepts a `PUT /__admin/stream-links` from the same origin, validates the body with the same `parseSharedLinks` and rewrites the JSON file. The save is optimistic (`useSavePublishedLinks`) and skips the page reload Vite would otherwise trigger. Commit and redeploy to publish. A production build has no such endpoint, and its `/admin` page is read-only.
-- **Personal links** live in the store as `streamLinks: Record<animeId, { id, label, url }[]>`, persisted with everything else, and only exist in that browser. A personal link with the same URL as a published one isn't shown twice. Because they are keyed by Kitsu id, they appear on the Detail page however you open it (Explore, Watchlist, Favorites, a bookmark or a reload), and every link (published or personal) appears as a logo button on the show's Watching row.
-- `normalizeStreamUrl` (`src/lib/streamLinks.ts`, unit-tested) adds `https://` when it is missing and only accepts `http(s)` URLs, so a saved link can never be `javascript:`. Links open in a new tab with `rel="noopener noreferrer"`.
-- The name is optional: `serviceName` fills in "Netflix", "Crunchyroll" and similar for known hosts, otherwise the hostname.
-- **Logos:** `findService` (`src/lib/streamLinks.ts`, unit-tested) recognises a link by hostname, or by its name when the URL is a short link, among services common in Thailand: Netflix, Crunchyroll, YouTube, Bilibili, iQIYI, Prime Video, Disney+, HBO Max, Apple TV, Paramount+, Viu, WeTV, TrueID, HIDIVE, Hulu, Ani-One and Muse Asia. `ServiceLogo` shows the official brand mark from [Simple Icons](https://simpleicons.org) (CC0 icon data; the trademarks belong to their owners) in the brand colour for Netflix, Crunchyroll, YouTube, Bilibili, HBO Max, Apple TV and Paramount+. Brands Simple Icons doesn't include (iQIYI, Prime Video, Disney+, Viu, WeTV, TrueID, …) and unknown sites show the site's own icon filling the tile, from Google's favicon service at 128 px (usually the site's square app icon). When Google has no icon (it then returns a 16 px default globe), the tile shows the first letter of the name.
-- Like favorites, links are independent of the watchlist: removing a show keeps them.
+**Zustand** (`src/store/useLibraryStore.ts`) only keeps what the user did:
 
-## UX
+- watchlist entries (status, episodes watched, date added)
+- favorite ids
+- the user's own streaming links
+- light/dark theme
 
-- Every API-backed view has a skeleton while loading (card grid, Watching rows, detail layout).
-- Error states have a working **Retry** button and messages specific to the error type.
-- Empty states cover a season with no shows, filters that match nothing, empty Watchlist tabs, no favorites and an empty Watching list.
-- Responsive layout: the card grid has 2 to 6 columns depending on width, the navbar collapses into a dropdown on mobile, and on the Detail page the tracking panel moves from the sidebar to under the title on small screens.
-- Light/dark theme toggle, persisted in the store and applied before the first paint. Both themes are custom DaisyUI themes in `src/index.css` (slate neutrals, indigo primary, Inter font); pages sit on `base-200` and panels use the `surface` utility (`base-100` with a hairline border).
-- Icons are inline SVGs (`src/components/Icon.tsx`), so there is no icon dependency and no emoji in the UI.
+It's saved to localStorage with `persist`. It never stores titles, posters or anything else from Kitsu, only the ids.
 
-## Project structure
+**TanStack Query** (`src/api/`) handles everything that comes from Kitsu: lists, show details, episodes, related shows and search. Each query has its own `staleTime` (15 minutes for trending, 30 minutes for season lists, 2 hours for details, 4 hours for episodes). All query keys come from one place (`queryKeys.ts`), so the Watchlist, Favorites and anime pages share the same cached details instead of fetching a show again.
+
+The two only meet when a component renders. For example, the Watching tab gets the ids from the store and then loads each show's details with `useQueries`. Things that need both, like "3 episodes behind", are worked out during render and never saved.
+
+Every Kitsu request has a loading state (skeletons) and an error state with a Retry button.
+
+## Working with the Kitsu API
+
+All requests go through `kitsuFetch` in `src/api/client.ts`. It sends one request at a time with at least 300 ms between them, so pages that load many shows don't get rate limited. If Kitsu still answers with 429 (too many requests), it waits and tries again.
+
+Kitsu uses the JSON:API format, where every item looks like `{ id, type, attributes }`. The functions in `src/api/guards.ts` check the response and turn it into plain objects like `{ id: 7442, canonicalTitle: "Attack on Titan", ... }`. The types in `src/types/kitsu.ts` were written from real responses. There's no `any` in the project.
+
+Some Kitsu quirks we had to work around:
+
+- Lists return at most 20 items per request, so a season is loaded in several pages (up to 8). Sometimes Kitsu repeats a page, so duplicates are removed.
+- The trending list and text search ignore paging, so we just show the first 60 trending shows and the first 20 search results.
+- Most shows don't have future episode dates on Kitsu. When there's no date, the app guesses one episode per week from the start date and shows the date with "≈".
+- Newer poster image links expire after about 15 minutes. If one has expired, the card shows a placeholder.
+
+The episode logic (last aired episode, next episode date, grouping by weekday) is in `src/lib/` and has unit tests.
+
+## Streaming links
+
+Kitsu doesn't tell you where a show is streaming, so we added "Where to watch" links. There are two kinds:
+
+1. **Published links** are saved in `src/data/streamLinks.json` and are part of the app, so everyone who opens the site sees them. To edit them, run `npm run dev` and open "Edit links" in the menu (`/admin`). You can browse shows the same way as on Explore, Home or search, and add, edit or remove links. Changes are written to the JSON file straight away. After that, commit and redeploy.
+
+   Saving only works under `npm run dev`. A small Vite plugin (`vite-plugins/streamLinksAdmin.ts`) adds the save endpoint to the dev server only. It checks every link before writing. On the deployed site the page is read-only and isn't in the menu.
+
+2. **Personal links** are added on the anime page and only exist in your own browser (Zustand).
+
+Links have to be normal `http`/`https` addresses. The app shows a logo for each link. For Netflix, Crunchyroll, YouTube, Bilibili, HBO Max, Apple TV and Paramount+ it uses the official logo from [Simple Icons](https://simpleicons.org). For other services like iQIYI, Prime Video, Disney+, Viu, WeTV and TrueID it uses the website's own icon from Google's favicon service. If there's no icon, it shows the first letter of the name. Logos also show on the cards and on Watching rows, and clicking one opens the link.
+
+## Folder structure
 
 ```
 src/
-  api/         client.ts (kitsuFetch + queue), errors.ts, guards.ts (JSON:API unwrapping),
-               endpoints.ts, queryKeys.ts, queries.ts (queryOptions + QueryClient), hooks.ts
-  types/       kitsu.ts (JSON:API + Kitsu interfaces)
-  store/       useLibraryStore.ts (Zustand + persist), selectors.ts
-  lib/         airedEpisodes.ts, schedule.ts, discover.ts, season.ts, streamLinks.ts (each + test), format.ts
-  hooks/       useMediaQuery.ts
-  components/  AnimeCard, DiscoverResults, LibraryGrid, LibraryControls, StreamLinks, PageHeader, Icon, Poster,
-               States (skeleton/error/empty)
-  pages/       Home, AnimeDetail, Favorites, About, NotFound, RouteError, watchlist/*, explore/*
-  routes/      router.tsx, RootLayout.tsx
-  data/        members.ts, streamLinks.json (published streaming links) + streamLinks.ts (loads and validates it)
-vite-plugins/  streamLinksAdmin.ts (dev-server endpoint that saves streamLinks.json)
-data/sample-anime.json   25 real trending items in Kitsu's JSON:API shape (also used by a parser test)
-screenshots/             app screenshots
+  api/          Kitsu requests, JSON:API parsing, query keys and queries
+  types/        Kitsu types
+  store/        Zustand store and selectors
+  lib/          episode, season, filter and streaming link logic (with tests)
+  hooks/        small React hooks
+  components/   cards, rows, loading/error/empty states, icons
+  pages/        one file per page
+  routes/       router and the main layout
+  data/         team members and published streaming links
+vite-plugins/   dev-only plugin that saves streaming links
+data/           sample-anime.json, 25 real shows from Kitsu
+screenshots/    screenshots of every page
 ```
 
-## Assumptions
+## Notes
 
-- **Home vs. Explore:** `/` shows this season's top shows and the trending list, with no search or filters. Explore is the items page in the rubric sense (search, filters, 20+ items in every season, and a Refresh button).
-- **Card actions:** the "Add to list" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The heart button on the poster toggles the favorite.
-- **Watching rows:** a − / + stepper for episodes watched (clamped to the episode count) and a ⋮ menu with Mark completed, Favorite and Remove.
-- **Marking completed** fills progress to the episode count when Kitsu knows it. The other way round works too: watching the last episode (+ on a Watching row, or the stepper on the Detail page) marks the show completed, which moves it to the Completed tab. Shows with an unknown episode count are never completed automatically.
-- **Favorites are independent:** removing a show from the watchlist keeps its favorite, and you can favorite a show without adding it.
-- **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
-- **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than Kitsu reports in total.
-- **Poster URLs:** newer Kitsu posters are signed URLs that expire after about 15 minutes. If a cached URL has expired, the card shows a "No poster" placeholder.
-- The Explore page takes its layout and filtering from the group's earlier app (season/year pickers, format pills, grouped grid). The tag filter was left out, as the brief requires.
-- Team details in `src/data/members.ts` are placeholders. To use real photos, put them in `public/members/` and set `photo: '/members/name.jpg'`.
+- Explore is based on the layout of our group's earlier app. We left out the tag filter from that version.
+- Marking a show completed sets its episodes to the total when Kitsu knows the episode count. Shows with an unknown count are never completed automatically.
+- The team info in `src/data/members.ts` is still placeholder data. Photos go in `public/members/`.
 
-## Attribution
+## Credits
 
-Anime data, posters and ratings come from [Kitsu](https://kitsu.app) ([API docs](https://kitsu.docs.apiary.io/)). This project is not affiliated with Kitsu.
+Anime data, posters and ratings are from [Kitsu](https://kitsu.app). This project isn't affiliated with Kitsu. Brand logos are trademarks of their owners.
