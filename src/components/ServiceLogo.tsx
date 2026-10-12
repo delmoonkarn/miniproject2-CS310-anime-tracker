@@ -1,14 +1,17 @@
 import { useState } from 'react';
-import { faviconUrl, findService } from '../lib/streamLinks';
+import { faviconUrls, findService } from '../lib/streamLinks';
 
 /**
- * Logo for a streaming link: the official brand mark (Simple Icons) in the brand colour when known,
- * otherwise the site's favicon, and the first letter of the name if that fails to load.
+ * Logo for a streaming link, always a full rounded tile: the official brand mark (Simple Icons) in the
+ * brand colour when known, otherwise the site's own icon filling the tile, and the first letter of the
+ * name if no icon loads.
  */
 export function ServiceLogo({ url, label, className = 'size-5' }: { url: string; label: string; className?: string }) {
   const service = findService(url, label);
-  const favicon = faviconUrl(url, service);
-  const [failed, setFailed] = useState<string | null>(null);
+  const sources = faviconUrls(url, service);
+  // Icon URLs that failed to load; the next source is tried.
+  const [failed, setFailed] = useState<readonly string[]>([]);
+  const src = sources.find((s) => !failed.includes(s));
   const base = `inline-grid shrink-0 place-items-center overflow-hidden rounded-[22%] ${className}`;
 
   if (service?.icon) {
@@ -20,10 +23,18 @@ export function ServiceLogo({ url, label, className = 'size-5' }: { url: string;
       </span>
     );
   }
-  if (favicon && failed !== favicon) {
+  if (src) {
     return (
+      // White only shows through icons with transparent parts.
       <span className={`${base} bg-white`} aria-hidden>
-        <img src={favicon} alt="" loading="lazy" referrerPolicy="no-referrer" onError={() => setFailed(favicon)} className="size-[78%] object-contain" />
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => setFailed((f) => [...f, src])}
+          className="size-full object-cover"
+        />
       </span>
     );
   }

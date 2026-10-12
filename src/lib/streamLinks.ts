@@ -77,10 +77,14 @@ export function serviceName(url: string): string {
 }
 
 /**
- * The site's own favicon, for services without a Simple Icons logo and for unknown sites.
- * A recognised service uses its main domain, so a short link labelled "Disney+" still shows Disney+.
+ * Icon URLs for services without a Simple Icons logo and for unknown sites, best first:
+ * Google's favicon service at 128 px (usually the site's square app icon, so it fills the tile like the
+ * official logos), then DuckDuckGo's plain favicon. A recognised service uses its main domain, so a
+ * short link labelled "Disney+" still shows Disney+.
  */
-export function faviconUrl(url: string, service: StreamingService | null = findService(url)): string | null {
+export function faviconUrls(url: string, service: StreamingService | null = findService(url)): string[] {
   const host = service?.hosts[0] ?? hostOf(url);
-  return host ? `https://icons.duckduckgo.com/ip3/${encodeURIComponent(host)}.ico` : null;
+  if (!host) return [];
+  const h = encodeURIComponent(host);
+  return [`https://www.google.com/s2/favicons?domain=${h}&sz=128`, `https://icons.duckduckgo.com/ip3/${h}.ico`];
 }
