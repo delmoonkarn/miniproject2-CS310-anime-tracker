@@ -2,13 +2,14 @@ import { useEffect, useRef, type MouseEvent } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { useWatchingData } from '../../api/hooks';
-import { useCollectionIds } from '../../store/selectors';
+import { useCollectionIds, useStreamLinks } from '../../store/selectors';
 import { useLibraryStore } from '../../store/useLibraryStore';
 import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../../lib/airedEpisodes';
 import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../../lib/format';
 import { WEEKDAY_LABEL, groupByWeekday } from '../../lib/schedule';
 import { EmptyState, ErrorState, RowSkeleton } from '../../components/States';
 import { Poster } from '../../components/Poster';
+import { Icon } from '../../components/Icon';
 import type { Anime, Episode, Page } from '../../types/kitsu';
 
 interface RowData {
@@ -77,12 +78,15 @@ export function WatchingTab() {
           tabIndex={g.isToday ? -1 : undefined}
           aria-current={g.isToday ? 'date' : undefined}
           aria-labelledby={`day-${g.day ?? 'none'}`}
-          className={`scroll-mt-24 rounded-box outline-none ${g.isToday ? 'border-2 border-primary/60 bg-primary/5 p-3' : ''}`}
+          className={`scroll-mt-20 rounded-box outline-none ${g.isToday ? 'border border-primary/40 bg-primary/5 p-3 sm:p-4' : ''}`}
         >
-          <h2 id={`day-${g.day ?? 'none'}`} className="mb-3 flex items-center gap-2 text-lg font-semibold">
+          <h2 id={`day-${g.day ?? 'none'}`} className="mb-3 flex items-center gap-2 text-sm font-semibold">
             {g.day === null ? 'No upcoming episode' : WEEKDAY_LABEL[g.day]}
-            {g.isToday && <span className="badge badge-primary badge-sm">Today</span>}
-            <span className="badge badge-ghost badge-sm">{g.items.length}</span>
+            {g.isToday && (
+              <span className="rounded-full bg-primary px-2 py-0.5 text-[0.6875rem] font-semibold text-primary-content">Today</span>
+            )}
+            <span className="text-base-content/50 tabular-nums">{g.items.length}</span>
+            <span className="flex-1 border-t border-base-300" aria-hidden />
           </h2>
           {g.items.length === 0 ? (
             <p className="text-sm text-base-content/60">Nothing you watch airs today.</p>
@@ -100,7 +104,7 @@ export function WatchingTab() {
 
       {pending.length > 0 && (
         <section aria-busy="true">
-          <h2 className="mb-3 text-lg font-semibold text-base-content/60">Checking schedule…</h2>
+          <h2 className="mb-3 text-sm font-semibold text-base-content/60">Checking schedule…</h2>
           <ul className="flex flex-col gap-3">
             {pending.map((id) => (
               <li key={id}>
@@ -130,6 +134,7 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
   const total = anime.episodeCount;
   const progress = useLibraryStore((s) => s.entries[anime.id]?.progress ?? 0);
   const favorited = useLibraryStore((s) => s.favoriteIds.includes(anime.id));
+  const watchLink = useStreamLinks(anime.id)[0];
   const { setProgress, increment, setStatus, toggleFavorite, remove } = useLibraryStore.getState();
 
   const waitingForEpisodes = needsEpisodeList(anime) && episodes.isPending;
@@ -146,16 +151,16 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-box bg-base-200 p-3 sm:flex-nowrap sm:gap-4">
+    <div className="surface flex flex-wrap items-center gap-3 p-3 transition-colors hover:border-base-content/20 sm:flex-nowrap sm:gap-4">
       <Link to={`/anime/${anime.id}`} className="shrink-0">
-        <Poster src={posterUrl(anime, 'small')} title={anime.canonicalTitle} className="h-24 w-16 rounded" />
+        <Poster src={posterUrl(anime, 'small')} title={anime.canonicalTitle} className="h-20 w-14 rounded-md" />
       </Link>
 
       <div className="flex min-w-0 flex-1 basis-40 flex-col gap-1">
-        <Link to={`/anime/${anime.id}`} className="link-hover truncate font-semibold">
+        <Link to={`/anime/${anime.id}`} className="truncate font-semibold hover:text-primary">
           {anime.canonicalTitle}
         </Link>
-        <p className="text-sm">
+        <p className="text-xs sm:text-sm">
           <span className="text-base-content/70">
             {waitingForEpisodes ? (
               <span className="skeleton inline-block h-3 w-20 align-middle" aria-label="Checking aired episodes" />
@@ -180,20 +185,37 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
           )}
         </p>
         <div className="flex flex-wrap gap-1">
-          <span className="badge badge-sm badge-ghost">{ANIME_STATUS_LABEL[anime.status]}</span>
+          <span className="rounded-md bg-base-300/70 px-1.5 py-0.5 text-xs font-medium text-base-content/70">
+            {ANIME_STATUS_LABEL[anime.status]}
+          </span>
           {behind !== null &&
             (behind > 0 ? (
-              <span className="badge badge-sm badge-warning">
+              <span className="rounded-md bg-warning/20 px-1.5 py-0.5 text-xs font-medium">
                 Behind by {aired?.estimated ? '≈ ' : ''}
                 {behind}
               </span>
             ) : (
-              <span className="badge badge-sm badge-success">Caught up</span>
+              <span className="inline-flex items-center gap-1 rounded-md bg-success/15 px-1.5 py-0.5 text-xs font-medium text-success">
+                <Icon name="check" className="size-3" />
+                Caught up
+              </span>
             ))}
         </div>
       </div>
 
       <div className="ml-auto flex items-center gap-2">
+        {watchLink && (
+          <a
+            href={watchLink.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-sm btn-ghost btn-square text-primary"
+            aria-label={`Watch ${anime.canonicalTitle} on ${watchLink.label}`}
+            title={`Watch on ${watchLink.label}`}
+          >
+            <Icon name="play" filled className="size-4" />
+          </a>
+        )}
         <div className="join" role="group" aria-label={`Episodes watched of ${anime.canonicalTitle}`}>
           <button
             type="button"
@@ -202,9 +224,9 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
             onClick={() => setProgress(anime.id, progress - 1, total)}
             aria-label="One episode less"
           >
-            −
+            <Icon name="minus" className="size-3.5" />
           </button>
-          <span className="btn btn-sm join-item pointer-events-none min-w-16 tabular-nums no-animation">
+          <span className="join-item flex min-w-16 items-center justify-center border border-base-300 bg-base-200 px-2 text-sm font-medium tabular-nums">
             {progress} / {total ?? '?'}
           </span>
           <button
@@ -214,28 +236,31 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
             onClick={() => increment(anime.id, total)}
             aria-label="One episode more"
           >
-            +
+            <Icon name="plus" className="size-3.5" />
           </button>
         </div>
 
         <div className="dropdown dropdown-end">
           <button type="button" tabIndex={0} className="btn btn-sm btn-ghost btn-square" aria-label={`More actions for ${anime.canonicalTitle}`}>
-            ⋮
+            <Icon name="more" className="size-4" />
           </button>
-          <ul tabIndex={0} className="menu dropdown-content menu-sm z-30 mt-1 w-48 rounded-box bg-base-100 p-1 shadow-lg">
+          <ul tabIndex={0} className="menu dropdown-content menu-sm surface z-30 mt-1 w-48 p-1 shadow-lg">
             <li>
               <button type="button" onClick={menuAction(() => setStatus(anime.id, 'completed', total))}>
-                ✓ Mark completed
+                <Icon name="check" className="size-3.5" />
+                Mark completed
               </button>
             </li>
             <li>
               <button type="button" onClick={menuAction(() => toggleFavorite(anime.id))}>
-                {favorited ? '♥ Unfavorite' : '♡ Favorite'}
+                <Icon name="heart" filled={favorited} className="size-3.5" />
+                {favorited ? 'Unfavorite' : 'Favorite'}
               </button>
             </li>
             <li>
               <button type="button" className="text-error" onClick={menuAction(() => remove(anime.id))}>
-                ✕ Remove
+                <Icon name="x" className="size-3.5" />
+                Remove
               </button>
             </li>
           </ul>

@@ -13,10 +13,19 @@ export interface LibraryEntry {
   addedAt: number;
 }
 
+/** A user-supplied "where to watch" link. `url` is always an http(s) URL (see normalizeStreamUrl). */
+export interface StreamLink {
+  id: string;
+  label: string;
+  url: string;
+}
+
 export interface LibraryState {
   /** Keyed by Kitsu anime id. */
   entries: Record<number, LibraryEntry>;
   favoriteIds: number[];
+  /** Keyed by Kitsu anime id, independent of `entries` so links survive removing a show. */
+  streamLinks: Record<number, StreamLink[]>;
   theme: Theme;
 }
 
@@ -30,6 +39,10 @@ export interface LibraryActions {
   toggleFavorite: (id: number) => void;
   /** Removes the entry. Favorites are independent and stay. */
   remove: (id: number) => void;
+  /** `url` must already be normalized. */
+  addStreamLink: (animeId: number, label: string, url: string) => void;
+  updateStreamLink: (animeId: number, linkId: string, label: string, url: string) => void;
+  removeStreamLink: (animeId: number, linkId: string) => void;
   toggleTheme: () => void;
 }
 
@@ -44,6 +57,8 @@ export function clampProgress(progress: number, total: number | null): number {
   return Math.min(Math.max(0, Math.floor(progress)), max);
 }
 
+const newLinkId = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+
 const prefersDark = () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: dark)').matches;
 
 export const useLibraryStore = create<LibraryStore>()(
@@ -51,6 +66,7 @@ export const useLibraryStore = create<LibraryStore>()(
     (set) => ({
       entries: {},
       favoriteIds: [],
+      streamLinks: {},
       theme: prefersDark() ? 'dark' : 'light',
 
       add: (id, status = 'interested') =>
@@ -90,8 +106,29 @@ export const useLibraryStore = create<LibraryStore>()(
           return { entries };
         }),
 
+      addStreamLink: (animeId, label, url) =>
+        set((s) => ({
+          streamLinks: { ...s.streamLinks, [animeId]: [...(s.streamLinks[animeId] ?? []), { id: newLinkId(), label, url }] },
+        })),
+
+      updateStreamLink: (animeId, linkId, label, url) =>
+        set((s) => ({
+          streamLinks: {
+            ...s.streamLinks,
+            [animeId]: (s.streamLinks[animeId] ?? []).map((l) => (l.id === linkId ? { ...l, label, url } : l)),
+          },
+        })),
+
+      removeStreamLink: (animeId, linkId) =>
+        set((s) => {
+          const { [animeId]: current = [], ...rest } = s.streamLinks;
+          const kept = current.filter((l) => l.id !== linkId);
+          return { streamLinks: kept.length > 0 ? { ...rest, [animeId]: kept } : rest };
+        }),
+
       toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
     }),
+    // Older saves have no `streamLinks`; persist's shallow merge keeps the `{}` default for them.
     { name: 'anime-tracker', version: 1 },
   ),
 );

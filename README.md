@@ -11,7 +11,7 @@ Requirements: Node.js 20+ and npm.
 ```bash
 npm install
 npm run dev        # http://localhost:5173
-npm test           # unit tests (aired-episode logic, store, JSON:API parsing)
+npm test           # unit tests (aired-episode logic, store, streaming links, JSON:API parsing)
 npm run build      # type-check + production build into dist/
 npm run preview    # serve the production build
 ```
@@ -25,12 +25,12 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/` | | Redirects to `/explore/season`. |
 | `/explore/season` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year). The current season also gets a **Continuing** block for older shows that are still airing. |
 | `/explore/trending` | Explore: trending (items page) | Top 60 trending anime on Kitsu. Switch views with the buttons next to the page title. |
-| `/anime/:id` | Detail | Synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle. Handles invalid ids and 404s. |
+| `/anime/:id` | Detail | Cover banner, synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
 | `/watchlist` | Watchlist (collection page) | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
 | `/watchlist/watching` | Watching | Grouped by the weekday of each show's next episode (Monday → Sunday, then "No upcoming episode"). Today's day is highlighted and scrolled into view on open. Each row shows progress, last aired episode, next episode date, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
 | `/watchlist/interested` | Interested | Card grid. |
 | `/watchlist/completed` | Completed | Card grid. |
-| `/favorites` | Favorites (extended page) | Every show marked ♥, kept separately from the watchlist. |
+| `/favorites` | Favorites (extended page) | Every show marked with a heart, kept separately from the watchlist. |
 
 How the pages map to the assignment's five required pages: **Items** = Explore, **Detail** = `/anime/:id`, **Collection** = Watchlist, **About** = `/about`, **Extended page** = Favorites.
 | `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
@@ -49,14 +49,14 @@ All filtering is done client-side on data already in the TanStack Query cache (`
 
 | | Zustand (`src/store`) | TanStack Query (`src/api`) |
 | --- | --- | --- |
-| Owns | The user's collection: `entries` (status, progress, addedAt), `favoriteIds`, `theme` | All Kitsu data: lists, details, episodes |
+| Owns | The user's collection: `entries` (status, progress, addedAt), `favoriteIds`, `streamLinks`, `theme` | All Kitsu data: lists, details, episodes |
 | Source of truth | The browser (localStorage key `anime-tracker`) | Kitsu |
 | Lifetime | Forever (persisted) | Cached with `staleTime` / `gcTime` |
 | Never contains | Titles, posters, episode counts or any other API data | User choices |
 
 The two meet only at render time. A component reads ids and progress from the store and passes the ids to query hooks. The Watching tab, for example, gets ids from `useCollectionIds('watching')` and then calls `useWatchingData(ids)`, which uses `useQueries`. Values derived from both sides (aired episode, next episode date, "behind by N") are computed during render and never stored.
 
-**Store** (`src/store/useLibraryStore.ts`): the state and actions are typed explicitly as `LibraryState` and `LibraryActions`. The actions are `add`, `setStatus`, `setProgress` (clamped to `0..episodeCount` when the count is known), `increment` (+1, also clamped), `toggleFavorite`, `remove` and `toggleTheme`. Selectors that return arrays use `useShallow`, so components don't re-render on unrelated changes.
+**Store** (`src/store/useLibraryStore.ts`): the state and actions are typed explicitly as `LibraryState` and `LibraryActions`. The actions are `add`, `setStatus`, `setProgress` (clamped to `0..episodeCount` when the count is known), `increment` (+1, also clamped), `toggleFavorite`, `remove`, `addStreamLink` / `updateStreamLink` / `removeStreamLink` and `toggleTheme`. Selectors that return arrays use `useShallow`, so components don't re-render on unrelated changes.
 
 **Queries** (`src/api/queryKeys.ts`, `src/api/queries.ts`):
 
@@ -118,13 +118,23 @@ The Watching tab groups shows by the weekday of this date (`groupByWeekday` in `
 
 Aired and next-episode data live only in the TanStack Query cache (`animeKeys.latestEpisodes(id)`), never in Zustand. The Detail page uses the same query, so opening an airing show you watch costs no extra request.
 
+### Streaming links ("Where to watch")
+
+Kitsu doesn't say where a show is legally streamed in your region, so the Detail page lets you save your own links (Netflix, Crunchyroll, a YouTube channel, …).
+
+- Links live in the store as `streamLinks: Record<animeId, { id, label, url }[]>`, persisted with everything else. Because they are keyed by Kitsu id, they appear on the Detail page however you open it (Explore, Watchlist, Favorites, a bookmark or a reload), and the first link becomes a **Watch on …** button there and a ▶ button on the show's Watching row.
+- `normalizeStreamUrl` (`src/lib/streamLinks.ts`, unit-tested) adds `https://` when it is missing and only accepts `http(s)` URLs, so a saved link can never be `javascript:`. Links open in a new tab with `rel="noopener noreferrer"`.
+- The name is optional: `serviceName` fills in "Netflix", "Crunchyroll" and similar for known hosts, otherwise the hostname.
+- Like favorites, links are independent of the watchlist: removing a show keeps them.
+
 ## UX
 
 - Every API-backed view has a skeleton while loading (card grid, Watching rows, detail layout).
 - Error states have a working **Retry** button and messages specific to the error type.
 - Empty states cover a season with no shows, filters that match nothing, empty Watchlist tabs, no favorites and an empty Watching list.
-- Responsive layout: the card grid has 1, 2, 3, 4 or 5 columns depending on width, and the navbar collapses into a dropdown on mobile.
-- Light/dark theme toggle, persisted in the store and applied before the first paint.
+- Responsive layout: the card grid has 2 to 6 columns depending on width, the navbar collapses into a dropdown on mobile, and on the Detail page the tracking panel moves from the sidebar to under the title on small screens.
+- Light/dark theme toggle, persisted in the store and applied before the first paint. Both themes are custom DaisyUI themes in `src/index.css` (slate neutrals, indigo primary, Inter font); pages sit on `base-200` and panels use the `surface` utility (`base-100` with a hairline border).
+- Icons are inline SVGs (`src/components/Icon.tsx`), so there is no icon dependency and no emoji in the UI.
 
 ## Project structure
 
@@ -134,8 +144,10 @@ src/
                endpoints.ts, queryKeys.ts, queries.ts (queryOptions + QueryClient), hooks.ts
   types/       kitsu.ts (JSON:API + Kitsu interfaces)
   store/       useLibraryStore.ts (Zustand + persist), selectors.ts
-  lib/         airedEpisodes.ts (+ test), format.ts
-  components/  AnimeCard, DiscoverResults, LibraryGrid, LibraryControls, Poster, States (skeleton/error/empty)
+  lib/         airedEpisodes.ts, schedule.ts, discover.ts, season.ts, streamLinks.ts (each + test), format.ts
+  hooks/       useMediaQuery.ts
+  components/  AnimeCard, DiscoverResults, LibraryGrid, LibraryControls, StreamLinks, PageHeader, Icon, Poster,
+               States (skeleton/error/empty)
   pages/       AnimeDetail, Favorites, About, NotFound, RouteError, watchlist/*, explore/*
   routes/      router.tsx, RootLayout.tsx
   data/        members.ts
@@ -146,7 +158,7 @@ screenshots/             app screenshots
 ## Assumptions
 
 - **No separate home page:** `/` opens Explore, which serves as the items page (20+ items in every view).
-- **Card actions:** the "+ Add ▾" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The ♥ button toggles the favorite.
+- **Card actions:** the "Add to list" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The heart button on the poster toggles the favorite.
 - **Watching rows:** a − / + stepper for episodes watched (clamped to the episode count) and a ⋮ menu with Mark completed, Favorite and Remove.
 - **Marking completed** fills progress to the episode count when Kitsu knows it.
 - **Favorites are independent:** removing a show from the watchlist keeps its favorite, and you can favorite a show without adding it.

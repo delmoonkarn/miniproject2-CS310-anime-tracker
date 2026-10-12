@@ -9,7 +9,7 @@ type Kind = 'interested' | 'completed' | 'favorites';
 const EMPTY_TEXT: Record<Kind, string> = {
   interested: 'Shows you add from Explore land here.',
   completed: 'Mark a show as completed on its detail page.',
-  favorites: 'Tap ♥ on any show to keep it here.',
+  favorites: 'Tap the heart on any show to keep it here.',
 };
 
 export function LibraryGrid({ kind }: { kind: Kind }) {

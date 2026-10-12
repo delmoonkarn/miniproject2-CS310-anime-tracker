@@ -4,7 +4,7 @@ import { clampProgress, useLibraryStore } from './useLibraryStore';
 const { getState } = useLibraryStore;
 
 describe('library store', () => {
-  beforeEach(() => useLibraryStore.setState({ entries: {}, favoriteIds: [] }));
+  beforeEach(() => useLibraryStore.setState({ entries: {}, favoriteIds: [], streamLinks: {} }));
 
   it('clamps progress to 0..total', () => {
     expect(clampProgress(-3, 12)).toBe(0);
@@ -42,5 +42,24 @@ describe('library store', () => {
     getState().remove(2);
     expect(getState().entries[2]).toBeUndefined();
     expect(getState().favoriteIds).toEqual([2]);
+  });
+
+  it('adds, edits and removes streaming links per show, independent of the watchlist', () => {
+    getState().add(5, 'watching');
+    getState().addStreamLink(5, 'Netflix', 'https://www.netflix.com/title/1');
+    getState().addStreamLink(5, 'YouTube', 'https://youtube.com/watch?v=x');
+    const [first, second] = getState().streamLinks[5] ?? [];
+    expect(first?.label).toBe('Netflix');
+    expect(first?.id).not.toBe(second?.id);
+
+    getState().updateStreamLink(5, second?.id ?? '', 'Muse Asia', 'https://youtube.com/@MuseAsia');
+    expect(getState().streamLinks[5]?.[1]).toMatchObject({ label: 'Muse Asia', url: 'https://youtube.com/@MuseAsia' });
+
+    getState().remove(5);
+    expect(getState().streamLinks[5]).toHaveLength(2);
+
+    getState().removeStreamLink(5, first?.id ?? '');
+    getState().removeStreamLink(5, second?.id ?? '');
+    expect(getState().streamLinks[5]).toBeUndefined();
   });
 });

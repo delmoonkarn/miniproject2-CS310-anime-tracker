@@ -3,10 +3,17 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import type { Anime, AnimeSubtype, Page } from '../types/kitsu';
 import { FORMAT_LABEL, countFormats, groupIntoSections, matchesTitle } from '../lib/discover';
 import { AnimeCard } from './AnimeCard';
+import { Icon } from './Icon';
 import { CardGridSkeleton, EmptyState, ErrorState, GRID_CLASSES } from './States';
 
 const pill = (active: boolean, tone: 'primary' | 'info' = 'primary') =>
-  `btn btn-xs rounded-full font-medium ${active ? (tone === 'info' ? 'btn-info btn-soft' : 'btn-primary btn-soft') : 'btn-ghost border-base-300'}`;
+  `inline-flex h-7 items-center gap-1.5 rounded-full border px-3 text-xs font-medium transition-colors ${
+    active
+      ? tone === 'info'
+        ? 'border-info/50 bg-info/15 text-info'
+        : 'border-primary/50 bg-primary/10 text-primary'
+      : 'border-base-300 bg-base-100 text-base-content/70 hover:border-base-content/30 hover:text-base-content'
+  }`;
 
 interface Props {
   query: UseQueryResult<Page<Anime>>;
@@ -42,52 +49,51 @@ export function DiscoverResults({ query, continuing = [], emptyText }: Props) {
 
   return (
     <div className={query.isFetching ? 'opacity-60 transition-opacity' : ''}>
-      <div className="mb-4 flex items-start gap-3">
-        <span className="pt-1 text-xs font-semibold tracking-wide text-base-content/60 uppercase">Format</span>
-        <div className="flex flex-wrap items-center gap-1.5">
-          {counts.map(([f, n]) => (
-            <button key={f} type="button" className={pill(formats.includes(f))} aria-pressed={formats.includes(f)} onClick={() => toggleFormat(f)}>
-              {FORMAT_LABEL[f] ?? f} <span className="opacity-60">{n}</span>
-            </button>
-          ))}
-          {continuingCount > 0 && (
-            <button
-              type="button"
-              className={pill(continuingOnly, 'info')}
-              aria-pressed={continuingOnly}
-              onClick={() => setContinuingOnly((v) => !v)}
-              title="Show only shows from earlier seasons that are still airing"
-            >
-              Continuing <span className="opacity-60">{continuingCount}</span>
-            </button>
-          )}
-          {(formats.length > 0 || continuingOnly) && (
-            <button
-              type="button"
-              className="btn btn-link btn-xs text-base-content/60 no-underline"
-              onClick={() => {
-                setFormats([]);
-                setContinuingOnly(false);
-              }}
-            >
-              Clear
-            </button>
-          )}
+      <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center">
+        <label className="input input-sm w-full lg:max-w-xs">
+          <Icon name="search" className="size-4 opacity-50" />
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={`Search ${items.length + extra.length} title${items.length + extra.length === 1 ? '' : 's'}…`}
+            aria-label="Filter these results by title"
+          />
+        </label>
+        <div className="flex items-center gap-3">
+          <span className="eyebrow">Format</span>
+          <div className="flex flex-wrap items-center gap-1.5">
+            {counts.map(([f, n]) => (
+              <button key={f} type="button" className={pill(formats.includes(f))} aria-pressed={formats.includes(f)} onClick={() => toggleFormat(f)}>
+                {FORMAT_LABEL[f] ?? f} <span className="tabular-nums opacity-60">{n}</span>
+              </button>
+            ))}
+            {continuingCount > 0 && (
+              <button
+                type="button"
+                className={pill(continuingOnly, 'info')}
+                aria-pressed={continuingOnly}
+                onClick={() => setContinuingOnly((v) => !v)}
+                title="Show only shows from earlier seasons that are still airing"
+              >
+                Continuing <span className="tabular-nums opacity-60">{continuingCount}</span>
+              </button>
+            )}
+            {(formats.length > 0 || continuingOnly) && (
+              <button
+                type="button"
+                className="btn btn-link btn-xs text-base-content/60 no-underline"
+                onClick={() => {
+                  setFormats([]);
+                  setContinuingOnly(false);
+                }}
+              >
+                Clear
+              </button>
+            )}
+          </div>
         </div>
       </div>
-
-      <label className="input mb-6 w-full">
-        <span aria-hidden className="opacity-50">
-          🔍
-        </span>
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder={`Search ${items.length + extra.length} title${items.length + extra.length === 1 ? '' : 's'}…`}
-          aria-label="Filter these results by title"
-        />
-      </label>
 
       {sections.length === 0 ? (
         <p className="py-12 text-center text-sm text-base-content/60">
@@ -98,7 +104,7 @@ export function DiscoverResults({ query, continuing = [], emptyText }: Props) {
           {sections.map((s) => (
             <Fragment key={s.key}>
               {s.heading && (
-                <div className="col-span-full my-3 flex items-center gap-3">
+                <div className="col-span-full mt-4 mb-1 flex items-center gap-3 first:mt-0">
                   <h2 className="shrink-0 text-sm font-semibold">{s.heading}</h2>
                   <div className="flex-1 border-t border-base-300" aria-hidden />
                 </div>

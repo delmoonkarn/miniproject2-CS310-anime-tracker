@@ -1,5 +1,7 @@
 import { useShallow } from 'zustand/react/shallow';
-import { useLibraryStore, type WatchStatus } from './useLibraryStore';
+import { useLibraryStore, type StreamLink, type WatchStatus } from './useLibraryStore';
+
+const NO_LINKS: StreamLink[] = [];
 
 /** Ids with the given status (newest first), or the favorites. useShallow keeps the array stable between renders. */
 export function useCollectionIds(kind: WatchStatus | 'favorites'): number[] {
@@ -23,4 +25,9 @@ export function useStatusCounts(): Record<WatchStatus | 'favorites', number> {
       return counts;
     }),
   );
+}
+
+/** The user's streaming links for one show. A shared empty array keeps the reference stable when there are none. */
+export function useStreamLinks(animeId: number): StreamLink[] {
+  return useLibraryStore((s) => s.streamLinks[animeId] ?? NO_LINKS);
 }

@@ -3,6 +3,8 @@ import { useQuery, type UseQueryResult } from '@tanstack/react-query';
 import { NavLink, useParams, useSearchParams } from 'react-router';
 import { airingQuery, seasonQuery, trendingQuery } from '../../api/queries';
 import { DiscoverResults } from '../../components/DiscoverResults';
+import { Icon } from '../../components/Icon';
+import { PageHeader } from '../../components/PageHeader';
 import { timeAgo } from '../../lib/format';
 import { SEASONS, SEASON_LABEL, currentSeason, isSeason, nextSeason, seasonStart, type Season } from '../../lib/season';
 import type { Anime, Page } from '../../types/kitsu';
@@ -37,44 +39,51 @@ function ExploreHeader({ title, sparkle, subtitle, query, onRefresh, children }:
   const shown = query.data?.items.length ?? 0;
   const total = query.data?.total ?? null;
   return (
-    <header className="mb-6 border-b border-base-300 pb-4">
-      <nav aria-label="Explore views" className="flex flex-wrap gap-1">
-        {VIEWS.map((v) => (
-          <NavLink
-            key={v.to}
-            to={v.to}
-            className={({ isActive }) =>
-              `btn btn-xs tracking-wider uppercase ${isActive ? 'btn-primary btn-soft' : 'btn-ghost text-base-content/60'}`
-            }
-          >
-            {v.label}
-          </NavLink>
-        ))}
-      </nav>
-      <h1 className="mt-0.5 flex items-center gap-2 text-2xl font-bold">
-        {title}
-        {sparkle && (
-          <span className="text-warning" title="Current season">
-            ✦
-          </span>
-        )}
-      </h1>
-      {subtitle && <p className="text-sm text-base-content/60">{subtitle}</p>}
-
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+    <PageHeader
+      eyebrow={
+        <nav aria-label="Explore views" className="inline-flex rounded-field border border-base-300 bg-base-100 p-0.5">
+          {VIEWS.map((v) => (
+            <NavLink
+              key={v.to}
+              to={v.to}
+              className={({ isActive }) =>
+                `rounded-[calc(var(--radius-field)-2px)] px-3 py-1 text-xs font-semibold transition-colors ${
+                  isActive ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/60 hover:text-base-content'
+                }`
+              }
+            >
+              {v.label}
+            </NavLink>
+          ))}
+        </nav>
+      }
+      title={
+        <>
+          {title}
+          {sparkle && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-warning/20 px-2 py-0.5 text-xs font-semibold" title="Current season">
+              <Icon name="sparkle" filled className="size-3" />
+              Now
+            </span>
+          )}
+        </>
+      }
+      description={subtitle}
+    >
+      <div className="flex flex-wrap items-center gap-2">
         {children}
-        <button type="button" className="btn btn-sm" onClick={onRefresh} disabled={query.isFetching} title="Fetch fresh data from Kitsu">
-          {query.isFetching ? <span className="loading loading-spinner loading-xs" /> : <span aria-hidden>↻</span>}
+        <button type="button" className="btn btn-sm btn-ghost" onClick={onRefresh} disabled={query.isFetching} title="Fetch fresh data from Kitsu">
+          {query.isFetching ? <span className="loading loading-spinner loading-xs" /> : <Icon name="refresh" className="size-3.5" />}
           <span className="hidden sm:inline">Refresh</span>
         </button>
         {query.isSuccess && !query.isFetching && (
-          <span className="text-xs text-base-content/60">
+          <span className="text-xs text-base-content/50">
             Updated {timeAgo(query.dataUpdatedAt)}
             {total !== null && total > shown && ` · top ${shown} of ${total}`}
           </span>
         )}
       </div>
-    </header>
+    </PageHeader>
   );
 }
 

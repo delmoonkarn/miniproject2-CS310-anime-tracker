@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { isKitsuError } from '../api/errors';
+import { Icon } from './Icon';
 
 function describeError(error: unknown): { title: string; message: string } {
   if (!isKitsuError(error)) return { title: 'Something went wrong', message: 'An unexpected error occurred.' };
@@ -19,12 +20,17 @@ function describeError(error: unknown): { title: string; message: string } {
 export function ErrorState({ error, onRetry, compact = false }: { error: unknown; onRetry: () => void; compact?: boolean }) {
   const { title, message } = describeError(error);
   return (
-    <div role="alert" className={`alert alert-error alert-soft ${compact ? 'text-sm' : 'my-6'} flex-wrap`}>
-      <div className="flex-1">
-        <h3 className="font-bold">{title}</h3>
-        {!compact && <p className="text-sm">{message}</p>}
+    <div
+      role="alert"
+      className={`flex flex-wrap items-center gap-3 rounded-box border border-error/30 bg-error/5 ${compact ? 'p-3 text-sm' : 'my-6 p-4'}`}
+    >
+      <Icon name="alert" className={`text-error ${compact ? 'size-4' : 'size-5'}`} />
+      <div className="min-w-0 flex-1">
+        <h3 className="font-semibold">{title}</h3>
+        {!compact && <p className="text-sm text-base-content/70">{message}</p>}
       </div>
       <button type="button" className="btn btn-sm" onClick={onRetry}>
+        <Icon name="refresh" className="size-3.5" />
         Retry
       </button>
     </div>
@@ -33,12 +39,12 @@ export function ErrorState({ error, onRetry, compact = false }: { error: unknown
 
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="my-10 flex flex-col items-center gap-3 text-center">
-      <p className="text-4xl" aria-hidden>
-        📭
-      </p>
-      <h3 className="text-lg font-semibold">{title}</h3>
-      {children && <div className="text-base-content/70">{children}</div>}
+    <div className="my-6 flex flex-col items-center gap-2 rounded-box border border-dashed border-base-300 px-6 py-14 text-center">
+      <span className="mb-1 grid size-12 place-items-center rounded-full bg-base-300/60 text-base-content/50">
+        <Icon name="inbox" className="size-6" />
+      </span>
+      <h3 className="font-semibold">{title}</h3>
+      {children && <div className="text-sm text-base-content/60">{children}</div>}
     </div>
   );
 }
@@ -47,20 +53,20 @@ export function EmptyState({ title, children }: { title: string; children?: Reac
 
 export function CardSkeleton() {
   return (
-    <div className="card bg-base-200 shadow-sm" aria-hidden>
-      <div className="skeleton aspect-[2/3] w-full rounded-b-none" />
-      <div className="card-body gap-2 p-4">
-        <div className="skeleton h-5 w-3/4" />
-        <div className="skeleton h-4 w-1/2" />
-        <div className="skeleton h-8 w-full" />
+    <div className="surface overflow-hidden" aria-hidden>
+      <div className="skeleton aspect-[2/3] w-full rounded-none" />
+      <div className="flex flex-col gap-2 p-3">
+        <div className="skeleton h-4 w-3/4" />
+        <div className="skeleton h-3 w-1/2" />
+        <div className="skeleton mt-2 h-8 w-full" />
       </div>
     </div>
   );
 }
 
-export const GRID_CLASSES = 'grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5';
+export const GRID_CLASSES = 'grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
 
-export function CardGridSkeleton({ count = 10 }: { count?: number }) {
+export function CardGridSkeleton({ count = 12 }: { count?: number }) {
   return (
     <div className={GRID_CLASSES} aria-busy="true" aria-label="Loading">
       {Array.from({ length: count }, (_, i) => (
@@ -72,26 +78,29 @@ export function CardGridSkeleton({ count = 10 }: { count?: number }) {
 
 export function RowSkeleton() {
   return (
-    <div className="flex items-center gap-4 rounded-box bg-base-200 p-3" aria-hidden>
-      <div className="skeleton h-24 w-16 shrink-0" />
+    <div className="surface flex items-center gap-4 p-3" aria-hidden>
+      <div className="skeleton h-20 w-14 shrink-0" />
       <div className="flex flex-1 flex-col gap-2">
-        <div className="skeleton h-5 w-1/2" />
-        <div className="skeleton h-4 w-1/3" />
+        <div className="skeleton h-4 w-1/2" />
+        <div className="skeleton h-3 w-1/3" />
       </div>
-      <div className="skeleton h-8 w-16" />
+      <div className="skeleton h-8 w-24" />
     </div>
   );
 }
 
 export function DetailSkeleton() {
   return (
-    <div className="flex flex-col gap-6 md:flex-row" aria-busy="true" aria-label="Loading">
-      <div className="skeleton aspect-[2/3] w-full max-w-64 self-center md:self-start" />
-      <div className="flex flex-1 flex-col gap-3">
-        <div className="skeleton h-9 w-2/3" />
-        <div className="skeleton h-5 w-1/2" />
-        <div className="skeleton h-24 w-full" />
-        <div className="skeleton h-40 w-full" />
+    <div aria-busy="true" aria-label="Loading">
+      <div className="skeleton h-48 w-full sm:h-64" />
+      <div className="flex flex-col gap-6 px-4 md:flex-row md:px-8">
+        <div className="skeleton -mt-24 aspect-[2/3] w-40 self-center md:w-60 md:self-start" />
+        <div className="flex flex-1 flex-col gap-3 pt-6">
+          <div className="skeleton h-9 w-2/3" />
+          <div className="skeleton h-5 w-1/2" />
+          <div className="skeleton h-24 w-full" />
+          <div className="skeleton h-40 w-full" />
+        </div>
       </div>
     </div>
   );
