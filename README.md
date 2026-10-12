@@ -22,9 +22,8 @@ No API key is needed: the Kitsu endpoints used are public.
 
 | Path | Page | Notes |
 | --- | --- | --- |
-| `/` | | Redirects to `/explore/season`. |
-| `/explore/season` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year). The current season also gets a **Continuing** block for older shows that are still airing. |
-| `/explore/trending` | Explore: trending (items page) | Top 60 trending anime on Kitsu. Switch views with the buttons next to the page title. |
+| `/` | Home: trending | Kitsu's trending list in Kitsu's order (top 60). No search or filters. |
+| `/explore` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year), title search and format filters, all in one row under the title. The current season also gets a **Continuing** block for older shows that are still airing. Old `/explore/season` links redirect here; `/explore/trending` redirects to `/`. |
 | `/anime/:id` | Detail | Cover banner, synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
 | `/watchlist` | Watchlist (collection page) | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |
 | `/watchlist/watching` | Watching | Grouped by the weekday of each show's next episode (Monday → Sunday, then "No upcoming episode"). Today's day is highlighted and scrolled into view on open. Each row shows progress, last aired episode, next episode date, "behind by N" or "caught up", a − / + progress stepper and a ⋮ menu (complete, favorite, remove). |
@@ -32,15 +31,15 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/watchlist/completed` | Completed | Card grid. |
 | `/favorites` | Favorites (extended page) | Every show marked with a heart, kept separately from the watchlist. |
 
-How the pages map to the assignment's five required pages: **Items** = Explore, **Detail** = `/anime/:id`, **Collection** = Watchlist, **About** = `/about`, **Extended page** = Favorites.
 | `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
 | `*` | Not found | Unknown paths, including `/explore/<anything else>`. |
 
-Both Explore views share the same list:
+How the pages map to the assignment's five required pages: **Items** = Explore, **Detail** = `/anime/:id`, **Collection** = Watchlist, **About** = `/about`, **Extended page** = Favorites.
+
+The Explore page:
 - **Format** pills (TV, ONA, Movie, Special, OVA, Music, plus Continuing) with live counts. You can select several; **Clear** resets them.
 - A search box that filters the loaded results by title.
 - The grid is grouped into labelled sections: TV & ONA first, then *Movies*, *Specials & OVAs*, *Music* and *Continuing*.
-- A **Refresh** button and an "updated N min ago" note.
 - Shows already in your collection are outlined.
 
 All filtering is done client-side on data already in the TanStack Query cache (`src/lib/discover.ts`, unit-tested), so it never triggers a request.
@@ -148,7 +147,7 @@ src/
   hooks/       useMediaQuery.ts
   components/  AnimeCard, DiscoverResults, LibraryGrid, LibraryControls, StreamLinks, PageHeader, Icon, Poster,
                States (skeleton/error/empty)
-  pages/       AnimeDetail, Favorites, About, NotFound, RouteError, watchlist/*, explore/*
+  pages/       Home, AnimeDetail, Favorites, About, NotFound, RouteError, watchlist/*, explore/*
   routes/      router.tsx, RootLayout.tsx
   data/        members.ts
 data/sample-anime.json   25 real trending items in Kitsu's JSON:API shape (also used by a parser test)
@@ -157,7 +156,7 @@ screenshots/             app screenshots
 
 ## Assumptions
 
-- **No separate home page:** `/` opens Explore, which serves as the items page (20+ items in every view).
+- **Home vs. Explore:** `/` shows the trending list as a plain grid. Explore is the items page in the rubric sense (search, filters, 20+ items in every season). Data refreshes on its own through each query's `staleTime`, so there is no Refresh button.
 - **Card actions:** the "Add to list" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The heart button on the poster toggles the favorite.
 - **Watching rows:** a − / + stepper for episodes watched (clamped to the episode count) and a ⋮ menu with Mark completed, Favorite and Remove.
 - **Marking completed** fills progress to the episode count when Kitsu knows it.

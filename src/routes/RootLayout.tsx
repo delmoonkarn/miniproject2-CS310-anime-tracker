@@ -4,6 +4,7 @@ import { useStatusCounts } from '../store/selectors';
 import { Icon } from '../components/Icon';
 
 const NAV = [
+  { to: '/', label: 'Home' },
   { to: '/explore', label: 'Explore' },
   { to: '/watchlist', label: 'Watchlist' },
   { to: '/favorites', label: 'Favorites' },
@@ -34,6 +35,7 @@ export function RootLayout() {
       <li key={n.to}>
         <NavLink
           to={n.to}
+          end={n.to === '/'}
           className={({ isActive }) =>
             `rounded-field px-3 py-1.5 text-sm font-medium transition-colors ${
               isActive ? 'bg-primary/10 text-primary' : 'text-base-content/70 hover:bg-base-200 hover:text-base-content'

@@ -1,14 +1,21 @@
-import { Navigate, createBrowserRouter } from 'react-router';
+import { Navigate, createBrowserRouter, useLocation } from 'react-router';
 import { RootLayout } from './RootLayout';
 import { RouteError } from '../pages/RouteError';
+import { HomePage } from '../pages/HomePage';
 import { AnimeDetailPage } from '../pages/AnimeDetailPage';
 import { WatchlistLayout } from '../pages/watchlist/WatchlistLayout';
 import { WatchingTab } from '../pages/watchlist/WatchingTab';
 import { LibraryGrid } from '../components/LibraryGrid';
 import { FavoritesPage } from '../pages/FavoritesPage';
-import { ExploreCategoryPage } from '../pages/explore/ExploreCategoryPage';
+import { ExplorePage } from '../pages/explore/ExplorePage';
 import { AboutPage } from '../pages/AboutPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
+
+/** Old /explore/season?… links keep working; the query string (season, year) is carried over. */
+function ToExplore() {
+  const { search } = useLocation();
+  return <Navigate to={`/explore${search}`} replace />;
+}
 
 export const router = createBrowserRouter([
   {
@@ -16,7 +23,7 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <RouteError />,
     children: [
-      { index: true, element: <Navigate to="/explore/season" replace /> },
+      { index: true, element: <HomePage /> },
       { path: 'anime/:id', element: <AnimeDetailPage /> },
       {
         path: 'watchlist',
@@ -32,8 +39,9 @@ export const router = createBrowserRouter([
       {
         path: 'explore',
         children: [
-          { index: true, element: <Navigate to="season" replace /> },
-          { path: ':category', element: <ExploreCategoryPage /> },
+          { index: true, element: <ExplorePage /> },
+          { path: 'season', element: <ToExplore /> },
+          { path: 'trending', element: <Navigate to="/" replace /> },
         ],
       },
       { path: 'about', element: <AboutPage /> },
