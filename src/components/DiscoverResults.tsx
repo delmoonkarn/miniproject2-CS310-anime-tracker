@@ -21,6 +21,7 @@ export interface DiscoverFilters {
   toggleFormat: (format: AnimeSubtype) => void;
   toggleContinuing: () => void;
   toggleService: (service: string) => void;
+  clearServices: () => void;
   clear: () => void;
 }
 
@@ -41,6 +42,7 @@ export function useDiscoverFilters(): DiscoverFilters {
     toggleFormat: (f) => setFormats((cur) => toggle(cur, f)),
     toggleContinuing: () => setContinuingOnly((v) => !v),
     toggleService: (s) => setServices((cur) => toggle(cur, s)),
+    clearServices: () => setServices([]),
     clear: () => {
       setFormats([]);
       setContinuingOnly(false);
@@ -65,9 +67,8 @@ interface Props {
 
 // ---------- controls ----------
 
-/** Title search, format pills and streaming-service pills. The pills appear once the list has loaded. */
+/** Title search and format pills. The pills appear once the list has loaded. */
 export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
-  const index = useServiceIndex();
   const { items, extra } = splitItems(query, continuing);
   const all = [...items, ...extra];
   const { search, formats, continuingOnly, services } = filters;
@@ -76,11 +77,6 @@ export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
   const searched = all.filter((a) => matchesTitle(a, search));
   const counts = countFormats(searched);
   const continuingCount = extra.filter((a) => matchesTitle(a, search)).length;
-  const serviceCounts = new Map<string, number>();
-  for (const a of searched) for (const s of index.servicesOf(a.id)) serviceCounts.set(s, (serviceCounts.get(s) ?? 0) + 1);
-  // A selected service stays visible even when the search hides all its shows, so it can be turned off.
-  for (const s of services) if (!serviceCounts.has(s)) serviceCounts.set(s, 0);
-  const serviceList = [...serviceCounts].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0]));
   const anyFilter = formats.length > 0 || continuingOnly || services.length > 0;
 
   return (
@@ -112,31 +108,6 @@ export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
               Continuing <span className="tabular-nums opacity-60">{continuingCount}</span>
             </button>
           )}
-          {anyFilter && serviceList.length === 0 && (
-            <button type="button" className="btn btn-link btn-xs text-base-content/60 no-underline" onClick={filters.clear}>
-              Clear
-            </button>
-          )}
-        </div>
-      )}
-      {serviceList.length > 0 && (
-        <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="Streaming service">
-          {serviceList.map(([s, n]) => {
-            const logo = index.logoLink.get(s);
-            return (
-              <button
-                key={s}
-                type="button"
-                className={pill(services.includes(s))}
-                aria-pressed={services.includes(s)}
-                onClick={() => filters.toggleService(s)}
-                title={`Only shows on ${s}`}
-              >
-                {logo && <ServiceLogo url={logo.url} label={logo.label} className="-ml-1.5 size-5" />}
-                {s} <span className="tabular-nums opacity-60">{n}</span>
-              </button>
-            );
-          })}
           {anyFilter && (
             <button type="button" className="btn btn-link btn-xs text-base-content/60 no-underline" onClick={filters.clear}>
               Clear
@@ -145,6 +116,76 @@ export function DiscoverFilterBar({ query, continuing = [], filters }: Props) {
         </div>
       )}
     </>
+  );
+}
+
+/**
+ * Multi-select dropdown of the streaming services the listed shows have links for (published or
+ * personal), with a logo and a count each. A show passes if it is on any selected service.
+ */
+export function ServiceFilter({ query, continuing = [], filters }: Props) {
+  const index = useServiceIndex();
+  const { items, extra } = splitItems(query, continuing);
+  const { search, services } = filters;
+
+  // Counts follow the title search, like the format pills.
+  const counts = new Map<string, number>();
+  for (const a of [...items, ...extra]) {
+    if (!matchesTitle(a, search)) continue;
+    for (const s of index.servicesOf(a.id)) counts.set(s, (counts.get(s) ?? 0) + 1);
+  }
+  // A selected service stays listed even when the search hides all its shows, so it can be unticked.
+  for (const s of services) if (!counts.has(s)) counts.set(s, 0);
+  const list = [...counts].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0]));
+
+  const label = services.length === 0 ? 'All services' : services.length === 1 ? services[0] : `${services[0]} +${services.length - 1}`;
+  const firstLogo = services[0] !== undefined ? index.logoLink.get(services[0]) : undefined;
+
+  return (
+    <div className="dropdown">
+      <button
+        type="button"
+        tabIndex={0}
+        disabled={list.length === 0}
+        className={`btn btn-sm min-w-36 justify-between font-normal ${services.length > 0 ? 'border-primary/50 bg-primary/10 text-primary' : ''}`}
+        aria-label={`Streaming service filter: ${label}`}
+        title={list.length === 0 ? 'No show in this list has streaming links yet' : undefined}
+      >
+        <span className="flex min-w-0 items-center gap-1.5">
+          {firstLogo ? <ServiceLogo url={firstLogo.url} label={firstLogo.label} className="size-4" /> : <Icon name="play" className="size-3.5 opacity-60" />}
+          <span className="truncate">{label}</span>
+        </span>
+        <Icon name="chevronDown" className="size-3.5 opacity-60" />
+      </button>
+      <div tabIndex={0} className="dropdown-content surface z-30 mt-1 w-64 p-1.5 shadow-lg">
+        <ul className="flex max-h-72 flex-col gap-0.5 overflow-y-auto" aria-label="Streaming services">
+          {list.map(([s, n]) => {
+            const logo = index.logoLink.get(s);
+            return (
+              <li key={s}>
+                <label className="flex cursor-pointer items-center gap-2.5 rounded-field px-2 py-1.5 text-sm hover:bg-base-200">
+                  <input
+                    type="checkbox"
+                    className="checkbox checkbox-xs checkbox-primary"
+                    checked={services.includes(s)}
+                    onChange={() => filters.toggleService(s)}
+                    aria-label={`${s}, ${n} show${n === 1 ? '' : 's'}`}
+                  />
+                  {logo && <ServiceLogo url={logo.url} label={logo.label} className="size-5" />}
+                  <span className="min-w-0 flex-1 truncate">{s}</span>
+                  <span className="text-xs text-base-content/50 tabular-nums">{n}</span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+        {services.length > 0 && (
+          <button type="button" className="btn btn-ghost btn-xs mt-1 w-full" onClick={filters.clearServices}>
+            Clear selection
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 
