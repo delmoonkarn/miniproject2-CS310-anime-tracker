@@ -73,6 +73,19 @@ export function ExplorePage() {
               Today ({SEASON_LABEL[now.season]} {now.year})
             </button>
           )}
+          <button
+            type="button"
+            className="btn btn-ghost btn-sm"
+            onClick={() => {
+              void query.refetch();
+              if (isCurrent) void airing.refetch();
+            }}
+            disabled={query.isFetching}
+            title="Fetch fresh data from Kitsu"
+          >
+            {query.isFetching ? <span className="loading loading-spinner loading-xs" /> : <Icon name="refresh" className="size-3.5" />}
+            <span className="hidden sm:inline">Refresh</span>
+          </button>
           <span className="mx-1 hidden h-5 border-l border-base-300 sm:block" aria-hidden />
           <DiscoverFilterBar query={query} continuing={continuing} filters={filters} />
         </div>

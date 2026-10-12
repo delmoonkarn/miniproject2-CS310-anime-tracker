@@ -49,6 +49,17 @@ export function fetchSearch(text: string, signal?: AbortSignal): Promise<Page<An
   return kitsuFetch(`/anime?${qs}`, animeList, signal);
 }
 
+/** The 20 most popular shows of one season: one request, for the Home page's "Trending this season" row. */
+export function fetchSeasonTop(season: Season, year: number, signal?: AbortSignal): Promise<Page<Anime>> {
+  const qs = new URLSearchParams({
+    'filter[season]': season,
+    'filter[seasonYear]': String(year),
+    sort: '-userCount',
+    'page[limit]': String(PAGE_SIZE),
+  });
+  return kitsuFetch(`/anime?${qs}`, animeList, signal);
+}
+
 /** A season holds ~100–180 shows, a whole year 500+. Cap the page walk; the list is popularity-sorted. */
 export const SEASON_MAX_PAGES = 8;
 

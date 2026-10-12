@@ -8,6 +8,7 @@ export const animeKeys = {
   /** `season: null` = the whole year. */
   season: (season: Season | null, year: number) => [...animeKeys.all, 'season', year, season ?? 'all'] as const,
   search: (text: string) => [...animeKeys.all, 'search', text] as const,
+  seasonTop: (season: Season, year: number) => [...animeKeys.all, 'seasonTop', year, season] as const,
   /** Shared by the Detail, Watchlist and Favorites pages, so a show is fetched once. */
   detail: (id: number) => [...animeKeys.all, 'detail', id] as const,
   latestEpisodes: (id: number) => [...animeKeys.all, 'latestEpisodes', id] as const,
