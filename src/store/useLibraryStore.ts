@@ -33,7 +33,10 @@ export interface LibraryActions {
   add: (id: number, status?: WatchStatus) => void;
   /** Adds the show if it isn't in the collection yet. "completed" fills progress to `total` when it is known. */
   setStatus: (id: number, status: WatchStatus, total?: number | null) => void;
-  /** `total` is the episode count when known; progress is clamped to 0..total. */
+  /**
+   * `total` is the episode count when known; progress is clamped to 0..total.
+   * Reaching the last episode marks the show completed.
+   */
   setProgress: (id: number, progress: number, total: number | null) => void;
   increment: (id: number, total: number | null) => void;
   toggleFavorite: (id: number) => void;
@@ -51,6 +54,13 @@ export type LibraryStore = LibraryState & LibraryActions;
 export const WATCH_STATUSES: readonly WatchStatus[] = ['watching', 'interested', 'completed'];
 
 export const isWatchStatus = (v: unknown): v is WatchStatus => WATCH_STATUSES.some((s) => s === v);
+
+/** The entry with new progress; watching the last episode (when the count is known) marks it completed. */
+function withProgress(entry: LibraryEntry, progress: number, total: number | null): LibraryEntry {
+  const clamped = clampProgress(progress, total);
+  const finished = total !== null && total > 0 && clamped >= total;
+  return { ...entry, progress: clamped, status: finished ? 'completed' : entry.status };
+}
 
 export function clampProgress(progress: number, total: number | null): number {
   const max = total ?? Number.POSITIVE_INFINITY;
@@ -85,14 +95,14 @@ export const useLibraryStore = create<LibraryStore>()(
         set((s) => {
           const entry = s.entries[id];
           if (!entry) return s;
-          return { entries: { ...s.entries, [id]: { ...entry, progress: clampProgress(progress, total) } } };
+          return { entries: { ...s.entries, [id]: withProgress(entry, progress, total) } };
         }),
 
       increment: (id, total) =>
         set((s) => {
           const entry = s.entries[id];
           if (!entry) return s;
-          return { entries: { ...s.entries, [id]: { ...entry, progress: clampProgress(entry.progress + 1, total) } } };
+          return { entries: { ...s.entries, [id]: withProgress(entry, entry.progress + 1, total) } };
         }),
 
       toggleFavorite: (id) =>

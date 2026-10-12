@@ -17,7 +17,7 @@ describe('library store', () => {
     getState().setProgress(1, 11, 12);
     getState().increment(1, 12);
     getState().increment(1, 12);
-    expect(getState().entries[1]).toMatchObject({ status: 'watching', progress: 12 });
+    expect(getState().entries[1]).toMatchObject({ status: 'completed', progress: 12 });
   });
 
   it('does not reset an existing entry when added again', () => {
@@ -61,5 +61,21 @@ describe('library store', () => {
     getState().removeStreamLink(5, first?.id ?? '');
     getState().removeStreamLink(5, second?.id ?? '');
     expect(getState().streamLinks[5]).toBeUndefined();
+  });
+
+  it('marks a show completed when progress reaches the episode count, not before or when it is unknown', () => {
+    getState().add(7, 'watching');
+    getState().setProgress(7, 11, 12);
+    expect(getState().entries[7]?.status).toBe('watching');
+    getState().increment(7, 12);
+    expect(getState().entries[7]).toMatchObject({ status: 'completed', progress: 12 });
+
+    getState().add(8, 'interested');
+    getState().setProgress(8, 30, 24);
+    expect(getState().entries[8]).toMatchObject({ status: 'completed', progress: 24 });
+
+    getState().add(9, 'watching');
+    getState().setProgress(9, 500, null);
+    expect(getState().entries[9]?.status).toBe('watching');
   });
 });

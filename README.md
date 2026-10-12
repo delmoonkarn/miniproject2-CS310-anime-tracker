@@ -57,7 +57,7 @@ All filtering is done client-side on data already in the TanStack Query cache (`
 
 The two meet only at render time. A component reads ids and progress from the store and passes the ids to query hooks. The Watching tab, for example, gets ids from `useCollectionIds('watching')` and then calls `useWatchingData(ids)`, which uses `useQueries`. Values derived from both sides (aired episode, next episode date, "behind by N") are computed during render and never stored.
 
-**Store** (`src/store/useLibraryStore.ts`): the state and actions are typed explicitly as `LibraryState` and `LibraryActions`. The actions are `add`, `setStatus`, `setProgress` (clamped to `0..episodeCount` when the count is known), `increment` (+1, also clamped), `toggleFavorite`, `remove`, `addStreamLink` / `updateStreamLink` / `removeStreamLink` and `toggleTheme`. Selectors that return arrays use `useShallow`, so components don't re-render on unrelated changes.
+**Store** (`src/store/useLibraryStore.ts`): the state and actions are typed explicitly as `LibraryState` and `LibraryActions`. The actions are `add`, `setStatus`, `setProgress` (clamped to `0..episodeCount` when the count is known), `increment` (+1, also clamped; reaching the last episode through either marks the show **completed**), `toggleFavorite`, `remove`, `addStreamLink` / `updateStreamLink` / `removeStreamLink` and `toggleTheme`. Selectors that return arrays use `useShallow`, so components don't re-render on unrelated changes.
 
 **Queries** (`src/api/queryKeys.ts`, `src/api/queries.ts`):
 
@@ -166,7 +166,7 @@ screenshots/             app screenshots
 - **Home vs. Explore:** `/` shows this season's top shows and the trending list, with no search or filters. Explore is the items page in the rubric sense (search, filters, 20+ items in every season, and a Refresh button).
 - **Card actions:** the "Add to list" menu sets *Watching*, *Interested* or *Completed*, or removes the show. The heart button on the poster toggles the favorite.
 - **Watching rows:** a − / + stepper for episodes watched (clamped to the episode count) and a ⋮ menu with Mark completed, Favorite and Remove.
-- **Marking completed** fills progress to the episode count when Kitsu knows it.
+- **Marking completed** fills progress to the episode count when Kitsu knows it. The other way round works too: watching the last episode (+ on a Watching row, or the stepper on the Detail page) marks the show completed, which moves it to the Completed tab. Shows with an unknown episode count are never completed automatically.
 - **Favorites are independent:** removing a show from the watchlist keeps its favorite, and you can favorite a show without adding it.
 - **Long-running shows** (One Piece and similar): Kitsu often lists recent episodes without airdates, so the Watching tab shows an estimate ("≈").
 - **Season lists:** Kitsu caps pages at 20, so a season is fetched as up to 8 pages through the request queue, which takes a few seconds the first time. Kitsu sometimes ignores `page[offset]` and repeats a page. Results are de-duplicated by id, so a season can show slightly fewer shows than Kitsu reports in total.
