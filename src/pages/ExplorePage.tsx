@@ -45,21 +45,6 @@ export function ExplorePage() {
             )}
           </>
         }
-        actions={
-          <button
-            type="button"
-            className="btn btn-ghost btn-sm"
-            onClick={() => {
-              void query.refetch();
-              if (isCurrent) void airing.refetch();
-            }}
-            disabled={query.isFetching}
-            title="Fetch fresh data from Kitsu"
-          >
-            {query.isFetching ? <span className="loading loading-spinner loading-xs" /> : <Icon name="refresh" className="size-3.5" />}
-            <span className="hidden sm:inline">Refresh</span>
-          </button>
-        }
       >
         <div className="flex flex-wrap items-center gap-2">
           <select
