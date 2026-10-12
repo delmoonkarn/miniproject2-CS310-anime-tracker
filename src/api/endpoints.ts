@@ -126,10 +126,7 @@ export const SEASON_MAX_PAGES = 8;
  * Walks `page[offset]` because Kitsu caps pages at 20; each page goes through the kitsuFetch queue.
  */
 export async function fetchSeason(season: Season | null, year: number, signal?: AbortSignal): Promise<Page<Anime>> {
-  // Kitsu sometimes ignores page[offset] and repeats an earlier page, so results are de-duplicated by id.
-  const byId = new Map<number, Anime>();
-  let total: number | null = null;
-  for (let page = 0; page < SEASON_MAX_PAGES; page++) {
+  const pageAt = (page: number) => {
     const qs = new URLSearchParams({
       ...(season ? { 'filter[season]': season } : {}),
       'filter[seasonYear]': String(year),
@@ -137,10 +134,18 @@ export async function fetchSeason(season: Season | null, year: number, signal?: 
       'page[limit]': String(PAGE_SIZE),
       'page[offset]': String(page * PAGE_SIZE),
     });
-    const res = await kitsuFetch(`/anime?${qs}`, animeList, signal);
-    for (const a of res.items) if (!byId.has(a.id)) byId.set(a.id, a);
-    total = res.total;
-    if (res.items.length < PAGE_SIZE || (total !== null && (page + 1) * PAGE_SIZE >= total)) break;
-  }
+    return kitsuFetch(`/anime?${qs}`, animeList, signal);
+  };
+
+  // The first page tells us the total, so the remaining pages can be fetched in parallel.
+  const first = await pageAt(0);
+  const total = first.total;
+  const pageCount =
+    first.items.length < PAGE_SIZE ? 1 : Math.min(SEASON_MAX_PAGES, total === null ? SEASON_MAX_PAGES : Math.ceil(total / PAGE_SIZE));
+  const rest = await Promise.all(Array.from({ length: pageCount - 1 }, (_, i) => pageAt(i + 1)));
+
+  // Kitsu sometimes ignores page[offset] and repeats an earlier page, so results are de-duplicated by id.
+  const byId = new Map<number, Anime>();
+  for (const page of [first, ...rest]) for (const a of page.items) if (!byId.has(a.id)) byId.set(a.id, a);
   return { items: [...byId.values()], total };
 }
