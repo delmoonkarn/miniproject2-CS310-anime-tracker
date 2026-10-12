@@ -1,12 +1,13 @@
 import { useEffect, useRef, type MouseEvent } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 import { useWatchingData } from '../../api/hooks';
 import { useCollectionIds, useStreamLinks } from '../../store/selectors';
 import { useLibraryStore } from '../../store/useLibraryStore';
 import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../../lib/airedEpisodes';
 import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../../lib/format';
-import { WEEKDAY_LABEL, groupByWeekday } from '../../lib/schedule';
+import { WEEKDAY_LABEL, WEEK_ORDER, dayFilterKey, groupByWeekday, parseDayFilter, type DayFilter } from '../../lib/schedule';
+import { pillClass } from '../../components/pill';
 import { EmptyState, ErrorState, RowSkeleton } from '../../components/States';
 import { Poster } from '../../components/Poster';
 import { Icon } from '../../components/Icon';
@@ -26,6 +27,14 @@ export function WatchingTab() {
   const { details, episodes } = useWatchingData(ids);
   const todayRef = useRef<HTMLElement>(null);
   const scrolled = useRef(false);
+  // The day filter lives in the URL (?day=fri, ?day=none), so it survives reloads and Back.
+  const [params, setParams] = useSearchParams();
+  const dayFilter = parseDayFilter(params.get('day'));
+  const setDayFilter = (f: DayFilter) => {
+    const key = dayFilterKey(f);
+    setParams(key ? { day: key } : {}, { replace: true });
+  };
+  const today = new Date().getDay();
 
   // A row is placed once its detail (and, for airing shows, its episodes) has loaded.
   const ready: RowData[] = [];
@@ -46,17 +55,23 @@ export function WatchingTab() {
     ready.push({ id, detail, episodes: eps, day: next ? next.date.getDay() : null, sortKey: next?.date.getTime() ?? Infinity });
   });
   ready.sort((a, b) => a.sortKey - b.sortKey);
-  const groups = groupByWeekday(ready, (r) => r.day, new Date().getDay());
+  const allGroups = groupByWeekday(ready, (r) => r.day, today);
+  const groups =
+    dayFilter === 'all'
+      ? allGroups
+      : [allGroups.find((g) => g.day === dayFilter) ?? { day: dayFilter, isToday: dayFilter === today, items: [] }];
   const allPlaced = pending.length === 0;
+  const countFor = (day: number | null) => ready.filter((r) => r.day === day).length;
 
   // Jump to today once, after every row has found its day, so the layout no longer shifts.
+  // Skipped when a day is picked: that day is then the only one on screen.
   useEffect(() => {
-    if (allPlaced && ids.length > 0 && !scrolled.current) {
+    if (dayFilter === 'all' && allPlaced && ids.length > 0 && !scrolled.current) {
       scrolled.current = true;
       todayRef.current?.scrollIntoView({ block: 'start' });
       todayRef.current?.focus({ preventScroll: true });
     }
-  }, [allPlaced, ids.length]);
+  }, [dayFilter, allPlaced, ids.length]);
 
   if (ids.length === 0) {
     return (
@@ -69,8 +84,42 @@ export function WatchingTab() {
     );
   }
 
+  const noDateCount = countFor(null);
+
   return (
     <div className="flex flex-col gap-6">
+      {/* Sticks under the navbar so the filter stays reachable after the jump to today. */}
+      <div
+        className="sticky top-14 z-10 -mx-4 -my-2 flex flex-wrap items-center gap-1.5 bg-base-200/90 px-4 py-2 backdrop-blur-md"
+        role="group"
+        aria-label="Filter by airing day"
+      >
+        <button type="button" className={pillClass(dayFilter === 'all')} aria-pressed={dayFilter === 'all'} onClick={() => setDayFilter('all')}>
+          All days <span className="tabular-nums opacity-60">{ids.length}</span>
+        </button>
+        {WEEK_ORDER.map((d) => {
+          const n = countFor(d);
+          return (
+            <button
+              key={d}
+              type="button"
+              className={`${pillClass(dayFilter === d)} ${n === 0 && dayFilter !== d ? 'opacity-50' : ''}`}
+              aria-pressed={dayFilter === d}
+              aria-label={`${WEEKDAY_LABEL[d]}${d === today ? ' (today)' : ''}, ${n} show${n === 1 ? '' : 's'}`}
+              onClick={() => setDayFilter(d)}
+            >
+              {d === today && <span className="size-1.5 rounded-full bg-primary" aria-hidden />}
+              {WEEKDAY_LABEL[d]?.slice(0, 3)} <span className="tabular-nums opacity-60">{n}</span>
+            </button>
+          );
+        })}
+        {noDateCount > 0 && (
+          <button type="button" className={pillClass(dayFilter === null, 'info')} aria-pressed={dayFilter === null} onClick={() => setDayFilter(null)}>
+            No date <span className="tabular-nums opacity-60">{noDateCount}</span>
+          </button>
+        )}
+      </div>
+
       {groups.map((g) => (
         <section
           key={g.day ?? 'none'}
@@ -78,7 +127,7 @@ export function WatchingTab() {
           tabIndex={g.isToday ? -1 : undefined}
           aria-current={g.isToday ? 'date' : undefined}
           aria-labelledby={`day-${g.day ?? 'none'}`}
-          className={`scroll-mt-20 rounded-box outline-none ${g.isToday ? 'border border-primary/40 bg-primary/5 p-3 sm:p-4' : ''}`}
+          className={`scroll-mt-32 rounded-box outline-none ${g.isToday ? 'border border-primary/40 bg-primary/5 p-3 sm:p-4' : ''}`}
         >
           <h2 id={`day-${g.day ?? 'none'}`} className="mb-3 flex items-center gap-2 text-sm font-semibold">
             {g.day === null ? 'No upcoming episode' : WEEKDAY_LABEL[g.day]}
@@ -89,7 +138,9 @@ export function WatchingTab() {
             <span className="flex-1 border-t border-base-300" aria-hidden />
           </h2>
           {g.items.length === 0 ? (
-            <p className="text-sm text-base-content/60">Nothing you watch airs today.</p>
+            <p className="text-sm text-base-content/60">
+              {g.isToday ? 'Nothing you watch airs today.' : g.day === null ? 'Every show has a next episode date.' : `Nothing you watch airs on ${WEEKDAY_LABEL[g.day]}.`}
+            </p>
           ) : (
             <ul className="flex flex-col gap-3">
               {g.items.map((r) => (

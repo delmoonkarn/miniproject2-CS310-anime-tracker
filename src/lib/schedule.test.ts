@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { groupByWeekday } from './schedule';
+import { dayFilterKey, groupByWeekday, parseDayFilter } from './schedule';
 
 type Show = { name: string; day: number | null };
 const shows: Show[] = [
@@ -34,5 +34,18 @@ describe('groupByWeekday', () => {
 
   it('returns just today for an empty list', () => {
     expect(groupByWeekday<Show>([], (s) => s.day, 6)).toEqual([{ day: 6, isToday: true, items: [] }]);
+  });
+});
+
+describe('day filter', () => {
+  it('round-trips weekdays and the no-date group, and falls back to all', () => {
+    expect(parseDayFilter('fri')).toBe(5);
+    expect(parseDayFilter('sun')).toBe(0);
+    expect(parseDayFilter('none')).toBeNull();
+    expect(parseDayFilter(null)).toBe('all');
+    expect(parseDayFilter('someday')).toBe('all');
+    expect(dayFilterKey(5)).toBe('fri');
+    expect(dayFilterKey(null)).toBe('none');
+    expect(dayFilterKey('all')).toBeNull();
   });
 });

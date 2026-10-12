@@ -29,3 +29,21 @@ export function groupByWeekday<T>(items: readonly T[], dayOf: (item: T) => numbe
   const unknown = byDay.get(null);
   return unknown ? [...days, { day: null, isToday: false, items: unknown }] : days;
 }
+
+/** URL values for the day filter, indexed by `Date.getDay()`. */
+export const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
+
+/** A weekday number, null for "no upcoming episode", or 'all'. */
+export type DayFilter = number | null | 'all';
+
+/** `?day=` → filter. Unknown or missing values mean 'all'; "none" is the no-date group. */
+export function parseDayFilter(raw: string | null): DayFilter {
+  if (raw === 'none') return null;
+  const i = DAY_KEYS.findIndex((k) => k === raw);
+  return i === -1 ? 'all' : i;
+}
+
+export function dayFilterKey(filter: DayFilter): string | null {
+  if (filter === 'all') return null;
+  return filter === null ? 'none' : DAY_KEYS[filter] ?? null;
+}
