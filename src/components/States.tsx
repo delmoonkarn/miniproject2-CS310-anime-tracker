@@ -64,6 +64,7 @@ export function CardSkeleton() {
   );
 }
 
+/** Keep in sync with useGridColumns. */
 export const GRID_CLASSES = 'grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6';
 
 export function CardGridSkeleton({ count = 12 }: { count?: number }) {

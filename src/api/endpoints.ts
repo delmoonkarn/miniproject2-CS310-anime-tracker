@@ -49,13 +49,13 @@ export function fetchSearch(text: string, signal?: AbortSignal): Promise<Page<An
   return kitsuFetch(`/anime?${qs}`, animeList, signal);
 }
 
-/** The 20 most popular shows of one season: one request, for the Home page's "Trending this season" row. */
-export function fetchSeasonTop(season: Season, year: number, signal?: AbortSignal): Promise<Page<Anime>> {
+/** The `limit` most popular shows of one season in one request, for the Home page's "Trending this season" row. */
+export function fetchSeasonTop(season: Season, year: number, limit: number, signal?: AbortSignal): Promise<Page<Anime>> {
   const qs = new URLSearchParams({
     'filter[season]': season,
     'filter[seasonYear]': String(year),
     sort: '-userCount',
-    'page[limit]': String(PAGE_SIZE),
+    'page[limit]': String(Math.min(limit, PAGE_SIZE)),
   });
   return kitsuFetch(`/anime?${qs}`, animeList, signal);
 }

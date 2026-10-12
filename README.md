@@ -22,7 +22,7 @@ No API key is needed: the Kitsu endpoints used are public.
 
 | Path | Page | Notes |
 | --- | --- | --- |
-| `/` | Home | First row: **Trending this season**, the 20 most popular shows of the current season (one request, `sort=-userCount`) in a horizontal scroller with a *See all* link to Explore. Below: Kitsu's overall trending list (top 60) as a grid. No search or filters. |
+| `/` | Home | First row: **Trending this season**, the 10 most popular shows of the current season (one request, `sort=-userCount`) in a horizontal scroller with a *See more* link to Explore. Below: Kitsu's overall trending list as a grid, 6 rows at first (the column count follows the screen width) with **Show more** adding 6 rows at a time up to the top 60. No search or filters. |
 | `/explore` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year), title search, format filters and a **Refresh** button, all in one row under the title. The current season also gets a **Continuing** block for older shows that are still airing. Old `/explore/season` links redirect here; `/explore/trending` redirects to `/`. |
 | `/anime/:id` | Detail | Cover banner, synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
 | `/watchlist` | Watchlist (collection page) | Tabs built with `<NavLink>` and `<Outlet/>`. The index route redirects to `watching`. |

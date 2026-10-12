@@ -40,10 +40,10 @@ export const searchQuery = (text: string) =>
     enabled: text.length >= MIN_SEARCH_LENGTH,
   });
 
-export const seasonTopQuery = (season: Season, year: number) =>
+export const seasonTopQuery = (season: Season, year: number, limit: number) =>
   queryOptions({
-    queryKey: animeKeys.seasonTop(season, year),
-    queryFn: ({ signal }) => fetchSeasonTop(season, year, signal),
+    queryKey: animeKeys.seasonTop(season, year, limit),
+    queryFn: ({ signal }) => fetchSeasonTop(season, year, limit, signal),
     staleTime: 30 * MINUTE,
   });
 

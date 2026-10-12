@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { seasonTopQuery, trendingQuery } from '../api/queries';
@@ -6,6 +7,7 @@ import { AnimeCard } from '../components/AnimeCard';
 import { Icon } from '../components/Icon';
 import { CardGridSkeleton, CardSkeleton, EmptyState, ErrorState, GRID_CLASSES } from '../components/States';
 import { SEASON_LABEL, currentSeason } from '../lib/season';
+import { useGridColumns } from '../hooks/useGridColumns';
 
 function SectionHeading({ title, description, action }: { title: ReactNode; description: string; action?: ReactNode }) {
   return (
@@ -23,11 +25,21 @@ function SectionHeading({ title, description, action }: { title: ReactNode; desc
 const ROW_CLASSES = '-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pb-3 [scrollbar-width:thin] sm:gap-4';
 const ROW_ITEM = 'w-40 shrink-0 snap-start sm:w-44 lg:w-48';
 
+/** Cards in the "Trending this season" row; See more continues on Explore. */
+const SEASON_ROW_SIZE = 10;
+/** Rows of the trending grid shown at first, and added by each "Show more". */
+const ROWS_PER_STEP = 6;
+
 /** Home: the current season's most popular shows in one row, then Kitsu's overall trending list. */
 export function HomePage() {
   const now = currentSeason();
-  const season = useQuery(seasonTopQuery(now.season, now.year));
+  const season = useQuery(seasonTopQuery(now.season, now.year, SEASON_ROW_SIZE));
   const trending = useQuery(trendingQuery());
+  // Trending arrives in one request (Kitsu can't page it); only the first rows are rendered.
+  const columns = useGridColumns();
+  const [rows, setRows] = useState(ROWS_PER_STEP);
+  const trendingItems = trending.data?.items ?? [];
+  const visibleTrending = trendingItems.slice(0, rows * columns);
 
   return (
     <div className="flex flex-col gap-10">
@@ -47,14 +59,14 @@ export function HomePage() {
           description="The most popular shows that started this season."
           action={
             <Link to="/explore" className="btn btn-ghost btn-sm">
-              See all
+              See more
               <Icon name="chevronLeft" className="size-3.5 rotate-180" />
             </Link>
           }
         />
         {season.isPending ? (
           <div className={ROW_CLASSES} aria-busy="true" aria-label="Loading">
-            {Array.from({ length: 8 }, (_, i) => (
+            {Array.from({ length: 6 }, (_, i) => (
               <div key={i} className={ROW_ITEM}>
                 <CardSkeleton />
               </div>
@@ -84,14 +96,24 @@ export function HomePage() {
           <CardGridSkeleton />
         ) : trending.isError ? (
           <ErrorState error={trending.error} onRetry={() => void trending.refetch()} />
-        ) : trending.data.items.length === 0 ? (
+        ) : trendingItems.length === 0 ? (
           <EmptyState title="No results">No trending anime right now.</EmptyState>
         ) : (
-          <div className={GRID_CLASSES}>
-            {trending.data.items.map((a) => (
-              <AnimeCard key={a.id} anime={a} highlight />
-            ))}
-          </div>
+          <>
+            <div className={GRID_CLASSES}>
+              {visibleTrending.map((a) => (
+                <AnimeCard key={a.id} anime={a} highlight />
+              ))}
+            </div>
+            {visibleTrending.length < trendingItems.length && (
+              <div className="mt-8 flex justify-center">
+                <button type="button" className="btn btn-outline border-base-300" onClick={() => setRows((r) => r + ROWS_PER_STEP)}>
+                  <Icon name="chevronDown" className="size-4" />
+                  Show more
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
     </div>
