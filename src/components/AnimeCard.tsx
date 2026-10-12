@@ -5,6 +5,11 @@ import { FORMAT_LABEL } from '../lib/discover';
 import type { Anime } from '../types/kitsu';
 import { Icon, type IconName } from './Icon';
 import { Poster } from './Poster';
+import { ServiceLogo } from './ServiceLogo';
+import { useWatchLinks } from '../store/selectors';
+
+/** Logos on a poster; more would cover the artwork. */
+const MAX_CARD_LOGOS = 4;
 
 export const STATUS_ICON: Record<WatchStatus, IconName> = { watching: 'play', interested: 'bookmark', completed: 'check' };
 
@@ -14,6 +19,7 @@ export function AnimeCard({ anime, highlight = false }: { anime: Anime; highligh
   const favorited = useLibraryStore((s) => s.favoriteIds.includes(anime.id));
   const { setStatus, remove, toggleFavorite } = useLibraryStore.getState();
   const owned = highlight && entry !== undefined;
+  const watchLinks = useWatchLinks(anime.id);
   const rated = anime.averageRating !== null;
 
   return (
@@ -52,11 +58,22 @@ export function AnimeCard({ anime, highlight = false }: { anime: Anime; highligh
             <Icon name="heart" filled={favorited} className="size-4" />
           </button>
         </div>
-        {owned && (
-          <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-md bg-primary px-1.5 py-0.5 text-xs font-semibold text-primary-content shadow">
-            <Icon name={STATUS_ICON[entry.status]} className="size-3" />
-            {WATCH_STATUS_LABEL[entry.status]}
-          </span>
+        {watchLinks.length > 0 && (
+          <div className="absolute bottom-2 left-2 flex flex-wrap gap-1">
+            {watchLinks.slice(0, MAX_CARD_LOGOS).map((l) => (
+              <a
+                key={l.url}
+                href={l.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-[22%] shadow-md ring-1 ring-black/20 transition-transform hover:scale-110"
+                aria-label={`Watch ${anime.canonicalTitle} on ${l.label}`}
+                title={`Watch on ${l.label}`}
+              >
+                <ServiceLogo url={l.url} label={l.label} className="size-7" />
+              </a>
+            ))}
+          </div>
         )}
       </div>
 
