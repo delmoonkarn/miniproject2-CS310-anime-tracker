@@ -31,8 +31,9 @@ TanStack Query (`src/api/`) handles everything from Kitsu. staleTime is set per 
 
 ## Kitsu notes
 
-- Kitsu returns max 20 items per request, so a season is loaded in a few pages.
-- Requests are queued 300 ms apart so we don't get rate limited (429 gets retried).
+- Kitsu returns max 20 items per request, so a season is loaded in a few pages (in parallel after the first one).
+- Max 4 requests at a time, 100 ms apart, so we don't get rate limited (429 pauses everything and retries).
+- Show details are fetched 20 at a time with `filter[id]`, so the watchlist doesn't send one request per show.
 - Most shows have no future episode dates on Kitsu, so the next episode is estimated as one per week (shown with ≈).
 - Some poster links expire after ~15 min, a placeholder shows if that happens.
 
