@@ -22,7 +22,6 @@ No API key is needed: the Kitsu endpoints used are public.
 
 | Path | Page | Notes |
 | --- | --- | --- |
-| `/search?q=…` | Search | Searches the whole Kitsu catalogue by title (`filter[text]`). Type in the navbar box (press `/` to focus it); results update after a short pause, and further typing replaces the history entry so Back leaves the search in one step. Shows the 20 most relevant matches and the total count. |
 | `/` | Home: trending | Kitsu's trending list in Kitsu's order (top 60). No search or filters. |
 | `/explore` | Explore: discover by season (items page) | Season and year pickers (`?season=fall&year=2026`, or `season=all` for the whole year), title search and format filters, all in one row under the title. The current season also gets a **Continuing** block for older shows that are still airing. Old `/explore/season` links redirect here; `/explore/trending` redirects to `/`. |
 | `/anime/:id` | Detail | Cover banner, synopsis, ratings, dates, trailer. Status select, progress stepper, favorite toggle and **Where to watch** (your own streaming links). **Back** returns to the page you came from, or to Explore on a direct visit. Handles invalid ids and 404s. |
@@ -31,9 +30,10 @@ No API key is needed: the Kitsu endpoints used are public.
 | `/watchlist/interested` | Interested | Card grid. |
 | `/watchlist/completed` | Completed | Card grid. |
 | `/favorites` | Favorites (extended page) | Every show marked with a heart, kept separately from the watchlist. |
-
 | `/about` | About | Team members (`src/data/members.ts`) and Kitsu attribution. |
 | `*` | Not found | Unknown paths, including `/explore/<anything else>`. |
+
+**Search everything:** the box in the navbar searches the whole Kitsu catalogue by title (`filter[text]`) and shows the results in a dropdown (poster, format, year, status, rating). It waits 300 ms after you stop typing, keeps the previous results visible while the next ones load, and supports ↑/↓, Enter and Esc. Press `/` anywhere to focus it. Picking a result opens its Detail page.
 
 How the pages map to the assignment's five required pages: **Items** = Explore, **Detail** = `/anime/:id`, **Collection** = Watchlist, **About** = `/about`, **Extended page** = Favorites.
 
@@ -93,7 +93,7 @@ The interfaces in `src/types/kitsu.ts` are hand-written from real responses (fet
 | `/anime` rejects `page[limit]` above 20 | Page size is **20** |
 | `/trending/anime` takes `?limit=` but ignores offsets and returns no `meta`/`links` | The Trending view fetches the top 60 in one request. Season lists use `/anime` with `page[offset]` instead. |
 | Episodes are numbered by the absolute `number` field | That field is used |
-| Text search (`filter[text]`) ignores `page[offset]`: every offset returns the first page | Search shows the top 20 matches and the total, and suggests adding words, instead of a Load more button that would only repeat results |
+| Text search (`filter[text]`) ignores `page[offset]`: every offset returns the first page | The search dropdown shows the top 20 matches and the total, and suggests adding words, instead of paging through repeats |
 | `/anime/:id/episodes` ignores `sort` | `/episodes?filter[mediaId]=…&sort=-number&page[limit]=20&fields[episodes]=number,airdate` fetches the 20 newest episodes in one request, even for 1000+ episode shows |
 | Future episodes appear as placeholders with `airdate: null` | Ignored when finding the last aired episode |
 
