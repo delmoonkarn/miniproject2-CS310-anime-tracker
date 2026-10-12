@@ -8,8 +8,6 @@ import { LibraryControls } from '../components/LibraryControls';
 import { StreamLinks } from '../components/StreamLinks';
 import { Poster } from '../components/Poster';
 import { Icon } from '../components/Icon';
-import { ServiceLogo } from '../components/ServiceLogo';
-import { useWatchLinks } from '../store/selectors';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { needsEpisodeList, nextEpisode } from '../lib/airedEpisodes';
 import { FORMAT_LABEL } from '../lib/discover';
@@ -68,7 +66,6 @@ function AnimeDetail({ id }: { id: number }) {
   const query = useQuery(animeDetailQuery(id));
   // Only airing shows need episodes; same key and cache as the Watching tab.
   const episodes = useQuery(latestEpisodesQuery(id, query.data !== undefined && needsEpisodeList(query.data)));
-  const links = useWatchLinks(id);
   // Matches Tailwind's `md`: the controls move from under the title into the sidebar.
   const wide = useMediaQuery('(min-width: 48rem)');
 
@@ -96,7 +93,6 @@ function AnimeDetail({ id }: { id: number }) {
   }
   const englishTitle = anime.titles.en ?? anime.titles.en_jp;
   const altTitles = [englishTitle !== anime.canonicalTitle ? englishTitle : null, anime.titles.ja_jp].filter(Boolean).join(' · ');
-  const primaryLink = links[0];
   const controls = (
     <div className="flex flex-col gap-4">
       <LibraryControls id={anime.id} total={anime.episodeCount} />
@@ -141,17 +137,6 @@ function AnimeDetail({ id }: { id: number }) {
               >
                 {ANIME_STATUS_LABEL[anime.status]}
               </span>
-              {primaryLink && (
-                <a
-                  href={primaryLink.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary btn-sm rounded-full md:ml-auto"
-                >
-                  <ServiceLogo url={primaryLink.url} label={primaryLink.label} className="size-4 ring-1 ring-white/40" />
-                  Watch on {primaryLink.label}
-                </a>
-              )}
             </div>
           </header>
 

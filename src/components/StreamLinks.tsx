@@ -41,10 +41,10 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-sm min-w-0 flex-1 justify-start border-base-300 bg-base-100 hover:border-primary/50"
+                className="btn h-11 min-w-0 flex-1 justify-start gap-2.5 border-base-300 bg-base-100 px-2 hover:border-primary/50"
                 title={l.url}
               >
-                <ServiceLogo url={l.url} label={l.label} />
+                <ServiceLogo url={l.url} label={l.label} className="size-8" />
                 <span className="truncate">{l.label}</span>
                 <Icon name="external" className="ml-auto size-3.5 opacity-70" />
               </a>
@@ -80,10 +80,10 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
                   href={l.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-sm min-w-0 flex-1 justify-start border-base-300 bg-base-100 hover:border-primary/50"
+                  className="btn h-11 min-w-0 flex-1 justify-start gap-2.5 border-base-300 bg-base-100 px-2 hover:border-primary/50"
                   title={l.url}
                 >
-                  <ServiceLogo url={l.url} label={l.label} />
+                  <ServiceLogo url={l.url} label={l.label} className="size-8" />
                   <span className="truncate">{l.label}</span>
                   <Icon name="external" className="ml-auto size-3.5 opacity-70" />
                 </a>
