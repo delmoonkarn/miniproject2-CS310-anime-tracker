@@ -1,6 +1,6 @@
 import type { Anime, AnimeSubtype } from '../types/kitsu';
 
-export const FORMAT_ORDER: readonly AnimeSubtype[] = ['TV', 'ONA', 'movie', 'special', 'OVA', 'music'];
+const FORMAT_ORDER: readonly AnimeSubtype[] = ['TV', 'ONA', 'movie', 'special', 'OVA', 'music'];
 
 export const FORMAT_LABEL: Record<AnimeSubtype, string> = {
   TV: 'TV',

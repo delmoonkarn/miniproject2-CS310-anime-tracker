@@ -1,22 +1,16 @@
-import { Navigate, createBrowserRouter, useLocation } from 'react-router';
+import { Navigate, createBrowserRouter } from 'react-router';
 import { RootLayout } from './RootLayout';
 import { RouteError } from '../pages/RouteError';
 import { HomePage } from '../pages/HomePage';
 import { AnimeDetailPage } from '../pages/AnimeDetailPage';
-import { WatchlistLayout } from '../pages/watchlist/WatchlistLayout';
-import { WatchingTab } from '../pages/watchlist/WatchingTab';
+import { WatchlistLayout } from '../pages/WatchlistLayout';
+import { WatchingTab } from '../pages/WatchingTab';
 import { LibraryGrid } from '../components/LibraryGrid';
 import { FavoritesPage } from '../pages/FavoritesPage';
-import { ExplorePage } from '../pages/explore/ExplorePage';
+import { ExplorePage } from '../pages/ExplorePage';
 import { AboutPage } from '../pages/AboutPage';
 import { AdminLinksPage } from '../pages/AdminLinksPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
-
-/** Old /explore/season?… links keep working; the query string (season, year) is carried over. */
-function ToExplore() {
-  const { search } = useLocation();
-  return <Navigate to={`/explore${search}`} replace />;
-}
 
 export const router = createBrowserRouter([
   {
@@ -37,14 +31,7 @@ export const router = createBrowserRouter([
         ],
       },
       { path: 'favorites', element: <FavoritesPage /> },
-      {
-        path: 'explore',
-        children: [
-          { index: true, element: <ExplorePage /> },
-          { path: 'season', element: <ToExplore /> },
-          { path: 'trending', element: <Navigate to="/" replace /> },
-        ],
-      },
+      { path: 'explore', element: <ExplorePage /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'admin', element: <AdminLinksPage /> },
       { path: '*', element: <NotFoundPage /> },

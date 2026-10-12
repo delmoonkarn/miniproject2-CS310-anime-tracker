@@ -31,7 +31,7 @@ export function groupByWeekday<T>(items: readonly T[], dayOf: (item: T) => numbe
 }
 
 /** URL values for the day filter, indexed by `Date.getDay()`. */
-export const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
+const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
 
 /** A weekday number, null for "no upcoming episode", or 'all'. */
 export type DayFilter = number | null | 'all';

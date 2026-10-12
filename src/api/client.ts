@@ -1,7 +1,7 @@
 import { KitsuError } from './errors';
 import { isJsonApiErrorDocument, type Parser } from './guards';
 
-export const KITSU_BASE_URL = 'https://kitsu.io/api/edge';
+const KITSU_BASE_URL = 'https://kitsu.io/api/edge';
 
 /** Requests allowed at the same time. Kitsu handled 16 parallel requests without a 429 in testing (Oct 2026). */
 const MAX_IN_FLIGHT = 4;

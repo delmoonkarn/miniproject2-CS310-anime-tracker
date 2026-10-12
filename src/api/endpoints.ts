@@ -5,9 +5,9 @@ import { KitsuError } from './errors';
 import { isAnimeAttributes, isEpisodeAttributes, many, one, relatedAnime } from './guards';
 
 /** Kitsu rejects page[limit] above 20 on /anime and /episodes. */
-export const PAGE_SIZE = 20;
+const PAGE_SIZE = 20;
 /** /trending/anime ignores offsets and page limits, it takes a plain `limit`. */
-export const TRENDING_LIMIT = 60;
+const TRENDING_LIMIT = 60;
 
 const animeList = many('anime', isAnimeAttributes);
 const animeOne = one('anime', isAnimeAttributes);
@@ -119,7 +119,7 @@ export function fetchSeasonTop(season: Season, year: number, limit: number, sign
 }
 
 /** A season holds ~100–180 shows, a whole year 500+. Cap the page walk; the list is popularity-sorted. */
-export const SEASON_MAX_PAGES = 8;
+const SEASON_MAX_PAGES = 8;
 
 /**
  * All anime of a season (or a whole year when `season` is null), most popular first.

@@ -10,7 +10,7 @@ export const CAN_EDIT_PUBLISHED_LINKS = import.meta.env.DEV;
  * The published links ship inside the bundle, so there is nothing to fetch: the query only holds
  * them, so that a save on /admin shows up on every page straight away.
  */
-export const publishedLinksQuery = () =>
+const publishedLinksQuery = () =>
   queryOptions({
     queryKey: publishedLinksKey,
     queryFn: () => Promise.resolve<SharedLinkMap>(BUNDLED_STREAM_LINKS),

@@ -11,7 +11,7 @@ import { useWatchLinks } from '../store/selectors';
 /** Logos on a poster; more would cover the artwork. */
 const MAX_CARD_LOGOS = 4;
 
-export const STATUS_ICON: Record<WatchStatus, IconName> = { watching: 'play', interested: 'bookmark', completed: 'check' };
+const STATUS_ICON: Record<WatchStatus, IconName> = { watching: 'play', interested: 'bookmark', completed: 'check' };
 
 /** `highlight` outlines the card when the show is already in the user's collection. */
 export function AnimeCard({ anime, highlight = false }: { anime: Anime; highlight?: boolean }) {

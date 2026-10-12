@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
-import { airingQuery, seasonQuery } from '../../api/queries';
-import { DiscoverFilterBar, DiscoverResults, useDiscoverFilters } from '../../components/DiscoverResults';
-import { Icon } from '../../components/Icon';
-import { PageHeader } from '../../components/PageHeader';
-import { SEASONS, SEASON_LABEL, currentSeason, isSeason, nextSeason, seasonStart, type Season } from '../../lib/season';
+import { airingQuery, seasonQuery } from '../api/queries';
+import { DiscoverFilterBar, DiscoverResults, useDiscoverFilters } from '../components/DiscoverResults';
+import { Icon } from '../components/Icon';
+import { PageHeader } from '../components/PageHeader';
+import { SEASONS, SEASON_LABEL, currentSeason, isSeason, nextSeason, seasonStart, type Season } from '../lib/season';
 
 const MIN_YEAR = 1960;
 

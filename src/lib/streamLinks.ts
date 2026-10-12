@@ -23,7 +23,7 @@ export interface StreamingService {
 }
 
 /** Services common in Thailand and worldwide. Order matters only when two could match. */
-export const STREAMING_SERVICES: readonly StreamingService[] = [
+const STREAMING_SERVICES: readonly StreamingService[] = [
   { name: 'Netflix', hosts: ['netflix.com'], icon: siNetflix },
   { name: 'Crunchyroll', hosts: ['crunchyroll.com'], icon: siCrunchyroll },
   { name: 'YouTube', hosts: ['youtube.com', 'youtu.be'], icon: siYoutube },

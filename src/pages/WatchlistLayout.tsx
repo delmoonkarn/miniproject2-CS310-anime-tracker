@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router';
-import { useStatusCounts } from '../../store/selectors';
-import { PageHeader } from '../../components/PageHeader';
+import { useStatusCounts } from '../store/selectors';
+import { PageHeader } from '../components/PageHeader';
 
 const TABS = [
   { to: 'watching', label: 'Watching' },

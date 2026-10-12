@@ -19,10 +19,10 @@ export function useCollectionIds(kind: WatchStatus | 'favorites'): number[] {
   );
 }
 
-export function useStatusCounts(): Record<WatchStatus | 'favorites', number> {
+export function useStatusCounts(): Record<WatchStatus, number> {
   return useLibraryStore(
     useShallow((s) => {
-      const counts = { watching: 0, interested: 0, completed: 0, favorites: s.favoriteIds.length };
+      const counts = { watching: 0, interested: 0, completed: 0 };
       for (const e of Object.values(s.entries)) counts[e.status]++;
       return counts;
     }),

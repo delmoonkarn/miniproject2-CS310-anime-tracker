@@ -1,18 +1,18 @@
 import { useEffect, useRef, type MouseEvent } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { Link, useSearchParams } from 'react-router';
-import { useWatchingData } from '../../api/hooks';
-import { useCollectionIds, useWatchLinks } from '../../store/selectors';
-import { useLibraryStore } from '../../store/useLibraryStore';
-import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../../lib/airedEpisodes';
-import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../../lib/format';
-import { WEEKDAY_LABEL, WEEK_ORDER, dayFilterKey, groupByWeekday, parseDayFilter, type DayFilter } from '../../lib/schedule';
-import { pillClass } from '../../components/pill';
-import { EmptyState, ErrorState, RowSkeleton } from '../../components/States';
-import { Poster } from '../../components/Poster';
-import { Icon } from '../../components/Icon';
-import { ServiceLogo } from '../../components/ServiceLogo';
-import type { Anime, Episode, Page } from '../../types/kitsu';
+import { useWatchingData } from '../api/hooks';
+import { useCollectionIds, useWatchLinks } from '../store/selectors';
+import { useLibraryStore } from '../store/useLibraryStore';
+import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../lib/airedEpisodes';
+import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../lib/format';
+import { WEEKDAY_LABEL, WEEK_ORDER, dayFilterKey, groupByWeekday, parseDayFilter, type DayFilter } from '../lib/schedule';
+import { pillClass } from '../components/pill';
+import { EmptyState, ErrorState, RowSkeleton } from '../components/States';
+import { Poster } from '../components/Poster';
+import { Icon } from '../components/Icon';
+import { ServiceLogo } from '../components/ServiceLogo';
+import type { Anime, Episode, Page } from '../types/kitsu';
 
 interface RowData {
   id: number;

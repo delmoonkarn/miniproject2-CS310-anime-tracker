@@ -21,7 +21,7 @@ const isStringOrNull = (v: unknown): v is string | null => v === null || typeof 
 const isNumberOrNull = (v: unknown): v is number | null => v === null || typeof v === 'number';
 
 const ANIME_STATUSES: ReadonlySet<string> = new Set(['current', 'finished', 'tba', 'unreleased', 'upcoming']);
-export const isAnimeStatus = (v: unknown): v is AnimeStatus => typeof v === 'string' && ANIME_STATUSES.has(v);
+const isAnimeStatus = (v: unknown): v is AnimeStatus => typeof v === 'string' && ANIME_STATUSES.has(v);
 
 export function isAnimeAttributes(v: unknown): v is AnimeAttributes {
   return (

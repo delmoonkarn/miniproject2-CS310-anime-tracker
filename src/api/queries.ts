@@ -74,7 +74,7 @@ export const latestEpisodesQuery = (id: number, enabled = true) =>
   });
 
 /** Retry network failures, 5xx and rate limits. Other 4xx (404, 400) and parse errors won't fix themselves. */
-export function shouldRetry(failureCount: number, error: unknown): boolean {
+function shouldRetry(failureCount: number, error: unknown): boolean {
   if (failureCount >= 2 || !isKitsuError(error)) return false;
   if (error.kind === 'network') return true;
   return error.kind === 'http' && error.status !== null && (error.status >= 500 || error.isRateLimit);
