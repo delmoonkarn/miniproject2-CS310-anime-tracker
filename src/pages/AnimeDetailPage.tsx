@@ -8,7 +8,7 @@ import { LibraryControls } from '../components/LibraryControls';
 import { StreamLinks } from '../components/StreamLinks';
 import { Poster } from '../components/Poster';
 import { Icon } from '../components/Icon';
-import { useStreamLinks } from '../store/selectors';
+import { useWatchLinks } from '../store/selectors';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { needsEpisodeList, nextEpisode } from '../lib/airedEpisodes';
 import { FORMAT_LABEL } from '../lib/discover';
@@ -67,7 +67,7 @@ function AnimeDetail({ id }: { id: number }) {
   const query = useQuery(animeDetailQuery(id));
   // Only airing shows need episodes; same key and cache as the Watching tab.
   const episodes = useQuery(latestEpisodesQuery(id, query.data !== undefined && needsEpisodeList(query.data)));
-  const links = useStreamLinks(id);
+  const links = useWatchLinks(id);
   // Matches Tailwind's `md`: the controls move from under the title into the sidebar.
   const wide = useMediaQuery('(min-width: 48rem)');
 

@@ -121,9 +121,10 @@ Aired and next-episode data live only in the TanStack Query cache (`animeKeys.la
 
 ### Streaming links ("Where to watch")
 
-Kitsu doesn't say where a show is legally streamed in your region, so the Detail page lets you save your own links (Netflix, Crunchyroll, a YouTube channel, …).
+Kitsu doesn't say where a show is legally streamed in your region, so the Detail page shows links from two places (Netflix, Crunchyroll, a YouTube channel, …):
 
-- Links live in the store as `streamLinks: Record<animeId, { id, label, url }[]>`, persisted with everything else. Because they are keyed by Kitsu id, they appear on the Detail page however you open it (Explore, Watchlist, Favorites, a bookmark or a reload), and the first link becomes a **Watch on …** button there and a ▶ button on the show's Watching row.
+- **Published links** live in `src/data/streamLinks.ts` (`SHARED_STREAM_LINKS`, keyed by Kitsu id). They ship with the build, so every visitor of the deployed site sees them, read-only, at the top of the panel. To add one, take the id from `/anime/<id>`, add an entry, commit and redeploy. A unit test checks every entry is a named, valid http(s) link. This is static app data like `src/data/members.ts`: it is merged with the personal links at render time (`useWatchLinks`) and never copied into Zustand.
+- **Personal links** live in the store as `streamLinks: Record<animeId, { id, label, url }[]>`, persisted with everything else, and only exist in that browser. A personal link with the same URL as a published one isn't shown twice. Because they are keyed by Kitsu id, they appear on the Detail page however you open it (Explore, Watchlist, Favorites, a bookmark or a reload), and the first link becomes a **Watch on …** button there and a ▶ button on the show's Watching row.
 - `normalizeStreamUrl` (`src/lib/streamLinks.ts`, unit-tested) adds `https://` when it is missing and only accepts `http(s)` URLs, so a saved link can never be `javascript:`. Links open in a new tab with `rel="noopener noreferrer"`.
 - The name is optional: `serviceName` fills in "Netflix", "Crunchyroll" and similar for known hosts, otherwise the hostname.
 - Like favorites, links are independent of the watchlist: removing a show keeps them.
@@ -151,7 +152,7 @@ src/
                States (skeleton/error/empty)
   pages/       Home, AnimeDetail, Favorites, About, NotFound, RouteError, watchlist/*, explore/*
   routes/      router.tsx, RootLayout.tsx
-  data/        members.ts
+  data/        members.ts, streamLinks.ts (published streaming links)
 data/sample-anime.json   25 real trending items in Kitsu's JSON:API shape (also used by a parser test)
 screenshots/             app screenshots
 ```

@@ -2,7 +2,7 @@ import { useEffect, useRef, type MouseEvent } from 'react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { Link, useSearchParams } from 'react-router';
 import { useWatchingData } from '../../api/hooks';
-import { useCollectionIds, useStreamLinks } from '../../store/selectors';
+import { useCollectionIds, useWatchLinks } from '../../store/selectors';
 import { useLibraryStore } from '../../store/useLibraryStore';
 import { behindBy, lastAiredEpisode, needsEpisodeList, nextEpisode } from '../../lib/airedEpisodes';
 import { ANIME_STATUS_LABEL, formatNextEpisode, posterUrl } from '../../lib/format';
@@ -185,7 +185,7 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
   const total = anime.episodeCount;
   const progress = useLibraryStore((s) => s.entries[anime.id]?.progress ?? 0);
   const favorited = useLibraryStore((s) => s.favoriteIds.includes(anime.id));
-  const watchLink = useStreamLinks(anime.id)[0];
+  const watchLink = useWatchLinks(anime.id)[0];
   const { setProgress, increment, setStatus, toggleFavorite, remove } = useLibraryStore.getState();
 
   const waitingForEpisodes = needsEpisodeList(anime) && episodes.isPending;

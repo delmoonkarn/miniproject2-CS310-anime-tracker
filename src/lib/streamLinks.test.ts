@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { SHARED_STREAM_LINKS } from '../data/streamLinks';
 import { normalizeStreamUrl, serviceName } from './streamLinks';
 
 describe('normalizeStreamUrl', () => {
@@ -25,5 +26,17 @@ describe('serviceName', () => {
     expect(serviceName('https://www.netflix.com/title/1')).toBe('Netflix');
     expect(serviceName('https://m.youtube.com/watch?v=x')).toBe('YouTube');
     expect(serviceName('https://www.example.org/a')).toBe('example.org');
+  });
+});
+
+describe('SHARED_STREAM_LINKS', () => {
+  it('only holds named, already-normalized http(s) links', () => {
+    for (const [id, links] of Object.entries(SHARED_STREAM_LINKS)) {
+      expect(Number.isSafeInteger(Number(id)) && Number(id) > 0, `id ${id}`).toBe(true);
+      for (const l of links) {
+        expect(l.label.trim(), `label for ${id}`).not.toBe('');
+        expect(normalizeStreamUrl(l.url), `url for ${id}`).toBe(l.url);
+      }
+    }
   });
 });
