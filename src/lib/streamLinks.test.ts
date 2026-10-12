@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SHARED_STREAM_LINKS } from '../data/streamLinks';
-import { normalizeStreamUrl, serviceName } from './streamLinks';
+import { findService, normalizeStreamUrl, serviceName } from './streamLinks';
 
 describe('normalizeStreamUrl', () => {
   it('keeps full http(s) URLs', () => {
@@ -26,6 +26,23 @@ describe('serviceName', () => {
     expect(serviceName('https://www.netflix.com/title/1')).toBe('Netflix');
     expect(serviceName('https://m.youtube.com/watch?v=x')).toBe('YouTube');
     expect(serviceName('https://www.example.org/a')).toBe('example.org');
+  });
+});
+
+describe('findService', () => {
+  it('matches by hostname first, then by the link name', () => {
+    expect(findService('https://www.iq.com/play/abc')?.name).toBe('iQIYI');
+    expect(findService('https://tv.apple.com/show/x')?.name).toBe('Apple TV');
+    expect(findService('https://bit.ly/xyz', 'netflix')?.name).toBe('Netflix');
+    expect(findService('https://bit.ly/xyz', 'Disney Plus')?.name).toBe('Disney+');
+    // The hostname wins over a misleading name.
+    expect(findService('https://www.youtube.com/@MuseAsia', 'Netflix')?.name).toBe('YouTube');
+    expect(findService('https://example.org', 'My site')).toBeNull();
+  });
+
+  it('carries the official logo where Simple Icons has one', () => {
+    expect(findService('https://netflix.com')?.icon?.hex).toBe('E50914');
+    expect(findService('https://wetv.vip')?.icon).toBeNull();
   });
 });
 

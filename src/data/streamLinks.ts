@@ -12,5 +12,5 @@ export interface SharedStreamLink {
 
 /** Keyed by Kitsu anime id. */
 export const SHARED_STREAM_LINKS: Readonly<Record<number, readonly SharedStreamLink[]>> = {
-  // 50024: [{ label: 'Crunchyroll', url: 'https://www.crunchyroll.com/series/…' }],
+  50021: [{ label: 'Netflix', url: 'https://www.netflix.com/watch/83050561?utm_source=hareshi&utm_medium=195516-616d2395ae5ae697facc8ac5&utm_campaign=6ac147bd7c00f1754a9fd283' }],
 };

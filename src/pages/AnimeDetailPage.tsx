@@ -8,6 +8,7 @@ import { LibraryControls } from '../components/LibraryControls';
 import { StreamLinks } from '../components/StreamLinks';
 import { Poster } from '../components/Poster';
 import { Icon } from '../components/Icon';
+import { ServiceLogo } from '../components/ServiceLogo';
 import { useWatchLinks } from '../store/selectors';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { needsEpisodeList, nextEpisode } from '../lib/airedEpisodes';
@@ -147,7 +148,7 @@ function AnimeDetail({ id }: { id: number }) {
                   rel="noopener noreferrer"
                   className="btn btn-primary btn-sm rounded-full md:ml-auto"
                 >
-                  <Icon name="play" filled className="size-3.5" />
+                  <ServiceLogo url={primaryLink.url} label={primaryLink.label} className="size-4 ring-1 ring-white/40" />
                   Watch on {primaryLink.label}
                 </a>
               )}

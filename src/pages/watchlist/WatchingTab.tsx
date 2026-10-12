@@ -11,6 +11,7 @@ import { pillClass } from '../../components/pill';
 import { EmptyState, ErrorState, RowSkeleton } from '../../components/States';
 import { Poster } from '../../components/Poster';
 import { Icon } from '../../components/Icon';
+import { ServiceLogo } from '../../components/ServiceLogo';
 import type { Anime, Episode, Page } from '../../types/kitsu';
 
 interface RowData {
@@ -260,11 +261,11 @@ function WatchingRowContent({ anime, episodes }: { anime: Anime; episodes: UseQu
             href={watchLink.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-sm btn-ghost btn-square text-primary"
+            className="btn btn-sm btn-ghost btn-square"
             aria-label={`Watch ${anime.canonicalTitle} on ${watchLink.label}`}
             title={`Watch on ${watchLink.label}`}
           >
-            <Icon name="play" filled className="size-4" />
+            <ServiceLogo url={watchLink.url} label={watchLink.label} />
           </a>
         )}
         <div className="join" role="group" aria-label={`Episodes watched of ${anime.canonicalTitle}`}>

@@ -4,6 +4,7 @@ import { useStreamLinks } from '../store/selectors';
 import { normalizeStreamUrl, serviceName } from '../lib/streamLinks';
 import { SHARED_STREAM_LINKS } from '../data/streamLinks';
 import { Icon } from './Icon';
+import { ServiceLogo } from './ServiceLogo';
 
 /**
  * "Where to watch": links published with the app (src/data/streamLinks.ts, read-only, same for everyone)
@@ -40,10 +41,10 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
                 href={l.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-primary btn-sm min-w-0 flex-1 justify-start"
+                className="btn btn-sm min-w-0 flex-1 justify-start border-base-300 bg-base-100 hover:border-primary/50"
                 title={l.url}
               >
-                <Icon name="play" filled className="size-3.5" />
+                <ServiceLogo url={l.url} label={l.label} />
                 <span className="truncate">{l.label}</span>
                 <Icon name="external" className="ml-auto size-3.5 opacity-70" />
               </a>
@@ -72,10 +73,10 @@ export function StreamLinks({ animeId, title }: { animeId: number; title: string
                   href={l.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary btn-sm min-w-0 flex-1 justify-start"
+                  className="btn btn-sm min-w-0 flex-1 justify-start border-base-300 bg-base-100 hover:border-primary/50"
                   title={l.url}
                 >
-                  <Icon name="play" filled className="size-3.5" />
+                  <ServiceLogo url={l.url} label={l.label} />
                   <span className="truncate">{l.label}</span>
                   <Icon name="external" className="ml-auto size-3.5 opacity-70" />
                 </a>

@@ -1,6 +1,5 @@
 import { Link, NavLink, Outlet, ScrollRestoration } from 'react-router';
 import { useLibraryStore } from '../store/useLibraryStore';
-import { useStatusCounts } from '../store/selectors';
 import { Icon } from '../components/Icon';
 import { GlobalSearch } from '../components/GlobalSearch';
 
@@ -24,13 +23,6 @@ function ThemeToggle() {
 }
 
 export function RootLayout() {
-  const counts = useStatusCounts();
-  // Small count next to Watchlist / Favorites so the nav doubles as a summary.
-  const badge: Partial<Record<(typeof NAV)[number]['to'], number>> = {
-    '/watchlist': counts.watching + counts.interested + counts.completed,
-    '/favorites': counts.favorites,
-  };
-
   const links = (mobile: boolean) =>
     NAV.map((n) => (
       <li key={n.to}>
@@ -40,15 +32,10 @@ export function RootLayout() {
           className={({ isActive }) =>
             `rounded-field px-3 py-1.5 text-sm font-medium transition-colors ${
               isActive ? 'bg-primary/10 text-primary' : 'text-base-content/70 hover:bg-base-200 hover:text-base-content'
-            } ${mobile ? 'flex justify-between' : 'inline-flex items-center gap-1.5'}`
+            } ${mobile ? 'flex' : 'inline-flex items-center'}`
           }
         >
           {n.label}
-          {(badge[n.to] ?? 0) > 0 && (
-            <span className="rounded-full bg-base-300/80 px-1.5 text-[0.6875rem] font-semibold text-base-content/70 tabular-nums">
-              {badge[n.to]}
-            </span>
-          )}
         </NavLink>
       </li>
     ));
